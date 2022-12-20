@@ -48,11 +48,11 @@ void DiagnosticTool::runChecks()
     for (int i = 0; i < checkSize; i++)
     {
         if (stopFlag)
+        {
             break;
+        }
 
-        ADTExecutable *currentTask = d->checks->at(i).get();
-
-        emit messageChanged(currentTask->m_name);
+        emit messageChanged(d->checks->at(i).get()->m_name);
 
         QThread::sleep(1); //job simulation
 
@@ -88,9 +88,7 @@ void DiagnosticTool::runResolvers()
             break;
         }
 
-        ADTExecutable *currentTask = d->resolvers->at(i).get();
-
-        emit messageChanged(currentTask->m_name);
+        emit messageChanged(d->resolvers->at(i).get()->m_name);
 
         QThread::sleep(1); //job simulation
 
