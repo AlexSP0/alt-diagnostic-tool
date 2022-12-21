@@ -28,4 +28,16 @@ ADTExecutable::ADTExecutable()
     , m_category("")
     , m_command("")
     , m_args("")
+    , m_stdout("")
+    , m_stderr("")
 {}
+
+void ADTExecutable::getStdout(QString out)
+{
+    qWarning() << "stdout: " << out;
+}
+
+void ADTExecutable::getStderr(QString err)
+{
+    qWarning() << "stderr: " << err;
+}

@@ -19,11 +19,18 @@
 ***********************************************************************************************************************/
 
 #include "diagnostictool.h"
+#include "adtexecutable.h"
 
 #include <QJsonDocument>
 #include <QThread>
 
 #include <QtWidgets/QApplication>
+
+#include <QtDBus/QDBusConnection>
+#include <QtDBus/QDBusConnectionInterface>
+#include <QtDBus/QDBusInterface>
+#include <QtDBus/QDBusMessage>
+#include <QtDBus/QDBusReply>
 
 DiagnosticTool::DiagnosticTool(QJsonDocument document)
     : d(nullptr)
@@ -54,7 +61,8 @@ void DiagnosticTool::runChecks()
 
         emit messageChanged(d->checks->at(i).get()->m_name);
 
-        QThread::sleep(1); //job simulation
+        executeCommand(d->checks->at(i).get());
+        QThread::sleep(1);
 
         emit onProgressUpdate(progress + (i + 1) * percentByOneCheck);
     }
@@ -102,6 +110,50 @@ void DiagnosticTool::runResolvers()
     emit finish();
 
     QThread::currentThread()->quit();
+}
+
+void DiagnosticTool::executeCommand(ADTExecutable *task)
+{
+    QDBusConnection dbus = QDBusConnection::systemBus();
+
+    QDBusInterface iface("ru.basealt",
+                         "/ru/basealt/alterator/executor",
+                         "ru.basealt.alterator.executor",
+                         dbus);
+
+    bool i1 = iface.connection().connect(QLatin1String("ru.basealt"),
+                                         QLatin1String("/ru/basealt/alterator/executor"),
+                                         QLatin1String("ru.basealt.alterator.executor"),
+                                         QLatin1String("executor_stdout"),
+                                         task,
+                                         SLOT(getStdout(QString)));
+    bool i2 = iface.connection().connect("ru.basealt",
+                                         "/ru/basealt/alterator/executor",
+                                         "ru.basealt.alterator.executor",
+                                         "executor_stderr",
+                                         task,
+                                         SLOT(getStderr(QString)));
+
+    QDBusReply<int> reply = iface.call("test1", "\"dev\"");
+    //    QList<QVariant> arg;
+    //    arg << "\"dev\"";
+    //    QDBusPendingReply<QString> reply = iface.asyncCall("test1", arg);
+    //    reply.waitForFinished();
+
+    qWarning() << "Args: " << task->m_args << " Exit code: " << reply.value();
+
+    //    bool i3 = iface.connection().disconnect("ru.basealt",
+    //                                            "/ru/basealt/alterator/executor",
+    //                                            "ru.basealt.alterator.executor",
+    //                                            "executor_stdout",
+    //                                            task,
+    //                                            SLOT(getStdout(QString)));
+    //    bool i4 = iface.connection().disconnect("ru.basealt",
+    //                                            "/ru/basealt/alterator/executor",
+    //                                            "ru.basealt.alterator.executor",
+    //                                            "executor_stderr",
+    //                                            task,
+    //                                            SLOT(getStderr(QString)));
 }
 
 void DiagnosticTool::cancelTask()
