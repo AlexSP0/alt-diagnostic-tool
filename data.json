@@ -1,0 +1,231 @@
+{
+    "checks": [
+        {
+            "args": "check_hostnamectl",
+            "category": "category1",
+            "command": "domain-diag",
+            "id": "0",
+            "name": "check_hostnamectl"
+        },
+		{
+            "args": "test_hostname",
+            "category": "category2",
+            "command": "domain-diag",
+            "id": "1",
+            "name": "test_hostname"
+        },
+		{
+            "args": "check_system_auth",
+            "category": "category3",
+            "command": "domain-diag",
+            "id": "2",
+            "name": "ccheck_system_auth"
+        },
+		{
+            "args": "test_domain_system_auth",
+            "category": "category4",
+            "command": "domain-diag",
+            "id": "3",
+            "name": "test_domain_system_auth"
+        },
+		{
+            "args": "check_system_policy",
+            "category": "category5",
+            "command": "domain-diag",
+            "id": "4",
+            "name": "check_system_policy"
+        },
+		{
+            "args": "check_system_policy",
+            "category": "category6",
+            "command": "domain-diag",
+            "id": "5",
+            "name": "check_system_policy"
+        },
+		{
+            "args": "test_gpupdate_system_policy",
+            "category": "category7",
+            "command": "domain-diag",
+            "id": "6",
+            "name": "test_gpupdate_system_policy"
+        },
+		{
+            "args": "check_krb5_conf_exists",
+            "category": "category8",
+            "command": "domain-diag",
+            "id": "7",
+            "name": "check_krb5_conf_exists"
+        },
+        {
+            "args": "check_krb5_conf_ccache",
+            "category": "category9",
+            "command": "domain-diag",
+            "id": "8",
+            "name": "check_krb5_conf_ccache"
+        },
+        {
+            "args": "check_krb5_conf_kdc_lookup",
+            "category": "category9",
+            "command": "domain-diag",
+            "id": "9",
+            "name": "check_krb5_conf_kdc_lookup"
+        },
+        {
+            "args": "check_krb5_keytab_exists",
+            "category": "category9",
+            "command": "domain-diag",
+            "id": "10",
+            "name": "check_krb5_keytab_exists"
+        },
+        {
+            "args": "check_keytab_credential_list",
+            "category": "category9",
+            "command": "domain-diag",
+            "id": "11",
+            "name": "check_keytab_credential_list"
+        },
+        {
+            "args": "check_resolv_conf",
+            "category": "category9",
+            "command": "domain-diag",
+            "id": "12",
+            "name": "check_resolv_conf"
+        },
+        {
+            "args": "compare_resolv_conf_with_default_realm",
+            "category": "category9",
+            "command": "domain-diag",
+            "id": "13",
+            "name": "compare_resolv_conf_with_default_realm"
+        },
+        {
+            "args": "check_smb_conf",
+            "category": "category9",
+            "command": "domain-diag",
+            "id": "14",
+            "name": "check_smb_conf"
+        },
+        {
+            "args": "compare_smb_realm_with_krb5_default_realm",
+            "category": "category9",
+            "command": "domain-diag",
+            "id": "15",
+            "name": "compare_smb_realm_with_krb5_default_realm"
+        },
+        {
+            "args": "test_smb_realm",
+            "category": "category9",
+            "command": "domain-diag",
+            "id": "16",
+            "name": "test_smb_realm"
+        },
+        {
+            "args": "test_domainname",
+            "category": "category9",
+            "command": "domain-diag",
+            "id": "17",
+            "name": "test_domainname"
+        },
+        {
+            "args": "check_time_synchronization",
+            "category": "category9",
+            "command": "domain-diag",
+            "id": "18",
+            "name": "check_time_synchronization"
+        },
+        {
+            "args": "test_time_synchronization",
+            "category": "category9",
+            "command": "domain-diag",
+            "id": "19",
+            "name": "test_time_synchronization"
+        },
+        {
+            "args": "check_nameservers",
+            "category": "category9",
+            "command": "domain-diag",
+            "id": "20",
+            "name": "check_nameservers"
+        },
+        {
+            "args": "check_domain_controllers",
+            "category": "category9",
+            "command": "domain-diag",
+            "id": "21",
+            "name": "check_domain_controllers"
+        },
+        {
+            "args": "check_kerberos_and_ldap_srv_records",
+            "category": "category9",
+            "command": "domain-diag",
+            "id": "22",
+            "name": "check_kerberos_and_ldap_srv_records"
+        },
+        {
+            "args": "compare_netbios_name",
+            "category": "category9",
+            "command": "domain-diag",
+            "id": "23",
+            "name": "compare_netbios_name"
+        },
+        {
+            "args": "check_common_packages",
+            "category": "category9",
+            "command": "domain-diag",
+            "id": "24",
+            "name": "check_common_packages"
+        },
+        {
+            "args": "check_group_policy_packages",
+            "category": "category9",
+            "command": "domain-diag",
+            "id": "25",
+            "name": "check_group_policy_packages"
+        },
+        {
+            "args": "check_sssd_ad_packages",
+            "category": "category9",
+            "command": "domain-diag",
+            "id": "26",
+            "name": "check_sssd_ad_packages"
+        },
+        {
+            "args": "check_sssd_winbind_packages",
+            "category": "category9",
+            "command": "domain-diag",
+            "id": "27",
+            "name": "check_sssd_winbind_packages"
+        }
+    ],
+    "resolvers": [
+        {
+            "args": "arg1",
+            "category": "category1",
+            "command": "command1",
+            "id": "0",
+            "name": "name1"
+        },
+        {
+            "args": "arg2",
+            "category": "category2",
+            "command": "command2",
+            "id": "1",
+            "name": "name2"
+        },
+        {
+            "args": "arg3",
+            "category": "category3",
+            "command": "command3",
+            "id": "2",
+            "name": "name3"
+        },
+
+        {
+            "args": "arg4",
+            "category": "category4",
+            "command": "command4",
+            "id": "3",
+            "name": "name4"
+        }
+    ]
+}
