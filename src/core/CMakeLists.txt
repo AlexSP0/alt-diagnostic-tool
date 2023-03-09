@@ -15,6 +15,8 @@ set (HEADERS
     adtjsonconverter.h
     alteratorexecutordbusinterface.h
     adtjsonloader.h
+
+    ireportscollector.h
 )
 
 set (SOURCES
@@ -27,6 +29,8 @@ set (SOURCES
 
     adtjsonconverter.cpp
     adtjsonloader.cpp
+
+    ireportscollector.cpp
 )
 
 ADD_LIBRARY(adtcore STATIC ${SOURCES} ${HEADERS})
