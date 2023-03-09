@@ -17,6 +17,7 @@ set (HEADERS
     adtjsonloader.h
 
     ireportscollector.h
+    basereportcollector.h
 )
 
 set (SOURCES
@@ -31,6 +32,7 @@ set (SOURCES
     adtjsonloader.cpp
 
     ireportscollector.cpp
+    basereportcollector.cpp
 )
 
 ADD_LIBRARY(adtcore STATIC ${SOURCES} ${HEADERS})
