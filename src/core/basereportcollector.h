@@ -8,11 +8,7 @@ class BaseReportCollector : public IReportsCollector
 public:
     BaseReportCollector();
 
-    virtual QString getAllReports(ADTExecutableRunner *tasks) override;
-
-    virtual QString getStdoutReports(ADTExecutableRunner *tasks) override;
-
-    virtual QString getStderrReports(ADTExecutableRunner *tasks) override;
+    virtual QString getReport(ADTExecutableRunner *tasks, ReportType type) override;
 };
 
 #endif // BASEREPORTCOLLECTOR_H

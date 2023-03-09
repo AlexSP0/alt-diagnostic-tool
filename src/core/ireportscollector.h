@@ -8,14 +8,18 @@
 class IReportsCollector
 {
 public:
+    enum ReportType
+    {
+        All,
+        Stdout,
+        Stderr
+    };
+
+public:
     IReportsCollector();
     virtual ~IReportsCollector() = default;
 
-    virtual QString getAllReports(ADTExecutableRunner *tasks) = 0;
-
-    virtual QString getStdoutReports(ADTExecutableRunner *tasks) = 0;
-
-    virtual QString getStderrReports(ADTExecutableRunner *tasks) = 0;
+    virtual QString getReport(ADTExecutableRunner *tasks, ReportType type) = 0;
 
     void setDelimiter(QString delimiter);
 
