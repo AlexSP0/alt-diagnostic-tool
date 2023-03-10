@@ -22,6 +22,7 @@
 #define ADTWIZARD_H
 
 #include "../core/adtexecutablerunner.h"
+#include "../core/ireportscollector.h"
 
 #include "checkwizardpage.h"
 #include "finishwizardpage.h"
@@ -67,9 +68,12 @@ private slots:
     void dBusServiceUnregistered();
     void dBusServiceRegistered();
 
+    void onSaveButtonPressed();
+
 private:
     std::unique_ptr<ADTExecutableRunner> checks;
     std::unique_ptr<ADTExecutableRunner> resolvers;
+    std::unique_ptr<IReportsCollector> reportsCollector;
 
     QScopedPointer<IntroWizardPage> introPage;
     QScopedPointer<CheckWizardPage> checkPage;

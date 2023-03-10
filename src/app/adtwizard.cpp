@@ -20,10 +20,13 @@
 
 #include "adtwizard.h"
 #include "../core/adtjsonloader.h"
+#include "../core/basereportcollector.h"
 
 #include <QDebug>
 #include <QFile>
+#include <QFileDialog>
 #include <QJsonDocument>
+#include <QMessageBox>
 #include <QPushButton>
 
 #include <QtDBus/QDBusConnectionInterface>
@@ -41,6 +44,7 @@ ADTWizard::ADTWizard(QJsonDocument &checksData,
     : QWizard(parent)
     , checks(new ADTExecutableRunner(checksData, serviceName, path, interfaceName))
     , resolvers(new ADTExecutableRunner(resolversData, serviceName, path, interfaceName))
+    , reportsCollector(new BaseReportCollector())
     , introPage(new IntroWizardPage())
     , checkPage(new CheckWizardPage(checks.get()))
     , repairPage(new RepairWizardPage(resolvers.get()))
@@ -75,6 +79,13 @@ ADTWizard::ADTWizard(QJsonDocument &checksData,
             &QDBusServiceWatcher::serviceRegistered,
             this,
             &ADTWizard::dBusServiceRegistered);
+
+    setButtonText(QWizard::CustomButton1, "Save");
+
+    connect(button(QWizard::CustomButton1),
+            &QPushButton::clicked,
+            this,
+            &ADTWizard::onSaveButtonPressed);
 }
 
 int ADTWizard::nextId() const
@@ -160,8 +171,48 @@ void ADTWizard::dBusServiceRegistered()
     isServiceRegistered = true;
 }
 
+void ADTWizard::onSaveButtonPressed()
+{
+    QString fileName = QFileDialog::getSaveFileName(this,
+                                                    tr("Save File"),
+                                                    "reports.txt",
+                                                    tr("Text file (*.txt)"));
+
+    if (fileName.isEmpty())
+    {
+        QMessageBox errorMsgBox;
+        errorMsgBox.setText(QObject::tr("File name is empty! Cannot save the reports. "));
+        errorMsgBox.setIcon(QMessageBox::Warning);
+        errorMsgBox.exec();
+
+        return;
+    }
+
+    QFile outputFile(fileName);
+
+    if (!outputFile.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+        QMessageBox errorMsgBox;
+        errorMsgBox.setText(QObject::tr("Cannot open specified file! "));
+        errorMsgBox.setIcon(QMessageBox::Warning);
+        errorMsgBox.exec();
+
+        return;
+    }
+
+    QTextStream textStream(&outputFile);
+    textStream << reportsCollector->getReport(checks.get(), IReportsCollector::ReportType::All);
+
+    textStream << reportsCollector->getReport(resolvers.get(), IReportsCollector::ReportType::All);
+
+    outputFile.flush();
+    outputFile.close();
+}
+
 void ADTWizard::connectSlotInCurrentPage(int currentPageId)
 {
+    setOption(QWizard::HaveCustomButton1, false);
+
     switch (currentPageId)
     {
     case ADTWizard::Check_Page:
@@ -176,7 +227,11 @@ void ADTWizard::connectSlotInCurrentPage(int currentPageId)
         break;
 
     case ADTWizard::Intro_Page:
+        break;
+
     case ADTWizard::Finish_Page:
+        setOption(QWizard::HaveCustomButton1, true);
+        break;
     default:
         break;
     }
