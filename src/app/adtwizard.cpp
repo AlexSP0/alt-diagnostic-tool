@@ -19,8 +19,8 @@
 ***********************************************************************************************************************/
 
 #include "adtwizard.h"
-#include "../core/adtjsonloader.h"
 #include "../core/basereportcollector.h"
+#include "adtjsonloader.h"
 
 #include <QDebug>
 #include <QFile>

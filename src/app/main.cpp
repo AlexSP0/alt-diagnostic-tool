@@ -18,18 +18,20 @@
 **
 ***********************************************************************************************************************/
 
+#include "adtjsonloader.h"
 #include "adtwizard.h"
 #include "adtwizardbuilder.h"
 #include "dbuschecker.h"
 
+#include <memory>
 #include <QApplication>
 #include <QFile>
 #include <QJsonDocument>
 #include <QMessageBox>
 
 const QString DBUS_SERVICE_NAME   = "ru.basealt.alterator";
-const QString PATH_TO_DBUS_OBJECT = "/ru/basealt/alterator/executor";
-const QString DBUS_INTERFACE_NAME = "ru.basealt.alterator.executor";
+const QString PATH_TO_DBUS_OBJECT = "/ru/basealt/alterator/adt";
+const QString DBUS_INTERFACE_NAME = "ru.basealt.alterator.adt";
 
 int main(int argc, char **argv)
 {
@@ -55,12 +57,12 @@ int main(int argc, char **argv)
         exit(1);
     }
 
-    auto wizardBulder = ADTWizardBuilder();
+    auto wizardBuilder = ADTWizardBuilder();
 
-    auto wizard = wizardBulder.withService(DBUS_SERVICE_NAME)
+    auto wizard = wizardBuilder.withService(DBUS_SERVICE_NAME)
                       .withPath(PATH_TO_DBUS_OBJECT)
                       .withInterface(DBUS_INTERFACE_NAME)
-                      .build();
+                      .build(std::make_unique<ADTJsonLoader>());
 
     if (!wizard)
     {

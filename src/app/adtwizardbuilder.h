@@ -23,11 +23,13 @@
 
 #include "adtwizard.h"
 
+#include <iadtwizardbuilderstrategy.h>
+
 class ADTWizardBuilder
 {
 public:
-    ADTWizardBuilder()  = default;
-    ~ADTWizardBuilder() = default;
+    ADTWizardBuilder();
+    ~ADTWizardBuilder();
 
     ADTWizardBuilder &withFile(const QString &filename);
     ADTWizardBuilder &withChecksSection(const QString &checksSectionName);
@@ -36,7 +38,7 @@ public:
     ADTWizardBuilder &withPath(const QString &path);
     ADTWizardBuilder &withInterface(const QString &interfaceName);
 
-    std::unique_ptr<ADTWizard> build();
+    std::unique_ptr<ADTWizard> build(std::unique_ptr<IADTWizardBuilderStrategy> strategy);
 
 private:
     QString m_dataFile         = "data.json";

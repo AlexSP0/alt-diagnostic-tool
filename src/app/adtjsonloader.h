@@ -17,44 +17,33 @@
 ** Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 **
 ***********************************************************************************************************************/
-#include "adtjsonloader.h"
 
-#include <QDebug>
-#include <QFile>
-#include <QJsonArray>
+#ifndef ADTJSONLOADER_H
+#define ADTJSONLOADER_H
+
+#include "iadtwizardbuilderstrategy.h"
+
 #include <QJsonDocument>
-#include <QJsonObject>
 
-ADTJsonLoader::ADTJsonLoader() {}
-
-QJsonDocument ADTJsonLoader::loadDocument(QString file, QString jsonArrayName)
+class ADTJsonLoader : public IADTWizardBuilderStrategy
 {
-    QFile jsonFile(file);
+public:
+    ADTJsonLoader();
+    virtual ~ADTJsonLoader();
 
-    QJsonDocument doc;
+    virtual QJsonDocument buildChecks(QString &file,
+                                      QString &checksSection,
+                                      QString &serviceName,
+                                      QString &path,
+                                      QString &interfaceName);
+    virtual QJsonDocument buildResolvers(QString &file,
+                                         QString &resolversSection,
+                                         QString &serviceName,
+                                         QString &path,
+                                         QString &interfaceName);
 
-    if (!jsonFile.open(QIODevice::ReadOnly))
-    {
-        qWarning() << "Can't open json file!";
-        return doc;
-    }
+private:
+    QJsonDocument loadDocument(QString &file, QString &jsonArrayName);
+};
 
-    QByteArray fileData = jsonFile.readAll();
-
-    jsonFile.close();
-
-    doc = (QJsonDocument::fromJson(fileData));
-
-    QJsonObject object = doc.object();
-
-    if (object.contains(jsonArrayName) && object[jsonArrayName].isArray())
-    {
-        return QJsonDocument(object[jsonArrayName].toArray());
-    }
-
-    qWarning() << "Can't find in " << file << " json array with name " << jsonArrayName;
-
-    QJsonDocument emptyDoc;
-
-    return emptyDoc;
-}
+#endif // ADTJSONLOADER_H

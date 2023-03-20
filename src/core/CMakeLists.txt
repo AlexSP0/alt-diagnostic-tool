@@ -14,7 +14,6 @@ set (HEADERS
 
     adtjsonconverter.h
     alteratorexecutordbusinterface.h
-    adtjsonloader.h
 
     ireportscollector.h
     basereportcollector.h
@@ -29,7 +28,6 @@ set (SOURCES
     adtexecutablerunnerprivate.cpp
 
     adtjsonconverter.cpp
-    adtjsonloader.cpp
 
     ireportscollector.cpp
     basereportcollector.cpp

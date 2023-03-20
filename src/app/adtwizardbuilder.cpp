@@ -19,9 +19,14 @@
 ***********************************************************************************************************************/
 
 #include "adtwizardbuilder.h"
-#include "../core/adtjsonloader.h"
+#include "adtjsonloader.h"
 
+#include <memory>
 #include <QMessageBox>
+
+ADTWizardBuilder::ADTWizardBuilder() {}
+
+ADTWizardBuilder::~ADTWizardBuilder() {}
 
 ADTWizardBuilder &ADTWizardBuilder::withFile(const QString &filename)
 {
@@ -59,16 +64,25 @@ ADTWizardBuilder &ADTWizardBuilder::withInterface(const QString &interfaceName)
     return *this;
 }
 
-std::unique_ptr<ADTWizard> ADTWizardBuilder::build()
+std::unique_ptr<ADTWizard> ADTWizardBuilder::build(
+    std::unique_ptr<IADTWizardBuilderStrategy> strategy)
 {
-    QJsonDocument checks    = ADTJsonLoader::loadDocument(m_dataFile, m_checksSection);
-    QJsonDocument resolvers = ADTJsonLoader::loadDocument(m_dataFile, m_resolversSection);
+    QJsonDocument checks    = strategy.get()->buildChecks(m_dataFile,
+                                                       m_checksSection,
+                                                       m_serviceName,
+                                                       m_path,
+                                                       m_interfaceName);
+    QJsonDocument resolvers = strategy.get()->buildResolvers(m_dataFile,
+                                                             m_resolversSection,
+                                                             m_serviceName,
+                                                             m_path,
+                                                             m_interfaceName);
 
     if (checks.isEmpty())
     {
         QMessageBox checksMsgBox;
         checksMsgBox.setText(
-            QObject::tr("Checks file is missing or corrupted. Cannot continue working!"));
+            QObject::tr("Checks source is missing or corrupted. Cannot continue working!"));
         checksMsgBox.setIcon(QMessageBox::Critical);
         checksMsgBox.exec();
         return nullptr;
@@ -77,8 +91,8 @@ std::unique_ptr<ADTWizard> ADTWizardBuilder::build()
     if (resolvers.isEmpty())
     {
         QMessageBox resolversMsgBox;
-        resolversMsgBox.setText(QObject::tr(
-            "The data file does not contain data about the resolvers, only checks are possible."));
+        resolversMsgBox.setText(
+            QObject::tr("Resolvers source is missing or corrupted, only checks are possible."));
         resolversMsgBox.setIcon(QMessageBox::Warning);
         resolversMsgBox.exec();
     }
