@@ -3,14 +3,17 @@
 
 #include "iadtwizardbuilderstrategy.h"
 
+#include <QDBusConnection>
+#include <QDBusInterface>
 #include <QJsonDocument>
 #include <QString>
 
-class DomainDiagBuildStrategy : public IADTWizardBuilderStrategy
+class DomainDiagBuildStrategy : public QObject, public IADTWizardBuilderStrategy
 {
+    Q_OBJECT
 public:
     DomainDiagBuildStrategy();
-    ~DomainDiagBuildStrategy();
+    virtual ~DomainDiagBuildStrategy();
 
     QJsonDocument buildChecks(QString &file,
                               QString &checksSection,
@@ -22,11 +25,18 @@ public:
                                  QString &serviceName,
                                  QString &path,
                                  QString &interfaceName);
+public slots:
+    void getStdout(QString out);
+    void getStderr(QString err);
+
+    void buildListOfChecks(QString &serviceName, QString &path, QString &interfaceName);
 
 private:
-    QJsonDocument loadDocument(QString &file, QString &jsonArrayName);
+    QStringList m_listOfChecks;
 
-    QStringList getListOfChecks(QString &serviceName, QString &path, QString &interfaceName);
+    std::unique_ptr<QDBusConnection> m_dbusConnection;
+
+    std::unique_ptr<QDBusInterface> m_dbusInterface;
 };
 
 #endif // DOMAINDIAGBUILDSTRATEGY_H

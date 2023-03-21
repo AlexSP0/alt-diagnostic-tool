@@ -22,6 +22,7 @@
 #include "adtwizard.h"
 #include "adtwizardbuilder.h"
 #include "dbuschecker.h"
+#include "domaindiagbuildstrategy.h"
 
 #include <memory>
 #include <QApplication>
@@ -62,7 +63,7 @@ int main(int argc, char **argv)
     auto wizard = wizardBuilder.withService(DBUS_SERVICE_NAME)
                       .withPath(PATH_TO_DBUS_OBJECT)
                       .withInterface(DBUS_INTERFACE_NAME)
-                      .build(std::make_unique<ADTJsonLoader>());
+                      .build(std::make_unique<DomainDiagBuildStrategy>());
 
     if (!wizard)
     {

@@ -111,7 +111,7 @@ void ADTExecutableRunner::executeTask(std::unique_ptr<ADTExecutable> &task)
 
     emit beginTask(task.get());
 
-    QDBusReply<int> reply = dbusInterface->call("test1", "\"dev\"");
+    QDBusReply<int> reply = dbusInterface->call(task.get()->m_command, task.get()->m_args);
 
     disconnectExecutableSignals(task);
 

@@ -25,15 +25,9 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 
-ADTJsonLoader::ADTJsonLoader()
-{
+ADTJsonLoader::ADTJsonLoader() {}
 
-}
-
-ADTJsonLoader::~ADTJsonLoader()
-{
-
-}
+ADTJsonLoader::~ADTJsonLoader() {}
 
 QJsonDocument ADTJsonLoader::buildChecks(QString &file,
                                          QString &checksSection,
