@@ -1,4 +1,4 @@
-#include "domaindiagbuildstrategy.h"
+#include "domaindiagbuilderstrategy.h"
 
 #include <QDBusReply>
 #include <QEventLoop>
@@ -8,19 +8,19 @@
 #include <qfile.h>
 #include <qjsonarray.h>
 
-DomainDiagBuildStrategy::DomainDiagBuildStrategy()
+DomainDiagBuilderStrategy::DomainDiagBuilderStrategy()
     : m_listOfChecks({})
     , m_dbusConnection(nullptr)
     , m_dbusInterface(nullptr)
 {}
 
-DomainDiagBuildStrategy::~DomainDiagBuildStrategy() {}
+DomainDiagBuilderStrategy::~DomainDiagBuilderStrategy() {}
 
-QJsonDocument DomainDiagBuildStrategy::buildChecks(QString &file,
-                                                   QString &checksSection,
-                                                   QString &serviceName,
-                                                   QString &path,
-                                                   QString &interfaceName)
+QJsonDocument DomainDiagBuilderStrategy::buildChecks(QString &file,
+                                                     QString &checksSection,
+                                                     QString &serviceName,
+                                                     QString &path,
+                                                     QString &interfaceName)
 {
     QJsonDocument doc;
 
@@ -54,25 +54,25 @@ QJsonDocument DomainDiagBuildStrategy::buildChecks(QString &file,
     return QJsonDocument(checks[checksSection].toArray());
 }
 
-QJsonDocument DomainDiagBuildStrategy::buildResolvers(QString &file,
-                                                      QString &resolversSection,
-                                                      QString &serviceName,
-                                                      QString &path,
-                                                      QString &interfaceName)
+QJsonDocument DomainDiagBuilderStrategy::buildResolvers(QString &file,
+                                                        QString &resolversSection,
+                                                        QString &serviceName,
+                                                        QString &path,
+                                                        QString &interfaceName)
 {
     return QJsonDocument();
 }
 
-void DomainDiagBuildStrategy::getStdout(QString out)
+void DomainDiagBuilderStrategy::getStdout(QString out)
 {
     m_listOfChecks.append(out);
 }
 
-void DomainDiagBuildStrategy::getStderr(QString err) {}
+void DomainDiagBuilderStrategy::getStderr(QString err) {}
 
-void DomainDiagBuildStrategy::buildListOfChecks(QString &serviceName,
-                                                QString &path,
-                                                QString &interfaceName)
+void DomainDiagBuilderStrategy::buildListOfChecks(QString &serviceName,
+                                                  QString &path,
+                                                  QString &interfaceName)
 {
     QString dbusMethodName("domain_diag");
     QString dbusSSignalName("executor_stdout");

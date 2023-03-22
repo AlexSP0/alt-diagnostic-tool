@@ -8,12 +8,12 @@
 #include <QJsonDocument>
 #include <QString>
 
-class DomainDiagBuildStrategy : public QObject, public IADTWizardBuilderStrategy
+class DomainDiagBuilderStrategy : public QObject, public IADTWizardBuilderStrategy
 {
     Q_OBJECT
 public:
-    DomainDiagBuildStrategy();
-    virtual ~DomainDiagBuildStrategy();
+    DomainDiagBuilderStrategy();
+    virtual ~DomainDiagBuilderStrategy();
 
     QJsonDocument buildChecks(QString &file,
                               QString &checksSection,

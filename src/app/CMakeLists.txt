@@ -39,7 +39,7 @@ set(HEADERS
     slotconnector.h
     adtwizardbuilder.h
     iadtwizardbuilderstrategy.h
-    domaindiagbuildstrategy.h
+    domaindiagbuilderstrategy.h
     dbuschecker.h
     adtjsonloader.h
 )
@@ -56,7 +56,7 @@ set(SOURCES
     slotconnector.cpp
     main.cpp
     adtwizardbuilder.cpp
-    domaindiagbuildstrategy.cpp
+    domaindiagbuilderstrategy.cpp
     dbuschecker.cpp
     adtjsonloader.cpp
 )
