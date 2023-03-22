@@ -20,7 +20,7 @@
 
 #include "adtwizard.h"
 #include "../core/basereportcollector.h"
-#include "adtjsonloader.h"
+#include "jsonloadbuilderstrategy.h"
 
 #include <QDebug>
 #include <QFile>

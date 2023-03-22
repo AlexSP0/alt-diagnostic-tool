@@ -18,11 +18,11 @@
 **
 ***********************************************************************************************************************/
 
-#include "adtjsonloader.h"
 #include "adtwizard.h"
 #include "adtwizardbuilder.h"
 #include "dbuschecker.h"
 #include "domaindiagbuilderstrategy.h"
+#include "jsonloadbuilderstrategy.h"
 
 #include <memory>
 #include <QApplication>

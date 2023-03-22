@@ -25,11 +25,11 @@
 
 #include <QJsonDocument>
 
-class ADTJsonLoader : public IADTWizardBuilderStrategy
+class JsonLoadBuilderStrategy : public IADTWizardBuilderStrategy
 {
 public:
-    ADTJsonLoader();
-    virtual ~ADTJsonLoader();
+    JsonLoadBuilderStrategy();
+    virtual ~JsonLoadBuilderStrategy();
 
     virtual QJsonDocument buildChecks(QString &file,
                                       QString &checksSection,

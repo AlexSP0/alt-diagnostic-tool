@@ -17,7 +17,7 @@
 ** Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 **
 ***********************************************************************************************************************/
-#include "adtjsonloader.h"
+#include "jsonloadbuilderstrategy.h"
 
 #include <QDebug>
 #include <QFile>
@@ -25,29 +25,29 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 
-ADTJsonLoader::ADTJsonLoader() {}
+JsonLoadBuilderStrategy::JsonLoadBuilderStrategy() {}
 
-ADTJsonLoader::~ADTJsonLoader() {}
+JsonLoadBuilderStrategy::~JsonLoadBuilderStrategy() {}
 
-QJsonDocument ADTJsonLoader::buildChecks(QString &file,
-                                         QString &checksSection,
-                                         QString &serviceName,
-                                         QString &path,
-                                         QString &interfaceName)
+QJsonDocument JsonLoadBuilderStrategy::buildChecks(QString &file,
+                                                   QString &checksSection,
+                                                   QString &serviceName,
+                                                   QString &path,
+                                                   QString &interfaceName)
 {
     return loadDocument(file, checksSection);
 }
 
-QJsonDocument ADTJsonLoader::buildResolvers(QString &file,
-                                            QString &resolversSection,
-                                            QString &serviceName,
-                                            QString &path,
-                                            QString &interfaceName)
+QJsonDocument JsonLoadBuilderStrategy::buildResolvers(QString &file,
+                                                      QString &resolversSection,
+                                                      QString &serviceName,
+                                                      QString &path,
+                                                      QString &interfaceName)
 {
     return loadDocument(file, resolversSection);
 }
 
-QJsonDocument ADTJsonLoader::loadDocument(QString &file, QString &jsonArrayName)
+QJsonDocument JsonLoadBuilderStrategy::loadDocument(QString &file, QString &jsonArrayName)
 {
     QFile jsonFile(file);
 

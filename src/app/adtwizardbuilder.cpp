@@ -19,7 +19,7 @@
 ***********************************************************************************************************************/
 
 #include "adtwizardbuilder.h"
-#include "adtjsonloader.h"
+#include "jsonloadbuilderstrategy.h"
 
 #include <memory>
 #include <QMessageBox>

@@ -41,7 +41,7 @@ set(HEADERS
     iadtwizardbuilderstrategy.h
     domaindiagbuilderstrategy.h
     dbuschecker.h
-    adtjsonloader.h
+    jsonloadbuilderstrategy.h
 )
 
 set(SOURCES
@@ -58,7 +58,7 @@ set(SOURCES
     adtwizardbuilder.cpp
     domaindiagbuilderstrategy.cpp
     dbuschecker.cpp
-    adtjsonloader.cpp
+    jsonloadbuilderstrategy.cpp
 )
 
 set(UI_FORMS
