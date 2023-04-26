@@ -89,6 +89,11 @@ QVariant TreeModel::data(const QModelIndex &index, int role) const
     if (role != Qt::DisplayRole)
         return QVariant();
 
+    if (role == Qt::UserRole + 1)
+    {
+        return QVariant::fromValue(item->getExecutable());
+    }
+
     return item->data(index.column());
 }
 

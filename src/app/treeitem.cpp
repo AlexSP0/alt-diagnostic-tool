@@ -53,7 +53,14 @@ TreeItem::TreeItem(const QList<QVariant> &data, TreeItem *parent)
     , itemData(data)
     , parentItem(parent)
     , checked(false)
+    , itemExecutable(nullptr)
 {}
+
+TreeItem::TreeItem(const QList<QVariant> &data, ADTExecutable *executable, TreeItem *parent)
+    : TreeItem::TreeItem(data, parent)
+{
+    itemExecutable = executable;
+}
 
 TreeItem::~TreeItem()
 {
@@ -105,4 +112,14 @@ bool TreeItem::isChecked() const
 void TreeItem::setChecked(bool state)
 {
     checked = state;
+}
+
+ADTExecutable *TreeItem::getExecutable() const
+{
+    return itemExecutable;
+}
+
+void TreeItem::setExecutable(ADTExecutable *executable)
+{
+    itemExecutable = executable;
 }

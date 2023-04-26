@@ -25,6 +25,8 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
 set(HEADERS
+    categoryproxymodel.h
+
     introwizardpage.h
     checkwizardpage.h
     repairwizardpage.h
@@ -49,6 +51,8 @@ set(HEADERS
 )
 
 set(SOURCES
+    categoryproxymodel.cpp
+
     introwizardpage.cpp
     checkwizardpage.cpp
     repairwizardpage.cpp

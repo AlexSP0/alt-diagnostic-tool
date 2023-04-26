@@ -44,10 +44,13 @@
 #include <QList>
 #include <QVariant>
 
+class ADTExecutable;
+
 class TreeItem
 {
 public:
-    TreeItem(const QList<QVariant> &data, TreeItem *parent = 0);
+    explicit TreeItem(const QList<QVariant> &data, TreeItem *parent = 0);
+    explicit TreeItem(const QList<QVariant> &data, ADTExecutable *executable, TreeItem *parent = 0);
     ~TreeItem();
 
     void appendChild(TreeItem *child);
@@ -60,12 +63,15 @@ public:
     TreeItem *parent();
     bool isChecked() const;
     void setChecked(bool state);
+    ADTExecutable *getExecutable() const;
+    void setExecutable(ADTExecutable *executable);
 
 private:
     QList<TreeItem *> childItems;
     QList<QVariant> itemData;
     TreeItem *parentItem;
     bool checked;
+    ADTExecutable *itemExecutable;
 
 private:
     TreeItem(const TreeItem &) = delete;
