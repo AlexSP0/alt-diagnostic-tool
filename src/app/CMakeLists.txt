@@ -79,6 +79,8 @@ set(UI_FORMS
 
     mainwindow.ui
     runtestsdialog.ui
+
+    statusCommonWidget.ui
 )
 set(RESOURCES
     resources.qrc

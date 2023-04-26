@@ -10,7 +10,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     treeProxyModel->setSourceModel(treeViewModel.get());
-    ui->checkTreeView->setModel(treeProxyModel.get());
+    ui->checkListView->setModel(treeProxyModel.get());
 
     connect(runTestWindow.get(), &RunTestsDialog::exitPressed, this, &MainWindow::on_exitPushButton_clicked);
     connect(this, &MainWindow::runAllCheckedTests, runTestWindow.get(), &RunTestsDialog::runCheckedTests);
