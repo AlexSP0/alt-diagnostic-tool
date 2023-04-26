@@ -39,6 +39,13 @@ set(HEADERS
     slotconnector.h
     adtwizardbuilder.h
     dbuschecker.h
+
+    mainwindow.h
+    runtests.h
+
+    treeitem.h
+    treemodel.h
+    treeproxymodel.h
 )
 
 set(SOURCES
@@ -54,6 +61,13 @@ set(SOURCES
     main.cpp
     adtwizardbuilder.cpp
     dbuschecker.cpp
+
+    mainwindow.cpp
+    runtests.cpp
+
+    treeitem.cpp
+    treemodel.cpp
+    treeproxymodel.cpp
 )
 
 set(UI_FORMS
@@ -62,6 +76,9 @@ set(UI_FORMS
     checkwizardpage.ui
     finishwizardpage.ui
     executablestatuswidget.ui
+
+    mainwindow.ui
+    runtestsdialog.ui
 )
 set(RESOURCES
     resources.qrc
