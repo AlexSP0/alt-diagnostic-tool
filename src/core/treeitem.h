@@ -38,88 +38,66 @@
 **
 ****************************************************************************/
 
-/*
-    treeitem.cpp
+#ifndef TREEITEM_H
+#define TREEITEM_H
 
-    A container for items of data supplied by the simple tree model.
-*/
+#include <memory>
+#include <QList>
+#include <QVariant>
 
-#include <QStringList>
+#include "adtexecutable.h"
 
-#include "treeitem.h"
+class ADTExecutable;
 
-TreeItem::TreeItem(const QList<QVariant> &data, TreeItem *parent)
-    : childItems()
-    , itemData(data)
-    , parentItem(parent)
-    , checked(false)
-    , itemExecutable(nullptr)
-{}
-
-TreeItem::TreeItem(const QList<QVariant> &data, ADTExecutable *executable, TreeItem *parent)
-    : TreeItem::TreeItem(data, parent)
+class TreeItem
 {
-    itemExecutable = executable;
-}
+public:
+    enum ItemType
+    {
+        categoryItem,
+        checkItem
+    };
 
-TreeItem::~TreeItem()
-{
-    qDeleteAll(childItems);
-}
+public:
+    explicit TreeItem(const QList<QVariant> &data,
+                      ItemType type    = ItemType::checkItem,
+                      TreeItem *parent = 0);
 
-void TreeItem::appendChild(TreeItem *item)
-{
-    childItems.append(item);
-}
+    ~TreeItem();
 
-TreeItem *TreeItem::child(int row)
-{
-    return childItems.value(row);
-}
+    void appendChild(TreeItem *child);
 
-int TreeItem::childCount() const
-{
-    return childItems.count();
-}
+    TreeItem *child(int row);
+    int childCount() const;
+    int columnCount() const;
+    QVariant data(int column) const;
+    int row() const;
+    TreeItem *parent();
+    bool isChecked() const;
+    void setChecked(bool state);
 
-int TreeItem::columnCount() const
-{
-    return itemData.count();
-}
+    ADTExecutable *getExecutable() const;
+    void setExecutable(std::unique_ptr<ADTExecutable> executable);
+    ItemType getItemType();
 
-QVariant TreeItem::data(int column) const
-{
-    return itemData.value(column);
-}
+private:
+    QList<TreeItem *> childItems;
 
-TreeItem *TreeItem::parent()
-{
-    return parentItem;
-}
+    QList<QVariant> itemData;
 
-int TreeItem::row() const
-{
-    if (parentItem)
-        return parentItem->childItems.indexOf(const_cast<TreeItem *>(this));
+    TreeItem *parentItem;
 
-    return 0;
-}
+    bool checked;
 
-bool TreeItem::isChecked() const
-{
-    return checked;
-}
-void TreeItem::setChecked(bool state)
-{
-    checked = state;
-}
+    ItemType itemType;
 
-ADTExecutable *TreeItem::getExecutable() const
-{
-    return itemExecutable;
-}
+    std::unique_ptr<ADTExecutable> task;
 
-void TreeItem::setExecutable(ADTExecutable *executable)
-{
-    itemExecutable = executable;
-}
+private:
+    TreeItem(const TreeItem &) = delete;
+    TreeItem(TreeItem &&)      = delete;
+    TreeItem &operator=(const TreeItem &) = delete;
+    TreeItem &operator=(TreeItem &&) = delete;
+};
+
+#endif

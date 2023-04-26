@@ -45,10 +45,9 @@
     models.
 */
 
-#include <QtGui>
-
-#include "treeitem.h"
 #include "treemodel.h"
+#include "adtexecutable.h"
+#include "treeitem.h"
 
 TreeModel::TreeModel(QObject *parent)
     : QAbstractItemModel(parent)
@@ -58,7 +57,7 @@ TreeModel::TreeModel(QObject *parent)
     rootData << "Title";
     rootItem = new TreeItem(rootData);
 
-    setupExampleData();
+    //setupExampleData();
 }
 
 TreeModel::~TreeModel()
@@ -81,18 +80,23 @@ QVariant TreeModel::data(const QModelIndex &index, int role) const
 
     TreeItem *item = static_cast<TreeItem *>(index.internalPointer());
 
-    if (role == Qt::CheckStateRole && index.column() == 0)
+    /*if (role == Qt::CheckStateRole && index.column() == 0)
     {
         return static_cast<int>(item->isChecked() ? Qt::Checked : Qt::Unchecked);
-    }
-
-    if (role != Qt::DisplayRole)
-        return QVariant();
+    }*/
 
     if (role == Qt::UserRole + 1)
     {
         return QVariant::fromValue(item->getExecutable());
     }
+
+    if (role == Qt::DisplayRole)
+    {
+        return QVariant(item->getExecutable()->m_name);
+    }
+
+    if (role != Qt::DisplayRole)
+        return QVariant();
 
     return item->data(index.column());
 }
@@ -104,8 +108,8 @@ Qt::ItemFlags TreeModel::flags(const QModelIndex &index) const
 
     Qt::ItemFlags flags = Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 
-    if (index.column() == 0)
-        flags |= Qt::ItemIsUserCheckable;
+    /*if (index.column() == 0)
+        flags |= Qt::ItemIsUserCheckable;*/
 
     return flags;
 }
@@ -140,7 +144,7 @@ QModelIndex TreeModel::index(int row, int column, const QModelIndex &parent) con
 QModelIndex TreeModel::parent(const QModelIndex &index) const
 {
     if (!index.isValid())
-        return QModelIndex();
+        return createIndex(0, 0, rootItem);
 
     TreeItem *childItem  = static_cast<TreeItem *>(index.internalPointer());
     TreeItem *parentItem = childItem->parent();
@@ -165,74 +169,25 @@ int TreeModel::rowCount(const QModelIndex &parent) const
     return parentItem->childCount();
 }
 
-void TreeModel::setupModelData(const QStringList &lines, TreeItem *parent)
-{
-    QList<TreeItem *> parents;
-    QList<int> indentations;
-    parents << parent;
-    indentations << 0;
-
-    int number = 0;
-
-    while (number < lines.count())
-    {
-        int position = 0;
-        while (position < lines[number].length())
-        {
-            if (lines[number].mid(position, 1) != " ")
-                break;
-            position++;
-        }
-
-        QString lineData = lines[number].mid(position).trimmed();
-
-        if (!lineData.isEmpty())
-        {
-            // Read the column data from the rest of the line.
-            QStringList columnStrings = lineData.split(QString("\t"), Qt::SplitBehaviorFlags::SkipEmptyParts);
-            QList<QVariant> columnData;
-            for (int column = 0; column < columnStrings.count(); ++column)
-                columnData << columnStrings[column];
-
-            if (position > indentations.last())
-            {
-                // The last child of the current parent is now the new parent
-                // unless the current parent has no children.
-
-                if (parents.last()->childCount() > 0)
-                {
-                    parents << parents.last()->child(parents.last()->childCount() - 1);
-                    indentations << position;
-                }
-            }
-            else
-            {
-                while (position < indentations.last() && parents.count() > 0)
-                {
-                    parents.pop_back();
-                    indentations.pop_back();
-                }
-            }
-
-            // Append a new item to the current parent's list of children.
-            parents.last()->appendChild(new TreeItem(columnData, parents.last()));
-        }
-
-        number++;
-    }
-}
-
 void TreeModel::setupExampleData()
 {
-    rootItem->appendChild(new TreeItem(QList<QVariant>{QVariant("firstCategory")}, rootItem));
-    rootItem->appendChild(new TreeItem(QList<QVariant>{QVariant("secondCategory")}, rootItem));
+    rootItem->appendChild(new TreeItem(QList<QVariant>{QVariant("firstCategory")},
+                                       TreeItem::ItemType::categoryItem,
+                                       rootItem));
+    rootItem->appendChild(new TreeItem(QList<QVariant>{QVariant("secondCategory")},
+                                       TreeItem::ItemType::categoryItem,
+                                       rootItem));
     auto firstChild = rootItem->child(0);
     firstChild->setChecked(true);
     auto secondChild = rootItem->child(1);
     secondChild->setChecked(true);
 
-    firstChild->appendChild(new TreeItem(QList<QVariant>{QVariant("firstTest")}, firstChild));
-    secondChild->appendChild(new TreeItem(QList<QVariant>{QVariant("secondTest")}, secondChild));
+    firstChild->appendChild(new TreeItem(QList<QVariant>{QVariant("firstTest")},
+                                         TreeItem::ItemType::checkItem,
+                                         firstChild));
+    secondChild->appendChild(new TreeItem(QList<QVariant>{QVariant("secondTest")},
+                                          TreeItem::ItemType::checkItem,
+                                          secondChild));
 
     auto firstTest = firstChild->child(0);
     firstTest->setChecked(true);

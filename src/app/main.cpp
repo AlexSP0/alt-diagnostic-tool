@@ -18,6 +18,7 @@
 **
 ***********************************************************************************************************************/
 
+#include "adtmodelbuilder.h"
 #include "adtwizard.h"
 #include "adtwizardbuilder.h"
 #include "dbuschecker.h"
@@ -43,17 +44,24 @@ int main(int argc, char **argv)
     app.setApplicationName("ALT Diagnostic tool");
     app.setApplicationVersion("0.1.0");
 
-    if (!DBusChecker::checkDBusServiceOnSystemBus(DBUS_SERVICE_NAME, PATH_TO_DBUS_OBJECT, DBUS_INTERFACE_NAME))
+    if (!DBusChecker::checkDBusServiceOnSystemBus(DBUS_SERVICE_NAME,
+                                                  PATH_TO_DBUS_OBJECT,
+                                                  DBUS_INTERFACE_NAME))
     {
         QMessageBox errorMsgBox;
-        errorMsgBox.setText(QObject::tr("Cannot connect to service. Restart the service and run ADT again."));
+        errorMsgBox.setText(
+            QObject::tr("Cannot connect to service. Restart the service and run ADT again."));
         errorMsgBox.setIcon(QMessageBox::Critical);
         errorMsgBox.exec();
 
         exit(1);
     }
 
-    MainWindow w;
+    ADTModelBuilder modelBuilder;
+
+    auto model = modelBuilder.buildModel();
+
+    MainWindow w(model.get());
 
     w.show();
 

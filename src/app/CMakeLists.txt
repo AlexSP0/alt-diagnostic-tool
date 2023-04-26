@@ -25,7 +25,6 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
 set(HEADERS
-    categoryproxymodel.h
 
     introwizardpage.h
     checkwizardpage.h
@@ -44,14 +43,15 @@ set(HEADERS
 
     mainwindow.h
     runtests.h
+    adtmodelbuilder.h
+    statuscommonwidget.h
 
-    treeitem.h
-    treemodel.h
     treeproxymodel.h
+    categoryproxymodel.h
 )
 
 set(SOURCES
-    categoryproxymodel.cpp
+
 
     introwizardpage.cpp
     checkwizardpage.cpp
@@ -68,10 +68,12 @@ set(SOURCES
 
     mainwindow.cpp
     runtests.cpp
+    adtmodelbuilder.cpp
+    statuscommonwidget.cpp
 
-    treeitem.cpp
-    treemodel.cpp
     treeproxymodel.cpp
+
+    categoryproxymodel.cpp
 )
 
 set(UI_FORMS
@@ -84,7 +86,7 @@ set(UI_FORMS
     mainwindow.ui
     runtestsdialog.ui
 
-    statusCommonWidget.ui
+    statuscommonwidget.ui
 )
 set(RESOURCES
     resources.qrc

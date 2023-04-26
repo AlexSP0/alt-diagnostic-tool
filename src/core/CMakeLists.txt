@@ -15,6 +15,11 @@ set (HEADERS
     adtjsonconverter.h
     alteratorexecutordbusinterface.h
     adtjsonloader.h
+
+    treemodelbuilderinterface.h
+    treemodel.h
+    treeitem.h
+    treemodelbuilderimpl.h
 )
 
 set (SOURCES
@@ -27,6 +32,11 @@ set (SOURCES
 
     adtjsonconverter.cpp
     adtjsonloader.cpp
+
+    treemodelbuilderinterface.cpp
+    treemodel.cpp
+    treeitem.cpp
+    treemodelbuilderimpl.cpp
 )
 
 ADD_LIBRARY(adtcore STATIC ${SOURCES} ${HEADERS})

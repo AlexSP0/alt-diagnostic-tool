@@ -1,9 +1,12 @@
 #ifndef RUNTESTS_H
 #define RUNTESTS_H
 
-#include "treemodel.h"
+#include "../core/treemodel.h"
+
+#include "statuscommonwidget.h"
 
 #include <QDialog>
+#include <QVBoxLayout>
 
 QT_BEGIN_NAMESPACE
 namespace Ui
@@ -19,6 +22,8 @@ public:
 public:
     RunTestsDialog(TreeModel *model, QWidget *parent = nullptr);
     ~RunTestsDialog();
+
+    void setCategory(TreeItem *category);
 
 public slots:
     void runCheckedTests();
@@ -36,7 +41,19 @@ private slots:
 private:
     Ui::RunTestsDialog *ui;
 
+    QVBoxLayout *summaryLayout;
+    QVBoxLayout *detailsLayout;
+
     TreeModel *treeModel;
+
+    TreeItem *currentItemCategory;
+
+    std::vector<std::unique_ptr<StatusCommonWidget>> statusWidgets;
+
+private:
+    void updateStackedWidget();
+
+    void updateCommonStatusWidgets();
 
 private:
     RunTestsDialog(const RunTestsDialog &) = delete;

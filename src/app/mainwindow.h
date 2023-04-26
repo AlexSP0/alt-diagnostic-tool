@@ -1,11 +1,12 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "../core/treemodel.h"
 #include "runtests.h"
-#include "treemodel.h"
 
 #include <memory>
 #include <treeproxymodel.h>
+#include <QItemSelectionModel>
 #include <QMainWindow>
 
 QT_BEGIN_NAMESPACE
@@ -21,7 +22,7 @@ public:
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
+    MainWindow(TreeModel *model, QWidget *parent = nullptr);
     ~MainWindow();
 
 signals:
@@ -35,10 +36,13 @@ private slots:
 
     void on_browseCheckPushButton_clicked();
 
+    void onSelectionChanged(QItemSelection const &newSelection,
+                            QItemSelection const &previousSelection);
+
 private:
     Ui::MainWindow *ui;
 
-    std::unique_ptr<TreeModel> treeViewModel;
+    TreeModel *treeViewModel;
     std::unique_ptr<TreeProxyModel> treeProxyModel;
     std::unique_ptr<RunTestsDialog> runTestWindow;
 
