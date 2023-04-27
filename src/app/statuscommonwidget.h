@@ -16,6 +16,8 @@ class StatusCommonWidget : public QWidget
 public:
     StatusCommonWidget(TreeItem *item, QWidget *parent = nullptr);
 
+    ADTExecutable *getExecutable();
+
 private:
     Ui::StatusCommonWidget *ui;
 

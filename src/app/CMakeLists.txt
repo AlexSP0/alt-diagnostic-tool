@@ -45,6 +45,8 @@ set(HEADERS
     runtests.h
     adtmodelbuilder.h
     statuscommonwidget.h
+    adtexecutor.h
+    adtexecutorprivate.h
 
     treeproxymodel.h
     categoryproxymodel.h
@@ -70,6 +72,8 @@ set(SOURCES
     runtests.cpp
     adtmodelbuilder.cpp
     statuscommonwidget.cpp
+    adtexecutor.cpp
+    adtexecutorprivate.cpp
 
     treeproxymodel.cpp
 

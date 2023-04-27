@@ -48,12 +48,18 @@ private:
 
     TreeItem *currentItemCategory;
 
-    std::vector<std::unique_ptr<StatusCommonWidget>> statusWidgets;
+    std::vector<StatusCommonWidget *> statusWidgets;
 
 private:
+    void clearUi();
+
     void updateStackedWidget();
 
     void updateCommonStatusWidgets();
+
+    void updateWidgetStorage();
+
+    void toggleWidgetsInStackedWidget();
 
 private:
     RunTestsDialog(const RunTestsDialog &) = delete;
