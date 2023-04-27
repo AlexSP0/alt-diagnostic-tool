@@ -6,10 +6,14 @@
 
 #include <QObject>
 
-class ADTExecutor
+class ADTExecutor : public QObject
 {
+    Q_OBJECT
 public:
-    ADTExecutor(std::vector<StatusCommonWidget> &widgets, QString &serviceName, QString &path, QString &intefaceName);
+    ADTExecutor(std::vector<StatusCommonWidget *> *vectorWidgets,
+                QString serviceName,
+                QString path,
+                QString intefaceName);
 
     int getAmountOfWidgets();
 
@@ -18,11 +22,10 @@ public:
     void resetStopFlag();
 
 public slots:
-
     void runTasks();
 
 private:
-    void executeTask();
+    void executeTask(ADTExecutable *task);
 
 private:
     std::unique_ptr<ADTExecutorPrivate> d;

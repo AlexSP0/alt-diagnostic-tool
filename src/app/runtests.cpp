@@ -1,7 +1,7 @@
 #include "runtests.h"
 #include "./ui_runtestsdialog.h"
 
-const int LAYOUT_STRETCH_INDEX  = 0;
+const int LAYOUT_STRETCH_INDEX  = 1;
 const int LAYOUT_STRETCH_FACTOR = 10;
 
 RunTestsDialog::RunTestsDialog(TreeModel *model, QWidget *parent)
@@ -12,6 +12,8 @@ RunTestsDialog::RunTestsDialog(TreeModel *model, QWidget *parent)
     , treeModel(model)
     , currentItemCategory(nullptr)
     , statusWidgets()
+    , executor(new ADTExecutor(&statusWidgets, "", "", ""))
+    , workerThread(nullptr)
 {
     ui->setupUi(this);
 
@@ -35,7 +37,21 @@ void RunTestsDialog::setCategory(TreeItem *category)
     updateCommonStatusWidgets();
 }
 
-void RunTestsDialog::runCheckedTests() {}
+void RunTestsDialog::runCheckedTests()
+{
+    //clearUi();
+
+    executor->resetStopFlag();
+
+    workerThread = new QThread();
+
+    connect(workerThread, &QThread::started, executor.get(), &ADTExecutor::runTasks);
+    connect(workerThread, &QThread::finished, workerThread, &QObject::deleteLater);
+
+    executor->moveToThread(workerThread);
+
+    workerThread->start();
+}
 
 void RunTestsDialog::on_exitPushButton_clicked()
 {

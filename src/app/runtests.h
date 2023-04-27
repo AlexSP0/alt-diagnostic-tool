@@ -3,9 +3,11 @@
 
 #include "../core/treemodel.h"
 
+#include "adtexecutor.h"
 #include "statuscommonwidget.h"
 
 #include <QDialog>
+#include <QThread>
 #include <QVBoxLayout>
 
 QT_BEGIN_NAMESPACE
@@ -49,6 +51,10 @@ private:
     TreeItem *currentItemCategory;
 
     std::vector<StatusCommonWidget *> statusWidgets;
+
+    std::unique_ptr<ADTExecutor> executor;
+
+    QThread *workerThread;
 
 private:
     void clearUi();
