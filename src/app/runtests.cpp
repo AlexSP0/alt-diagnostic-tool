@@ -1,8 +1,8 @@
 #include "runtests.h"
 #include "./ui_runtestsdialog.h"
 
-const int LAYOUT_STRETCH_INDEX  = 1;
-const int LAYOUT_STRETCH_FACTOR = 10;
+const int LAYOUT_STRETCH_INDEX  = 100;
+const int LAYOUT_STRETCH_FACTOR = 400;
 
 RunTestsDialog::RunTestsDialog(TreeModel *model, QWidget *parent)
     : QDialog(parent)
@@ -76,7 +76,6 @@ void RunTestsDialog::clearUi()
 
     summaryLayout = new QVBoxLayout();
     summaryLayout->setAlignment(Qt::AlignTop);
-    summaryLayout->insertStretch(LAYOUT_STRETCH_INDEX, LAYOUT_STRETCH_FACTOR);
 
     ui->summaryScrollAreaWidgetContents->setLayout(summaryLayout);
 
@@ -89,6 +88,8 @@ void RunTestsDialog::updateCommonStatusWidgets()
     {
         summaryLayout->insertWidget(0, commonStatusWidget, Qt::AlignTop);
     }
+
+    summaryLayout->insertStretch(LAYOUT_STRETCH_INDEX, LAYOUT_STRETCH_FACTOR);
 }
 
 void RunTestsDialog::updateWidgetStorage()
