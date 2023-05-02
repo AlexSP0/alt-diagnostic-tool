@@ -18,6 +18,16 @@ public:
 
     ADTExecutable *getExecutable();
 
+    void setText(QString text);
+
+    void setIcon(QIcon &icon);
+
+signals:
+    void detailsButtonclicked(StatusCommonWidget *widget);
+
+private slots:
+    void on_detailsPushButton_clicked();
+
 private:
     Ui::StatusCommonWidget *ui;
 

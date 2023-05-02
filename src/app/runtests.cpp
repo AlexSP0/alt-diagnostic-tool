@@ -3,12 +3,15 @@
 
 const int LAYOUT_STRETCH_INDEX  = 100;
 const int LAYOUT_STRETCH_FACTOR = 400;
+const int LAYOUT_INDEX          = 10;
 
 RunTestsDialog::RunTestsDialog(TreeModel *model, QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::RunTestsDialog)
     , summaryLayout(new QVBoxLayout())
     , detailsLayout(new QVBoxLayout())
+    , detailsText(new QPlainTextEdit())
+    , backToSummaryWidgetButton(new QPushButton())
     , treeModel(model)
     , currentItemCategory(nullptr)
     , statusWidgets()
@@ -18,6 +21,17 @@ RunTestsDialog::RunTestsDialog(TreeModel *model, QWidget *parent)
     ui->setupUi(this);
 
     ui->summaryScrollAreaWidgetContents->setLayout(summaryLayout);
+    ui->detailsScrollAreaWidgetContents->setLayout(detailsLayout);
+
+    backToSummaryWidgetButton->setText("Back");
+    connect(backToSummaryWidgetButton, &QPushButton::clicked, this, &RunTestsDialog::toggleWidgetsInStackedWidget);
+
+    QHBoxLayout *detailsHButtonLayout = new QHBoxLayout();
+    detailsHButtonLayout->addStretch();
+    detailsHButtonLayout->addWidget(backToSummaryWidgetButton);
+
+    detailsLayout->addWidget(detailsText);
+    detailsLayout->insertLayout(LAYOUT_INDEX, detailsHButtonLayout);
     ui->detailsScrollAreaWidgetContents->setLayout(detailsLayout);
 }
 
@@ -66,6 +80,21 @@ void RunTestsDialog::on_backPushButton_clicked()
 
 void RunTestsDialog::on_testPushButton_clicked() {}
 
+void RunTestsDialog::on_Details_Button_clicked(StatusCommonWidget *widget)
+{
+    if (widget == nullptr)
+    {
+        return;
+    }
+
+    detailsText->clear();
+
+    detailsText->appendPlainText(widget->getExecutable()->m_stdout);
+    detailsText->appendPlainText(widget->getExecutable()->m_stderr);
+
+    toggleWidgetsInStackedWidget();
+}
+
 void RunTestsDialog::clearUi()
 {
     delete ui->summaryScrollAreaWidgetContents;
@@ -104,6 +133,12 @@ void RunTestsDialog::updateWidgetStorage()
     for (int i = 0; i < currentItemCategory->childCount(); i++)
     {
         StatusCommonWidget *currentWidget = new StatusCommonWidget(currentItemCategory->child(i));
+
+        connect(currentWidget,
+                &StatusCommonWidget::detailsButtonclicked,
+                this,
+                &RunTestsDialog::on_Details_Button_clicked);
+
         statusWidgets.push_back(currentWidget);
     }
 }

@@ -7,6 +7,7 @@
 #include "statuscommonwidget.h"
 
 #include <QDialog>
+#include <QPlainTextEdit>
 #include <QThread>
 #include <QVBoxLayout>
 
@@ -40,11 +41,17 @@ private slots:
 
     void on_testPushButton_clicked();
 
+    void on_Details_Button_clicked(StatusCommonWidget *widget);
+
+    void toggleWidgetsInStackedWidget();
+
 private:
     Ui::RunTestsDialog *ui;
 
     QVBoxLayout *summaryLayout;
     QVBoxLayout *detailsLayout;
+    QPlainTextEdit *detailsText;
+    QPushButton *backToSummaryWidgetButton;
 
     TreeModel *treeModel;
 
@@ -64,8 +71,6 @@ private:
     void updateCommonStatusWidgets();
 
     void updateWidgetStorage();
-
-    void toggleWidgetsInStackedWidget();
 
 private:
     RunTestsDialog(const RunTestsDialog &) = delete;
