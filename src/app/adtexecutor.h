@@ -31,8 +31,8 @@ private:
     std::unique_ptr<ADTExecutorPrivate> d;
 
 signals:
-    void beginTask();
-    void finishTask();
+    void beginTask(StatusCommonWidget *currentWidget);
+    void finishTask(StatusCommonWidget *currentWidget);
 
     void allTaskBegin();
     void allTasksFinished();

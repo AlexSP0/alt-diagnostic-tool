@@ -50,11 +50,11 @@ void ADTExecutor::runTasks()
     {
         ADTExecutable *currentTask = widget->getExecutable();
 
-        emit beginTask();
+        emit beginTask(widget);
 
         executeTask(currentTask);
 
-        emit finishTask();
+        emit finishTask(widget);
     }
 
     this->moveToThread(QApplication::instance()->thread());
@@ -69,5 +69,5 @@ void ADTExecutor::runTasks()
 void ADTExecutor::executeTask(ADTExecutable *task)
 {
     //No backend
-    QThread::sleep(100);
+    QThread::sleep(1);
 }

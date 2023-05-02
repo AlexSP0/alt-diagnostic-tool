@@ -1,5 +1,7 @@
-#include "runtests.h"
+#include <QStyle>
+
 #include "./ui_runtestsdialog.h"
+#include "runtests.h"
 
 const int LAYOUT_STRETCH_INDEX  = 100;
 const int LAYOUT_STRETCH_FACTOR = 400;
@@ -33,6 +35,9 @@ RunTestsDialog::RunTestsDialog(TreeModel *model, QWidget *parent)
     detailsLayout->addWidget(detailsText);
     detailsLayout->insertLayout(LAYOUT_INDEX, detailsHButtonLayout);
     ui->detailsScrollAreaWidgetContents->setLayout(detailsLayout);
+
+    connect(executor.get(), &ADTExecutor::beginTask, this, &RunTestsDialog::on_beginTask);
+    connect(executor.get(), &ADTExecutor::finishTask, this, &RunTestsDialog::on_finishTask);
 }
 
 RunTestsDialog::~RunTestsDialog()
@@ -113,9 +118,11 @@ void RunTestsDialog::clearUi()
 
 void RunTestsDialog::updateCommonStatusWidgets()
 {
+    int i = 0;
     for (auto &commonStatusWidget : statusWidgets)
     {
-        summaryLayout->insertWidget(0, commonStatusWidget, Qt::AlignTop);
+        summaryLayout->insertWidget(i, commonStatusWidget, Qt::AlignTop);
+        i++;
     }
 
     summaryLayout->insertStretch(LAYOUT_STRETCH_INDEX, LAYOUT_STRETCH_FACTOR);
@@ -130,7 +137,7 @@ void RunTestsDialog::updateWidgetStorage()
         return;
     }
 
-    for (int i = 0; i < currentItemCategory->childCount(); i++)
+    for (int i = currentItemCategory->childCount() - 1; i >= 0; i--)
     {
         StatusCommonWidget *currentWidget = new StatusCommonWidget(currentItemCategory->child(i));
 
@@ -147,4 +154,22 @@ void RunTestsDialog::toggleWidgetsInStackedWidget()
 {
     ui->stackedWidget->currentIndex() == 0 ? ui->stackedWidget->setCurrentIndex(1)
                                            : ui->stackedWidget->setCurrentIndex(0);
+}
+
+void RunTestsDialog::on_beginTask(StatusCommonWidget *currentWidget)
+{
+    QIcon icon = style()->standardIcon(QStyle::SP_BrowserReload);
+    currentWidget->setIcon(icon);
+}
+
+void RunTestsDialog::on_finishTask(StatusCommonWidget *currentWidget)
+{
+    QIcon icon = style()->standardIcon(QStyle::SP_DialogApplyButton);
+
+    if (currentWidget->getExecutable()->m_exit_code != 0)
+    {
+        icon = style()->standardIcon(QStyle::SP_DialogCloseButton);
+    }
+
+    currentWidget->setIcon(icon);
 }

@@ -45,6 +45,10 @@ private slots:
 
     void toggleWidgetsInStackedWidget();
 
+    void on_beginTask(StatusCommonWidget *currentWidget);
+
+    void on_finishTask(StatusCommonWidget *currentWidget);
+
 private:
     Ui::RunTestsDialog *ui;
 
