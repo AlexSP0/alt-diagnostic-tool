@@ -41,6 +41,8 @@ private slots:
 
     void on_testPushButton_clicked();
 
+    void on_runPushBitton_clicked(StatusCommonWidget *currentWidget);
+
     void on_Details_Button_clicked(StatusCommonWidget *widget);
 
     void toggleWidgetsInStackedWidget();
@@ -61,7 +63,8 @@ private:
 
     TreeItem *currentItemCategory;
 
-    std::vector<StatusCommonWidget *> statusWidgets;
+    std::vector<StatusCommonWidget *> statusWidgetsToDraw;
+    std::vector<StatusCommonWidget *> statusWidgetsForRun;
 
     std::unique_ptr<ADTExecutor> executor;
 

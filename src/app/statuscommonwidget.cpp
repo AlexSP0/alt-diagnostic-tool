@@ -34,5 +34,10 @@ void StatusCommonWidget::setIcon(QIcon &icon)
 
 void StatusCommonWidget::on_detailsPushButton_clicked()
 {
-    emit detailsButtonclicked(this);
+    emit detailsButtonClicked(this);
+}
+
+void StatusCommonWidget::on_runPushButton_clicked()
+{
+    emit runButtonCLicked(this);
 }

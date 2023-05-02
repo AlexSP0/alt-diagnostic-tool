@@ -23,10 +23,14 @@ public:
     void setIcon(QIcon &icon);
 
 signals:
-    void detailsButtonclicked(StatusCommonWidget *widget);
+    void detailsButtonClicked(StatusCommonWidget *widget);
+
+    void runButtonCLicked(StatusCommonWidget *widget);
 
 private slots:
     void on_detailsPushButton_clicked();
+
+    void on_runPushButton_clicked();
 
 private:
     Ui::StatusCommonWidget *ui;

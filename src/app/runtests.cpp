@@ -16,8 +16,9 @@ RunTestsDialog::RunTestsDialog(TreeModel *model, QWidget *parent)
     , backToSummaryWidgetButton(new QPushButton())
     , treeModel(model)
     , currentItemCategory(nullptr)
-    , statusWidgets()
-    , executor(new ADTExecutor(&statusWidgets, "", "", ""))
+    , statusWidgetsToDraw({})
+    , statusWidgetsForRun({})
+    , executor(new ADTExecutor(&statusWidgetsForRun, "", "", ""))
     , workerThread(nullptr)
 {
     ui->setupUi(this);
@@ -58,8 +59,6 @@ void RunTestsDialog::setCategory(TreeItem *category)
 
 void RunTestsDialog::runCheckedTests()
 {
-    //clearUi();
-
     executor->resetStopFlag();
 
     workerThread = new QThread();
@@ -83,7 +82,24 @@ void RunTestsDialog::on_backPushButton_clicked()
     this->close();
 }
 
-void RunTestsDialog::on_testPushButton_clicked() {}
+void RunTestsDialog::on_testPushButton_clicked()
+{
+    clearUi();
+
+    updateWidgetStorage();
+
+    updateCommonStatusWidgets();
+
+    runCheckedTests();
+}
+
+void RunTestsDialog::on_runPushBitton_clicked(StatusCommonWidget *currentWidget)
+{
+    statusWidgetsForRun.clear();
+    statusWidgetsForRun.push_back(currentWidget);
+
+    runCheckedTests();
+}
 
 void RunTestsDialog::on_Details_Button_clicked(StatusCommonWidget *widget)
 {
@@ -119,7 +135,7 @@ void RunTestsDialog::clearUi()
 void RunTestsDialog::updateCommonStatusWidgets()
 {
     int i = 0;
-    for (auto &commonStatusWidget : statusWidgets)
+    for (auto &commonStatusWidget : statusWidgetsToDraw)
     {
         summaryLayout->insertWidget(i, commonStatusWidget, Qt::AlignTop);
         i++;
@@ -130,7 +146,7 @@ void RunTestsDialog::updateCommonStatusWidgets()
 
 void RunTestsDialog::updateWidgetStorage()
 {
-    statusWidgets.clear();
+    statusWidgetsToDraw.clear();
 
     if (currentItemCategory->childCount() == 0)
     {
@@ -142,11 +158,20 @@ void RunTestsDialog::updateWidgetStorage()
         StatusCommonWidget *currentWidget = new StatusCommonWidget(currentItemCategory->child(i));
 
         connect(currentWidget,
-                &StatusCommonWidget::detailsButtonclicked,
+                &StatusCommonWidget::detailsButtonClicked,
                 this,
                 &RunTestsDialog::on_Details_Button_clicked);
 
-        statusWidgets.push_back(currentWidget);
+        connect(currentWidget, &StatusCommonWidget::runButtonCLicked, this, &RunTestsDialog::on_runPushBitton_clicked);
+
+        statusWidgetsToDraw.push_back(currentWidget);
+    }
+
+    statusWidgetsForRun.clear();
+
+    for (StatusCommonWidget *currentWidgetPtr : statusWidgetsToDraw)
+    {
+        statusWidgetsForRun.push_back(currentWidgetPtr);
     }
 }
 
