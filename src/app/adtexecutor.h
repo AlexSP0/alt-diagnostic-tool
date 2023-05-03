@@ -30,6 +30,11 @@ private:
 private:
     std::unique_ptr<ADTExecutorPrivate> d;
 
+    void connectExecutableSignals(ADTExecutable *task);
+    void disconnectExecutableSignals(ADTExecutable *task);
+
+    void waitForAnswer(int mSeconds);
+
 signals:
     void beginTask(StatusCommonWidget *currentWidget);
     void finishTask(StatusCommonWidget *currentWidget);

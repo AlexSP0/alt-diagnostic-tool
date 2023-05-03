@@ -13,9 +13,11 @@ public:
 
     std::vector<StatusCommonWidget *> *widgets;
 
-    QString serviceName;
-    QString path;
-    QString interfaceName;
+    QString dbusServiceName;
+    QString dbusPath;
+    QString dbusInterfaceName;
+    QString dbusStdOutSignalName;
+    QString dbusStdErrSignalName;
 
     volatile bool stopFlag;
 
