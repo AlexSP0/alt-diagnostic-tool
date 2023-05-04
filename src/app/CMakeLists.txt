@@ -26,23 +26,10 @@ set(CMAKE_AUTORCC ON)
 
 set(HEADERS
 
-    introwizardpage.h
-    checkwizardpage.h
-    repairwizardpage.h
-    finishwizardpage.h
-    executablestatuswidget.h
-    abstractexecutablepage.h
-    adtwizardpage.h
-    adtwizardpage.inl
-    icancelbuttinhandler.h
-
-    adtwizard.h
-    slotconnector.h
-    adtwizardbuilder.h
     dbuschecker.h
 
     mainwindow.h
-    runtests.h
+    runtestsdialog.h
     adtmodelbuilder.h
     statuscommonwidget.h
     adtexecutor.h
@@ -58,21 +45,12 @@ set(HEADERS
 
 set(SOURCES
 
-    introwizardpage.cpp
-    checkwizardpage.cpp
-    repairwizardpage.cpp
-    finishwizardpage.cpp
-    executablestatuswidget.cpp
-    abstractexecutablepage.cpp
 
-    adtwizard.cpp
-    slotconnector.cpp
     main.cpp
-    adtwizardbuilder.cpp
     dbuschecker.cpp
 
     mainwindow.cpp
-    runtests.cpp
+    runtestsdialog.cpp
     adtmodelbuilder.cpp
     statuscommonwidget.cpp
     adtexecutor.cpp
@@ -87,11 +65,6 @@ set(SOURCES
 )
 
 set(UI_FORMS
-
-    introwizardpage.ui
-    checkwizardpage.ui
-    finishwizardpage.ui
-    executablestatuswidget.ui
 
     mainwindow.ui
     runtestsdialog.ui

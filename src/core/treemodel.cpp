@@ -38,13 +38,6 @@
 **
 ****************************************************************************/
 
-/*
-    treemodel.cpp
-
-    Provides a simple tree model to show how to create and use hierarchical
-    models.
-*/
-
 #include "treemodel.h"
 #include "adtexecutable.h"
 #include "treeitem.h"
@@ -171,23 +164,19 @@ int TreeModel::rowCount(const QModelIndex &parent) const
 
 void TreeModel::setupExampleData()
 {
-    rootItem->appendChild(new TreeItem(QList<QVariant>{QVariant("firstCategory")},
-                                       TreeItem::ItemType::categoryItem,
-                                       rootItem));
-    rootItem->appendChild(new TreeItem(QList<QVariant>{QVariant("secondCategory")},
-                                       TreeItem::ItemType::categoryItem,
-                                       rootItem));
+    rootItem->appendChild(
+        new TreeItem(QList<QVariant>{QVariant("firstCategory")}, TreeItem::ItemType::categoryItem, rootItem));
+    rootItem->appendChild(
+        new TreeItem(QList<QVariant>{QVariant("secondCategory")}, TreeItem::ItemType::categoryItem, rootItem));
     auto firstChild = rootItem->child(0);
     firstChild->setChecked(true);
     auto secondChild = rootItem->child(1);
     secondChild->setChecked(true);
 
-    firstChild->appendChild(new TreeItem(QList<QVariant>{QVariant("firstTest")},
-                                         TreeItem::ItemType::checkItem,
-                                         firstChild));
-    secondChild->appendChild(new TreeItem(QList<QVariant>{QVariant("secondTest")},
-                                          TreeItem::ItemType::checkItem,
-                                          secondChild));
+    firstChild->appendChild(
+        new TreeItem(QList<QVariant>{QVariant("firstTest")}, TreeItem::ItemType::checkItem, firstChild));
+    secondChild->appendChild(
+        new TreeItem(QList<QVariant>{QVariant("secondTest")}, TreeItem::ItemType::checkItem, secondChild));
 
     auto firstTest = firstChild->child(0);
     firstTest->setChecked(true);

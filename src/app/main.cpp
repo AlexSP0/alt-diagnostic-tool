@@ -21,8 +21,6 @@
 #include "adtmodelbuilder.h"
 #include "adtmodelbuilderstrategydomaindiag.h"
 #include "adtmodelbuilderstrategyfromjson.h"
-#include "adtwizard.h"
-#include "adtwizardbuilder.h"
 #include "dbuschecker.h"
 #include "mainwindow.h"
 
@@ -69,20 +67,6 @@ int main(int argc, char **argv)
     MainWindow w(model.get());
 
     w.show();
-
-    //    auto wizardBulder = ADTWizardBuilder();
-
-    //    auto wizard = wizardBulder.withService(DBUS_SERVICE_NAME)
-    //                      .withPath(PATH_TO_DBUS_OBJECT)
-    //                      .withInterface(DBUS_INTERFACE_NAME)
-    //                      .build();
-
-    //    if (!wizard)
-    //    {
-    //        exit(1);
-    //    }
-
-    //    wizard->show();
 
     return app.exec();
 }

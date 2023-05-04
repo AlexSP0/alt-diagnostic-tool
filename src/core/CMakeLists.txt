@@ -9,9 +9,6 @@ set (HEADERS
     adtcheck.h
     adtresolver.h
 
-    adtexecutablerunner.h
-    adtexecutablerunnerprivate.h
-
     adtjsonconverter.h
     alteratorexecutordbusinterface.h
     adtjsonloader.h
@@ -26,9 +23,6 @@ set (SOURCES
     adtexecutable.cpp
     adtcheck.cpp
     adtresolver.cpp
-
-    adtexecutablerunner.cpp
-    adtexecutablerunnerprivate.cpp
 
     adtjsonconverter.cpp
     adtjsonloader.cpp
