@@ -79,9 +79,9 @@ void ADTExecutor::executeTask(ADTExecutable *task)
 
     task->m_exit_code = reply.value();
 
-    //waitForAnswer(2000);
+    waitForAnswer(1000);
 
-    QThread::sleep(1);
+    //QThread::sleep(1);
 
     disconnectExecutableSignals(task);
 }

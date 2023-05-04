@@ -50,10 +50,12 @@ set(HEADERS
 
     treeproxymodel.h
     categoryproxymodel.h
+
+    adtmodelbuilderstrategyinterface.h
+    adtmodelbuilderstrategyfromjson.h
 )
 
 set(SOURCES
-
 
     introwizardpage.cpp
     checkwizardpage.cpp
@@ -76,8 +78,10 @@ set(SOURCES
     adtexecutorprivate.cpp
 
     treeproxymodel.cpp
-
     categoryproxymodel.cpp
+
+    adtmodelbuilderstrategyinterface.cpp
+    adtmodelbuilderstrategyfromjson.cpp
 )
 
 set(UI_FORMS
