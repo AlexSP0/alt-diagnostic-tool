@@ -4,7 +4,7 @@
 #include "runtests.h"
 
 const int LAYOUT_STRETCH_INDEX  = 100;
-const int LAYOUT_STRETCH_FACTOR = 400;
+const int LAYOUT_STRETCH_FACTOR = 40;
 const int LAYOUT_INDEX          = 10;
 
 RunTestsDialog::RunTestsDialog(TreeModel *model, QWidget *parent)
