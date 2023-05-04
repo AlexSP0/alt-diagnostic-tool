@@ -53,6 +53,7 @@ set(HEADERS
 
     adtmodelbuilderstrategyinterface.h
     adtmodelbuilderstrategyfromjson.h
+    adtmodelbuilderstrategydomaindiag.h
 )
 
 set(SOURCES
@@ -82,6 +83,7 @@ set(SOURCES
 
     adtmodelbuilderstrategyinterface.cpp
     adtmodelbuilderstrategyfromjson.cpp
+    adtmodelbuilderstrategydomaindiag.cpp
 )
 
 set(UI_FORMS

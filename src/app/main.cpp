@@ -19,11 +19,14 @@
 ***********************************************************************************************************************/
 
 #include "adtmodelbuilder.h"
+#include "adtmodelbuilderstrategydomaindiag.h"
 #include "adtmodelbuilderstrategyfromjson.h"
 #include "adtwizard.h"
 #include "adtwizardbuilder.h"
 #include "dbuschecker.h"
 #include "mainwindow.h"
+
+#include "../core/treemodelbuilderimpl.h"
 
 #include <QApplication>
 #include <QFile>
@@ -31,8 +34,8 @@
 #include <QMessageBox>
 
 const QString DBUS_SERVICE_NAME   = "ru.basealt.alterator";
-const QString PATH_TO_DBUS_OBJECT = "/ru/basealt/alterator/executor";
-const QString DBUS_INTERFACE_NAME = "ru.basealt.alterator.executor";
+const QString PATH_TO_DBUS_OBJECT = "/ru/basealt/alterator/adt";
+const QString DBUS_INTERFACE_NAME = "ru.basealt.alterator.adt";
 
 int main(int argc, char **argv)
 {
@@ -55,7 +58,11 @@ int main(int argc, char **argv)
         exit(1);
     }
 
-    ADTModelBuilder modelBuilder(new ADTModelBuilderStrategyFromJson("data.json"));
+    //ADTModelBuilder modelBuilder(new ADTModelBuilderStrategyFromJson("data.json"));
+    ADTModelBuilder modelBuilder(new ADTModelBuilderStrategyDomainDiag(DBUS_SERVICE_NAME,
+                                                                       PATH_TO_DBUS_OBJECT,
+                                                                       DBUS_INTERFACE_NAME,
+                                                                       new TreeModelBuilderImpl()));
 
     auto model = modelBuilder.buildModel();
 
