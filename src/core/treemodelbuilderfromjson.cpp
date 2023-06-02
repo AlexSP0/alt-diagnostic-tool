@@ -18,14 +18,14 @@
 **
 ***********************************************************************************************************************/
 
-#include "treemodelbuilderimpl.h"
 #include "adtexecutable.h"
 #include "adtjsonconverter.h"
 #include "treeitem.h"
+#include "treemodelbuilderfromjson.h"
 
 #include <QJsonArray>
 
-std::unique_ptr<TreeModel> TreeModelBuilderImpl::buildModel(QJsonDocument *document)
+std::unique_ptr<TreeModel> TreeModelBuilderFromJson::buildModel(QJsonDocument *document)
 {
     if (!document->isArray())
     {

@@ -24,7 +24,7 @@
 #include "dbuschecker.h"
 #include "mainwindow.h"
 
-#include "../core/treemodelbuilderimpl.h"
+#include "../core/treemodelbuilderfromjson.h"
 
 #include <QApplication>
 #include <QFile>

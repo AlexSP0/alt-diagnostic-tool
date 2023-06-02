@@ -21,13 +21,13 @@
 #include "adtmodelbuilderstrategyfromjson.h"
 
 #include "../core/adtjsonloader.h"
-#include "../core/treemodelbuilderimpl.h"
+#include "../core/treemodelbuilderfromjson.h"
 
 #include <QMessageBox>
 
 ADTModelBuilderStrategyFromJson::ADTModelBuilderStrategyFromJson(QString filename)
     : m_fileName(filename)
-    , m_builder(new TreeModelBuilderImpl())
+    , m_builder(new TreeModelBuilderFromJson())
 {}
 
 std::unique_ptr<TreeModel> ADTModelBuilderStrategyFromJson::buildModel()

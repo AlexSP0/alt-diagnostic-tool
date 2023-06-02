@@ -25,11 +25,11 @@
 
 #include <QJsonDocument>
 
-class TreeModelBuilderImpl : public TreeModelBuilderInterface
+class TreeModelBuilderFromJson : public TreeModelBuilderInterface
 {
 public:
-    TreeModelBuilderImpl()          = default;
-    virtual ~TreeModelBuilderImpl() = default;
+    TreeModelBuilderFromJson()          = default;
+    virtual ~TreeModelBuilderFromJson() = default;
 
     // TreeModelBuilderInterface interface
 public:

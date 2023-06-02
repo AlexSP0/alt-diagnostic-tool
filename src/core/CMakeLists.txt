@@ -16,7 +16,8 @@ set (HEADERS
     treemodelbuilderinterface.h
     treemodel.h
     treeitem.h
-    treemodelbuilderimpl.h
+    treemodelbuilderfromjson.h
+
 )
 
 set (SOURCES
@@ -30,7 +31,7 @@ set (SOURCES
     treemodelbuilderinterface.cpp
     treemodel.cpp
     treeitem.cpp
-    treemodelbuilderimpl.cpp
+    treemodelbuilderfromjson.cpp
 )
 
 ADD_LIBRARY(adtcore STATIC ${SOURCES} ${HEADERS})
