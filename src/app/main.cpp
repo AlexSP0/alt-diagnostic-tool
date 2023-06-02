@@ -31,9 +31,13 @@
 #include <QJsonDocument>
 #include <QMessageBox>
 
-const QString DBUS_SERVICE_NAME   = "ru.basealt.alterator";
-const QString PATH_TO_DBUS_OBJECT = "/ru/basealt/alterator/adt";
-const QString DBUS_INTERFACE_NAME = "ru.basealt.alterator.adt";
+#include <adtbuilderstrategies/adtmodelbuilderstrategydbusinfo.h>
+
+const QString DBUS_SERVICE_NAME    = "ru.basealt.alterator";
+const QString PATH_TO_DBUS_OBJECT  = "/ru/basealt/alterator";
+const QString DBUS_INTERFACE_NAME  = "ru.basealt.alterator.manager";
+const QString DBUS_GET_METHON_NAME = "get_objects";
+const QString DBUS_FIND_INTERFACE  = "ru.basealt.alterator.diag_interface";
 
 int main(int argc, char **argv)
 {
@@ -57,10 +61,16 @@ int main(int argc, char **argv)
     }
 
     //ADTModelBuilder modelBuilder(new ADTModelBuilderStrategyFromJson("data.json"));
-    ADTModelBuilder modelBuilder(new ADTModelBuilderStrategyDomainDiag(DBUS_SERVICE_NAME,
+    /*ADTModelBuilder modelBuilder(new ADTModelBuilderStrategyDomainDiag(DBUS_SERVICE_NAME,
                                                                        PATH_TO_DBUS_OBJECT,
                                                                        DBUS_INTERFACE_NAME,
-                                                                       new TreeModelBuilderImpl()));
+                                                                       new TreeModelBuilderImpl()));*/
+
+    ADTModelBuilder modelBuilder(new ADTModelBuilderStrategyDbusInfo(DBUS_SERVICE_NAME,
+                                                                     PATH_TO_DBUS_OBJECT,
+                                                                     DBUS_INTERFACE_NAME,
+                                                                     DBUS_GET_METHON_NAME,
+                                                                     DBUS_FIND_INTERFACE));
 
     auto model = modelBuilder.buildModel();
 
