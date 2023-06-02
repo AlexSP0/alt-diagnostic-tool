@@ -26,19 +26,25 @@ ADTExecutable::ADTExecutable()
     : m_id(0)
     , m_name("")
     , m_category("")
-    , m_command("")
+    , m_icon("")
+    , m_dbusServiceName("")
+    , m_dbusPath("")
+    , m_dbusInteface("")
+    , m_method("")
     , m_args("")
-    , m_exit_code(0)
-    , m_stdout("")
-    , m_stderr("")
+    , m_exit_code(-1)
+    , m_stringStdout("")
+    , m_stringStderr("")
+    , m_bytesStdout({})
+    , m_bytesStderr({})
 {}
 
 void ADTExecutable::getStdout(QString out)
 {
-    m_stdout.append(out);
+    m_stringStdout.append(out);
 }
 
 void ADTExecutable::getStderr(QString err)
 {
-    m_stderr.append(err);
+    m_stringStderr.append(err);
 }

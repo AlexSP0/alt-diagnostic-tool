@@ -130,8 +130,8 @@ void RunTestsDialog::on_Details_Button_clicked(StatusCommonWidget *widget)
 
     detailsText->clear();
 
-    detailsText->appendPlainText(widget->getExecutable()->m_stdout);
-    detailsText->appendPlainText(widget->getExecutable()->m_stderr);
+    //detailsText->appendPlainText(widget->getExecutable()->m_stdout);
+    //detailsText->appendPlainText(widget->getExecutable()->m_stderr);
 
     toggleWidgetsInStackedWidget();
 }

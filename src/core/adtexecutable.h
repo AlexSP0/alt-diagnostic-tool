@@ -31,7 +31,11 @@ class ADTExecutable : public QObject
     Q_PROPERTY(int id MEMBER m_id)
     Q_PROPERTY(QString name MEMBER m_name)
     Q_PROPERTY(QString category MEMBER m_category)
-    Q_PROPERTY(QString command MEMBER m_command)
+    Q_PROPERTY(QString icon MEMBER m_icon)
+    Q_PROPERTY(QString dbusServiceName MEMBER m_dbusServiceName)
+    Q_PROPERTY(QString dbusPath MEMBER m_dbusPath)
+    Q_PROPERTY(QString dbusInterface MEMBER m_dbusInteface)
+    Q_PROPERTY(QString dbusMethod MEMBER m_method)
     Q_PROPERTY(QString args MEMBER m_args)
     Q_PROPERTY(int m_exit_code MEMBER m_exit_code)
 
@@ -39,12 +43,19 @@ public:
     int m_id;
     QString m_name;
     QString m_category;
-    QString m_command;
+    QString m_icon;
+    QString m_dbusServiceName;
+    QString m_dbusPath;
+    QString m_dbusInteface;
+    QString m_method;
     QString m_args;
     int m_exit_code;
 
-    QString m_stdout;
-    QString m_stderr;
+    QString m_stringStdout;
+    QString m_stringStderr;
+
+    QByteArray m_bytesStdout;
+    QByteArray m_bytesStderr;
 
 public:
     ADTExecutable();
