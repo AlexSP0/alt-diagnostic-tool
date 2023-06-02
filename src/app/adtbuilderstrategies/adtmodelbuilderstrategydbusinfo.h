@@ -1,0 +1,11 @@
+#ifndef ADTMODELBUILDERSTRATEGYDBUSINFO_H
+#define ADTMODELBUILDERSTRATEGYDBUSINFO_H
+
+
+class ADTModelBuilderStrategyDbusInfo
+{
+public:
+    ADTModelBuilderStrategyDbusInfo();
+};
+
+#endif // ADTMODELBUILDERSTRATEGYDBUSINFO_H

@@ -21,7 +21,7 @@
 #ifndef ADTMODELBUILDER_H
 #define ADTMODELBUILDER_H
 
-#include "adtmodelbuilderstrategyinterface.h"
+#include "adtbuilderstrategies/adtmodelbuilderstrategyinterface.h"
 
 #include <memory>
 

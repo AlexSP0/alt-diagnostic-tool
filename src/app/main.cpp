@@ -18,9 +18,9 @@
 **
 ***********************************************************************************************************************/
 
-#include "adtmodelbuilder.h"
-#include "adtmodelbuilderstrategydomaindiag.h"
-#include "adtmodelbuilderstrategyfromjson.h"
+#include "adtbuilderstrategies/adtmodelbuilder.h"
+#include "adtbuilderstrategies/adtmodelbuilderstrategydomaindiag.h"
+#include "adtbuilderstrategies/adtmodelbuilderstrategyfromjson.h"
 #include "dbuschecker.h"
 #include "mainwindow.h"
 

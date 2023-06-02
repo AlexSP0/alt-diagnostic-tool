@@ -30,7 +30,6 @@ set(HEADERS
 
     mainwindow.h
     runtestsdialog.h
-    adtmodelbuilder.h
     statuscommonwidget.h
     adtexecutor.h
     adtexecutorprivate.h
@@ -38,9 +37,11 @@ set(HEADERS
     treeproxymodel.h
     categoryproxymodel.h
 
-    adtmodelbuilderstrategyinterface.h
-    adtmodelbuilderstrategyfromjson.h
-    adtmodelbuilderstrategydomaindiag.h
+    adtbuilderstrategies/adtmodelbuilder.h
+    adtbuilderstrategies/adtmodelbuilderstrategyinterface.h
+    adtbuilderstrategies/adtmodelbuilderstrategyfromjson.h
+    adtbuilderstrategies/adtmodelbuilderstrategydomaindiag.h
+    adtbuilderstrategies/adtmodelbuilderstrategydbusinfo.h
 )
 
 set(SOURCES
@@ -51,7 +52,6 @@ set(SOURCES
 
     mainwindow.cpp
     runtestsdialog.cpp
-    adtmodelbuilder.cpp
     statuscommonwidget.cpp
     adtexecutor.cpp
     adtexecutorprivate.cpp
@@ -59,9 +59,11 @@ set(SOURCES
     treeproxymodel.cpp
     categoryproxymodel.cpp
 
-    adtmodelbuilderstrategyinterface.cpp
-    adtmodelbuilderstrategyfromjson.cpp
-    adtmodelbuilderstrategydomaindiag.cpp
+    adtbuilderstrategies/adtmodelbuilder.cpp
+    adtbuilderstrategies/adtmodelbuilderstrategyinterface.cpp
+    adtbuilderstrategies/adtmodelbuilderstrategyfromjson.cpp
+    adtbuilderstrategies/adtmodelbuilderstrategydomaindiag.cpp
+    adtbuilderstrategies/adtmodelbuilderstrategydbusinfo.cpp
 )
 
 set(UI_FORMS
