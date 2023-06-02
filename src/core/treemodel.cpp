@@ -88,6 +88,11 @@ QVariant TreeModel::data(const QModelIndex &index, int role) const
         return QVariant(item->getExecutable()->m_name);
     }
 
+    if (role == Qt::DecorationRole)
+    {
+        return QVariant(item->getIcon());
+    }
+
     if (role != Qt::DisplayRole)
         return QVariant();
 

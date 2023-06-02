@@ -45,6 +45,8 @@
 #include <QList>
 #include <QVariant>
 
+#include <QIcon>
+
 #include "adtexecutable.h"
 
 class ADTExecutable;
@@ -59,9 +61,7 @@ public:
     };
 
 public:
-    explicit TreeItem(const QList<QVariant> &data,
-                      ItemType type    = ItemType::checkItem,
-                      TreeItem *parent = 0);
+    explicit TreeItem(const QList<QVariant> &data, ItemType type = ItemType::checkItem, TreeItem *parent = 0);
 
     ~TreeItem();
 
@@ -79,6 +79,8 @@ public:
     ADTExecutable *getExecutable() const;
     void setExecutable(std::unique_ptr<ADTExecutable> executable);
     ItemType getItemType();
+    QIcon getIcon();
+    void setIcon(QIcon i);
 
 private:
     QList<TreeItem *> childItems;
@@ -86,6 +88,8 @@ private:
     QList<QVariant> itemData;
 
     TreeItem *parentItem;
+
+    QIcon icon;
 
     bool checked;
 

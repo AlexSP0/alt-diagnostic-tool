@@ -46,6 +46,7 @@ TreeItem::TreeItem(const QList<QVariant> &data, ItemType type, TreeItem *parent)
     : childItems()
     , itemData(data)
     , parentItem(parent)
+    , icon(QIcon::fromTheme("system-run"))
     , checked(false)
     , itemType(type)
     , task(nullptr)
@@ -116,4 +117,14 @@ void TreeItem::setExecutable(std::unique_ptr<ADTExecutable> executable)
 TreeItem::ItemType TreeItem::getItemType()
 {
     return itemType;
+}
+
+QIcon TreeItem::getIcon()
+{
+    return icon;
+}
+
+void TreeItem::setIcon(QIcon i)
+{
+    icon = i;
 }
