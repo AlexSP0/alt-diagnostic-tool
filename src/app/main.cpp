@@ -64,13 +64,14 @@ int main(int argc, char **argv)
     /*ADTModelBuilder modelBuilder(new ADTModelBuilderStrategyDomainDiag(DBUS_SERVICE_NAME,
                                                                        PATH_TO_DBUS_OBJECT,
                                                                        DBUS_INTERFACE_NAME,
-                                                                       new TreeModelBuilderImpl()));*/
+                                                                       new TreeModelBuilderFromJson()));*/
 
     ADTModelBuilder modelBuilder(new ADTModelBuilderStrategyDbusInfo(DBUS_SERVICE_NAME,
                                                                      PATH_TO_DBUS_OBJECT,
                                                                      DBUS_INTERFACE_NAME,
                                                                      DBUS_GET_METHON_NAME,
-                                                                     DBUS_FIND_INTERFACE));
+                                                                     DBUS_FIND_INTERFACE,
+                                                                     new TreeModelBuilderFromJson));
 
     auto model = modelBuilder.buildModel();
 

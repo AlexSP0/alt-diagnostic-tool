@@ -32,6 +32,7 @@ class ADTExecutable : public QObject
     Q_PROPERTY(QString name MEMBER m_name)
     Q_PROPERTY(QString category MEMBER m_category)
     Q_PROPERTY(QString icon MEMBER m_icon)
+    Q_PROPERTY(QString description MEMBER m_description)
     Q_PROPERTY(QString dbusServiceName MEMBER m_dbusServiceName)
     Q_PROPERTY(QString dbusPath MEMBER m_dbusPath)
     Q_PROPERTY(QString dbusInterface MEMBER m_dbusInteface)
@@ -44,6 +45,7 @@ public:
     QString m_name;
     QString m_category;
     QString m_icon;
+    QString m_description;
     QString m_dbusServiceName;
     QString m_dbusPath;
     QString m_dbusInteface;
