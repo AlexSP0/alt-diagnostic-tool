@@ -18,6 +18,8 @@ set (HEADERS
     treeitem.h
     treemodelbuilderfromjson.h
 
+    adtdesktopfileparser.h
+
 )
 
 set (SOURCES
@@ -32,6 +34,8 @@ set (SOURCES
     treemodel.cpp
     treeitem.cpp
     treemodelbuilderfromjson.cpp
+
+    adtdesktopfileparser.cpp
 )
 
 ADD_LIBRARY(adtcore STATIC ${SOURCES} ${HEADERS})
