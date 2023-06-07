@@ -39,9 +39,7 @@ set(HEADERS
 
     adtbuilderstrategies/adtmodelbuilder.h
     adtbuilderstrategies/adtmodelbuilderstrategyinterface.h
-    adtbuilderstrategies/adtmodelbuilderstrategyfromjson.h
-    adtbuilderstrategies/adtmodelbuilderstrategydomaindiag.h
-    adtbuilderstrategies/adtmodelbuilderstrategydbusinfo.h
+    adtbuilderstrategies/adtmodelbuilderstrategydbusinfodesktop.h
 )
 
 set(SOURCES
@@ -60,10 +58,7 @@ set(SOURCES
     categoryproxymodel.cpp
 
     adtbuilderstrategies/adtmodelbuilder.cpp
-    adtbuilderstrategies/adtmodelbuilderstrategyinterface.cpp
-    adtbuilderstrategies/adtmodelbuilderstrategyfromjson.cpp
-    adtbuilderstrategies/adtmodelbuilderstrategydomaindiag.cpp
-    adtbuilderstrategies/adtmodelbuilderstrategydbusinfo.cpp
+    adtbuilderstrategies/adtmodelbuilderstrategydbusinfodesktop.cpp
 )
 
 set(UI_FORMS

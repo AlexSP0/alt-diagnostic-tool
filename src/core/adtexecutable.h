@@ -28,7 +28,7 @@
 class ADTExecutable : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(int id MEMBER m_id)
+    Q_PROPERTY(QString id MEMBER m_id)
     Q_PROPERTY(QString name MEMBER m_name)
     Q_PROPERTY(QString category MEMBER m_category)
     Q_PROPERTY(QString icon MEMBER m_icon)
@@ -41,7 +41,7 @@ class ADTExecutable : public QObject
     Q_PROPERTY(int m_exit_code MEMBER m_exit_code)
 
 public:
-    int m_id;
+    QString m_id;
     QString m_name;
     QString m_category;
     QString m_icon;
@@ -59,8 +59,14 @@ public:
     QByteArray m_bytesStdout;
     QByteArray m_bytesStderr;
 
+    QMap<QString, QString> m_nameLocaleStorage;
+    QMap<QString, QString> m_categoryLocaleStorage;
+    QMap<QString, QString> m_descriptionLocaleStorage;
+
 public:
     ADTExecutable();
+
+    void setLocate(QString locale);
 
 public slots:
     void getStdout(QString out);

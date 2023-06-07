@@ -22,6 +22,7 @@ public:
 
     QList<QString> getGroupsList();
     QList<QString> getKeysListOfGroup(QString group);
+
     QString getKeyLocale(QString keyName);
 
 private:

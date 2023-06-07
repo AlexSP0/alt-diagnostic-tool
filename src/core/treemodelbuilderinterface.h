@@ -21,6 +21,7 @@
 #ifndef TREEMODELBUILDERINTERFACE_H
 #define TREEMODELBUILDERINTERFACE_H
 
+#include "adtexecutable.h"
 #include "treemodel.h"
 
 #include <memory>
@@ -32,7 +33,7 @@ public:
 
     virtual ~TreeModelBuilderInterface() = default;
 
-    virtual std::unique_ptr<TreeModel> buildModel(QJsonDocument *document) = 0;
+    virtual std::unique_ptr<TreeModel> buildModel(std::vector<ADTExecutable>) = 0;
 };
 
 #endif // TREEMODELBUILDERINTERFACE_H

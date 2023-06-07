@@ -23,7 +23,7 @@
 #include <QJsonArray>
 
 ADTExecutable::ADTExecutable()
-    : m_id(0)
+    : m_id("")
     , m_name("")
     , m_category("")
     , m_icon("")
@@ -38,7 +38,31 @@ ADTExecutable::ADTExecutable()
     , m_stringStderr("")
     , m_bytesStdout({})
     , m_bytesStderr({})
+    , m_nameLocaleStorage()
+    , m_categoryLocaleStorage()
+    , m_descriptionLocaleStorage()
 {}
+
+void ADTExecutable::setLocate(QString locale)
+{
+    auto nameIt = m_nameLocaleStorage.find(locale);
+    if (nameIt != m_nameLocaleStorage.end())
+    {
+        m_name = *nameIt;
+    }
+
+    auto categoryIt = m_categoryLocaleStorage.find(locale);
+    if (categoryIt != m_categoryLocaleStorage.end())
+    {
+        m_category = *categoryIt;
+    }
+
+    auto descriptionIt = m_descriptionLocaleStorage.find(locale);
+    if (descriptionIt != m_descriptionLocaleStorage.end())
+    {
+        m_description = *descriptionIt;
+    }
+}
 
 void ADTExecutable::getStdout(QString out)
 {

@@ -6,17 +6,14 @@ set(CMAKE_AUTORCC ON)
 
 set (HEADERS
     adtexecutable.h
-    adtcheck.h
-    adtresolver.h
 
     adtjsonconverter.h
     alteratorexecutordbusinterface.h
-    adtjsonloader.h
 
     treemodelbuilderinterface.h
     treemodel.h
     treeitem.h
-    treemodelbuilderfromjson.h
+    treemodelbulderfromexecutable.h
 
     adtdesktopfileparser.h
 
@@ -24,16 +21,13 @@ set (HEADERS
 
 set (SOURCES
     adtexecutable.cpp
-    adtcheck.cpp
-    adtresolver.cpp
 
     adtjsonconverter.cpp
-    adtjsonloader.cpp
 
     treemodelbuilderinterface.cpp
     treemodel.cpp
     treeitem.cpp
-    treemodelbuilderfromjson.cpp
+    treemodelbulderfromexecutable.cpp
 
     adtdesktopfileparser.cpp
 )

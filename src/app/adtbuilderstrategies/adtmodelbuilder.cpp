@@ -19,8 +19,6 @@
 ***********************************************************************************************************************/
 
 #include "adtmodelbuilder.h"
-#include "../core/adtjsonloader.h"
-#include "../core/treemodelbuilderfromjson.h"
 
 #include <QJsonDocument>
 #include <QMessageBox>

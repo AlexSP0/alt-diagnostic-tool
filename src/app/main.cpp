@@ -18,20 +18,14 @@
 **
 ***********************************************************************************************************************/
 
+#include "../core/treemodelbulderfromexecutable.h"
 #include "adtbuilderstrategies/adtmodelbuilder.h"
-#include "adtbuilderstrategies/adtmodelbuilderstrategydomaindiag.h"
-#include "adtbuilderstrategies/adtmodelbuilderstrategyfromjson.h"
+#include "adtbuilderstrategies/adtmodelbuilderstrategydbusinfodesktop.h"
 #include "dbuschecker.h"
 #include "mainwindow.h"
 
-#include "../core/treemodelbuilderfromjson.h"
-
 #include <QApplication>
-#include <QFile>
-#include <QJsonDocument>
 #include <QMessageBox>
-
-#include <adtbuilderstrategies/adtmodelbuilderstrategydbusinfo.h>
 
 const QString DBUS_SERVICE_NAME    = "ru.basealt.alterator";
 const QString PATH_TO_DBUS_OBJECT  = "/ru/basealt/alterator";
@@ -60,18 +54,12 @@ int main(int argc, char **argv)
         exit(1);
     }
 
-    //ADTModelBuilder modelBuilder(new ADTModelBuilderStrategyFromJson("data.json"));
-    /*ADTModelBuilder modelBuilder(new ADTModelBuilderStrategyDomainDiag(DBUS_SERVICE_NAME,
-                                                                       PATH_TO_DBUS_OBJECT,
-                                                                       DBUS_INTERFACE_NAME,
-                                                                       new TreeModelBuilderFromJson()));*/
-
-    ADTModelBuilder modelBuilder(new ADTModelBuilderStrategyDbusInfo(DBUS_SERVICE_NAME,
-                                                                     PATH_TO_DBUS_OBJECT,
-                                                                     DBUS_INTERFACE_NAME,
-                                                                     DBUS_GET_METHON_NAME,
-                                                                     DBUS_FIND_INTERFACE,
-                                                                     new TreeModelBuilderFromJson));
+    ADTModelBuilder modelBuilder(new ADTModelBuilderStrategyDbusInfoDesktop(DBUS_SERVICE_NAME,
+                                                                            PATH_TO_DBUS_OBJECT,
+                                                                            DBUS_INTERFACE_NAME,
+                                                                            DBUS_GET_METHON_NAME,
+                                                                            DBUS_FIND_INTERFACE,
+                                                                            new TreeModelBulderFromExecutable()));
 
     auto model = modelBuilder.buildModel();
 
