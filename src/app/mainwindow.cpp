@@ -72,6 +72,9 @@ void MainWindow::onSelectionChanged(const QItemSelection &newSelection, const QI
     QModelIndex currentIndex = newSelection.indexes().at(0);
     TreeItem *currentItem    = static_cast<TreeItem *>(currentIndex.internalPointer());
 
+    ui->descriptionTextEdit->clear();
+    ui->descriptionTextEdit->setText(currentItem->getExecutable()->m_description);
+
     if (currentItem)
     {
         runTestWindow->setCategory(currentItem);

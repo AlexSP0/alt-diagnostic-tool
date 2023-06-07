@@ -95,11 +95,32 @@ void ADTExecutor::executeTask(ADTExecutable *task)
 {
     connectExecutableSignals(task);
 
-    QDBusReply<int> reply = d->dbusInterface->call("new_ls", "\"root\"");
+    /*QDBusReply<int> reply = d->dbusInterface->call("new_ls", "\"root\"");
 
     task->m_exit_code = reply.value();
 
-    waitForAnswer(1000);
+    waitForAnswer(1000);*/
+
+    QDBusConnection dbus(QDBusConnection::systemBus());
+
+    QDBusInterface dbusIface(task->m_dbusServiceName, task->m_dbusPath, task->m_dbusInteface, dbus);
+
+    QDBusReply<QStringList> reply = dbusIface.call(task->m_method, "ls -la");
+
+    if (reply.error().type() == QDBusError::NoError)
+    {
+        task->m_exit_code = 0;
+
+        for (QString &line : reply.value())
+        {
+            task->m_stringStdout.append(line);
+        }
+    }
+    else
+    {
+        task->m_exit_code = -1;
+        task->m_stringStderr.append(reply.error().message());
+    }
 
     //QThread::sleep(1);
 

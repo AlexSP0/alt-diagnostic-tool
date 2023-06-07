@@ -18,10 +18,10 @@
 **
 ***********************************************************************************************************************/
 
+#include "treemodelbuilderfromjson.h"
 #include "adtexecutable.h"
 #include "adtjsonconverter.h"
 #include "treeitem.h"
-#include "treemodelbuilderfromjson.h"
 
 #include <QJsonArray>
 
@@ -65,6 +65,8 @@ std::unique_ptr<TreeModel> TreeModelBuilderFromJson::buildModel(QJsonDocument *d
             categoriesMap[task->m_category] = categoryItem;
 
             auto categoryTask = std::make_unique<ADTExecutable>();
+
+            categoryTask->m_description = task->m_description;
 
             categoryTask->m_name = task->m_category;
 

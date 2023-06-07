@@ -24,7 +24,7 @@
 #include "runtestsdialog.h"
 
 const int LAYOUT_STRETCH_INDEX  = 100;
-const int LAYOUT_STRETCH_FACTOR = 40;
+const int LAYOUT_STRETCH_FACTOR = 400;
 const int LAYOUT_INDEX          = 10;
 
 RunTestsDialog::RunTestsDialog(TreeModel *model, QWidget *parent)
@@ -130,8 +130,8 @@ void RunTestsDialog::on_Details_Button_clicked(StatusCommonWidget *widget)
 
     detailsText->clear();
 
-    //detailsText->appendPlainText(widget->getExecutable()->m_stdout);
-    //detailsText->appendPlainText(widget->getExecutable()->m_stderr);
+    detailsText->appendPlainText(widget->getExecutable()->m_stringStdout);
+    detailsText->appendPlainText(widget->getExecutable()->m_stringStderr);
 
     toggleWidgetsInStackedWidget();
 }
