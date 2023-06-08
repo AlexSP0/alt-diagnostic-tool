@@ -23,7 +23,7 @@ public:
 private:
     QStringList getObjectsPathByInterface(QString interface);
 
-    QJsonDocument getInterfaceInfo(QString path);
+    std::unique_ptr<ADTExecutable> buildADTExecutableFromDesktopFile(QString path);
 
 private:
     QString m_serviceName;

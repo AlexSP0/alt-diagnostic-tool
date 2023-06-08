@@ -1,6 +1,8 @@
 #ifndef ADTDESKTOPFILEPARSER_H
 #define ADTDESKTOPFILEPARSER_H
 
+#include "adtexecutable.h"
+
 #include <QString>
 #include <QVariant>
 
@@ -17,16 +19,25 @@ public:
     using Section  = QMultiMap<QString, IniFileKey>;
     using Sections = QMap<QString, Section>;
 
-public:
-    ADTDesktopFileParser(QString filename);
+    const QString DEFAULT_ICON = "system-run";
 
-    QList<QString> getGroupsList();
-    QList<QString> getKeysListOfGroup(QString group);
+public:
+    ADTDesktopFileParser(QString data);
+
+    std::unique_ptr<ADTExecutable> buildExecutable();
+
+    QList<QString> getGroupsList() const;
+    QList<QString> getKeysListOfGroup(QString group) const;
 
     QString getKeyLocale(QString keyName);
 
 private:
     QString getKeyNameWithoutLocale(QString keyName);
+    bool setDbusFields(QString &category, ADTExecutable *object);
+    bool setIcon(QString &category, ADTExecutable *object);
+    bool setName(QString &category, ADTExecutable *object);
+    bool setCategory(QString &category, ADTExecutable *object);
+    bool setDescription(QString &category, ADTExecutable *object);
 
 private:
     Sections m_sections;

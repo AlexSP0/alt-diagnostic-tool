@@ -33,7 +33,7 @@ public:
 
     virtual ~TreeModelBuilderInterface() = default;
 
-    virtual std::unique_ptr<TreeModel> buildModel(std::vector<ADTExecutable>) = 0;
+    virtual std::unique_ptr<TreeModel> buildModel(std::vector<std::unique_ptr<ADTExecutable>>) = 0;
 };
 
 #endif // TREEMODELBUILDERINTERFACE_H

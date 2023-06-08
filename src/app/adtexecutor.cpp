@@ -105,7 +105,7 @@ void ADTExecutor::executeTask(ADTExecutable *task)
 
     QDBusInterface dbusIface(task->m_dbusServiceName, task->m_dbusPath, task->m_dbusInteface, dbus);
 
-    QDBusReply<QStringList> reply = dbusIface.call(task->m_method, "ls -la");
+    QDBusReply<QStringList> reply = dbusIface.call(task->m_method, task->m_args);
 
     if (reply.error().type() == QDBusError::NoError)
     {
