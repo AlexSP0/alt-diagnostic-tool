@@ -16,7 +16,7 @@ macro(add_adt_executable name)
 
 endmacro(add_adt_executable)
 
-find_package(Qt5 COMPONENTS Widgets Core Gui DBus Xml REQUIRED)
+find_package(Qt5 COMPONENTS Widgets Core Gui DBus Xml LinguistTools REQUIRED)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -25,7 +25,6 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
 set(HEADERS
-
     dbuschecker.h
 
     mainwindow.h
@@ -43,8 +42,6 @@ set(HEADERS
 )
 
 set(SOURCES
-
-
     main.cpp
     dbuschecker.cpp
 
@@ -62,7 +59,6 @@ set(SOURCES
 )
 
 set(UI_FORMS
-
     mainwindow.ui
     runtestsdialog.ui
 
@@ -71,11 +67,21 @@ set(UI_FORMS
 set(RESOURCES
     resources.qrc
 )
+set(TS_FILES
+    ${CMAKE_CURRENT_SOURCE_DIR}/i18n/app_ru.ts
+)
+
+add_custom_target(app_ts
+    DEPENDS ${TS_FILES}
+    COMMAND ${Qt5_LUPDATE_EXECUTABLE} -recursive ${CMAKE_CURRENT_SOURCE_DIR} -ts ${TS_FILES} -noobsolete
+)
+
+qt5_add_translation(QM_FILES ${TS_FILES})
 
 qt5_wrap_ui(UI_SOURCES ${UI_FORMS})
 
 qt5_add_resources(RCC_SOURCES ${RESOURCES})
 
-add_adt_executable(alt-diagnostic-tool ${SOURCES} ${HEADERS} ${UI_SOURCES} ${RCC_SOURCES})
+add_adt_executable(alt-diagnostic-tool ${SOURCES} ${HEADERS} ${UI_SOURCES} ${RCC_SOURCES} ${QM_FILES})
 
 target_link_libraries(alt-diagnostic-tool Qt5::Widgets Qt5::Core Qt5::DBus Qt5::Xml Qt5::Gui adtcore)

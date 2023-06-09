@@ -26,14 +26,14 @@
       </sizepolicy>
      </property>
      <property name="text">
-      <string>Доступные проверки:</string>
+      <string>Available tests:</string>
      </property>
     </widget>
    </item>
    <item row="1" column="0">
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Фильтр:</string>
+      <string>Filter</string>
      </property>
     </widget>
    </item>
@@ -159,21 +159,21 @@
      <item>
       <widget class="QPushButton" name="testPushButton">
        <property name="text">
-        <string>Запустить всё</string>
+        <string>Run all tests</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="backPushButton">
        <property name="text">
-        <string>Назад</string>
+        <string>Back</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="QPushButton" name="exitPushButton">
        <property name="text">
-        <string>Выход</string>
+        <string>Exit</string>
        </property>
       </widget>
      </item>

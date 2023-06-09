@@ -26,6 +26,7 @@
 
 #include <QApplication>
 #include <QMessageBox>
+#include <QTranslator>
 
 const QString DBUS_SERVICE_NAME    = "ru.basealt.alterator";
 const QString PATH_TO_DBUS_OBJECT  = "/ru/basealt/alterator";
@@ -43,6 +44,10 @@ int main(int argc, char **argv)
     app.setOrganizationDomain("basealt.ru");
     app.setApplicationName("ALT Diagnostic tool");
     app.setApplicationVersion("0.1.0");
+
+    QTranslator translator;
+    bool flag = translator.load("app_ru", ".");
+    app.installTranslator(&translator);
 
     if (!DBusChecker::checkDBusServiceOnSystemBus(DBUS_SERVICE_NAME, PATH_TO_DBUS_OBJECT, DBUS_INTERFACE_NAME))
     {
