@@ -23,8 +23,11 @@ public:
 
 public:
     ADTDesktopFileParser(QString data);
+    ADTDesktopFileParser(QString data, QStringList testLists);
 
-    std::unique_ptr<ADTExecutable> buildExecutable();
+    std::unique_ptr<ADTExecutable> buildCategoryExecutable();
+    std::unique_ptr<ADTExecutable> buildTestExecutable(QString test, ADTExecutable *categoryExecutable);
+    std::vector<std::unique_ptr<ADTExecutable>> buildExecutables();
 
     QList<QString> getGroupsList() const;
     QList<QString> getKeysListOfGroup(QString group) const;
@@ -41,6 +44,8 @@ private:
 
 private:
     Sections m_sections;
+
+    QStringList m_testLists;
 };
 
 #endif // ADTDESKTOPFILEPARSER_H

@@ -29,6 +29,7 @@ class ADTExecutable : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString id MEMBER m_id)
+    Q_PROPERTY(int type MEMBER m_type)
     Q_PROPERTY(QString name MEMBER m_name)
     Q_PROPERTY(QString category MEMBER m_category)
     Q_PROPERTY(QString icon MEMBER m_icon)
@@ -41,7 +42,14 @@ class ADTExecutable : public QObject
     Q_PROPERTY(int m_exit_code MEMBER m_exit_code)
 
 public:
+    enum ExecutableType
+    {
+        categoryType,
+        executableType
+    };
+
     QString m_id;
+    int m_type;
     QString m_name;
     QString m_category;
     QString m_icon;

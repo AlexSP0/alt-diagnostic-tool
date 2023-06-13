@@ -2,7 +2,11 @@
 #include "../core/adtdesktopfileparser.h"
 
 #include <QDBusReply>
+#include <QDebug>
 #include <QJsonDocument>
+
+const QString ADTModelBuilderStrategyDbusInfoDesktop::LIST_METHOD = QString("list");
+const QString ADTModelBuilderStrategyDbusInfoDesktop::INFO_METHOD = QString("info");
 
 ADTModelBuilderStrategyDbusInfoDesktop::ADTModelBuilderStrategyDbusInfoDesktop(QString serviceName,
                                                                                QString path,
@@ -34,10 +38,14 @@ std::unique_ptr<TreeModel> ADTModelBuilderStrategyDbusInfoDesktop::buildModel()
 
     for (QString currentPath : listOfObjects)
     {
-        std::unique_ptr<ADTExecutable> currentExecutable = std::move(buildADTExecutableFromDesktopFile(currentPath));
-        if (currentExecutable.get())
+        std::vector<std::unique_ptr<ADTExecutable>> currentExecutables = std::move(
+            buildADTExecutablesFromDesktopFile(currentPath));
+        if (!currentExecutables.empty())
         {
-            adtExecutables.push_back(std::move(currentExecutable));
+            for (auto &currentExe : currentExecutables)
+            {
+                adtExecutables.push_back(std::move(currentExe));
+            }
         }
     }
 
@@ -57,17 +65,31 @@ QStringList ADTModelBuilderStrategyDbusInfoDesktop::getObjectsPathByInterface(QS
     return paths;
 }
 
-std::unique_ptr<ADTExecutable> ADTModelBuilderStrategyDbusInfoDesktop::buildADTExecutableFromDesktopFile(QString path)
+std::vector<std::unique_ptr<ADTExecutable>> ADTModelBuilderStrategyDbusInfoDesktop::buildADTExecutablesFromDesktopFile(
+    QString path)
 {
     QDBusInterface iface(m_serviceName, path, m_findInterface, *m_dbus.get());
 
-    QDBusReply<QStringList> reply = iface.call("info");
+    QDBusReply<QStringList> testsListReply = iface.call(ADTModelBuilderStrategyDbusInfoDesktop::LIST_METHOD);
+
+    QStringList testsList = testsListReply.value();
+
+    if (testsList.empty())
+    {
+        qWarning() << "ERROR! Can't get list of tests from object with path: " << path;
+
+        return std::vector<std::unique_ptr<ADTExecutable>>();
+    }
+
+    QDBusReply<QStringList> reply = iface.call(ADTModelBuilderStrategyDbusInfoDesktop::INFO_METHOD);
 
     QStringList infoList = reply.value();
 
     if (infoList.empty())
     {
-        return nullptr;
+        qWarning() << "ERROR! Can't get info from object with path: " << path;
+
+        return std::vector<std::unique_ptr<ADTExecutable>>();
     }
 
     QString resultString;
@@ -77,7 +99,7 @@ std::unique_ptr<ADTExecutable> ADTModelBuilderStrategyDbusInfoDesktop::buildADTE
         resultString.append(line);
     }
 
-    ADTDesktopFileParser parser(resultString);
+    ADTDesktopFileParser parser(resultString, testsList);
 
-    return parser.buildExecutable();
+    return parser.buildExecutables();
 }

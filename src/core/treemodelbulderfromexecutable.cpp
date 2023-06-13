@@ -12,14 +12,7 @@ std::unique_ptr<TreeModel> TreeModelBulderFromExecutable::buildModel(std::vector
 
     for (size_t i = 0; i < elements.size(); i++)
     {
-        //auto task = std::make_unique<ADTExecutable>();
-
-        //QJsonObject obj = tasksArray[i].toObject();
-
-        //ADTJsonConverter::JSonToObject(*task.get(), &obj);
-
-        auto it = categoriesMap.find(elements.at(i)->m_category);
-        if (it == categoriesMap.end())
+        if (elements.at(i)->m_type == ADTExecutable::ExecutableType::categoryType)
         {
             TreeItem *categoryItem = new TreeItem(QList<QVariant>{}, TreeItem::categoryItem, rootItem);
 
@@ -27,32 +20,29 @@ std::unique_ptr<TreeModel> TreeModelBulderFromExecutable::buildModel(std::vector
 
             categoriesMap[elements.at(i)->m_category] = categoryItem;
 
-            auto categoryTask = std::make_unique<ADTExecutable>();
+            categoryItem->setExecutable(std::move(elements.at(i)));
 
-            categoryTask->m_description = elements.at(i)->m_description;
+            continue;
+        }
+        if (elements.at(i)->m_type == ADTExecutable::ExecutableType::executableType)
+        {
+            auto it = categoriesMap.find(elements.at(i)->m_category);
 
-            categoryTask->m_name = elements.at(i)->m_category;
+            if (it == categoriesMap.end())
+            {
+                qWarning() << "ERROR! Can't find category: " << elements.at(i)->m_category
+                           << " for element: " << elements.at(i)->m_id;
 
-            categoryItem->setExecutable(std::move(categoryTask));
+                continue;
+            }
+
+            TreeItem *categoryItem = categoriesMap[elements.at(i)->m_category];
 
             TreeItem *checkItem = new TreeItem(QList<QVariant>{}, TreeItem::checkItem, categoryItem);
 
-            checkItem->setExecutable(std::move(elements.at(i)));
-
             categoryItem->appendChild(checkItem);
-        }
-        else
-        {
-            TreeItem *categoryItem = categoriesMap[elements.at(i)->m_category];
 
-            if (categoryItem)
-            {
-                TreeItem *checkItem = new TreeItem(QList<QVariant>{}, TreeItem::checkItem, categoryItem);
-
-                categoryItem->appendChild(checkItem);
-
-                checkItem->setExecutable(std::move(elements.at(i)));
-            }
+            checkItem->setExecutable(std::move(elements.at(i)));
         }
     }
 

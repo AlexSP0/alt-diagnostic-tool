@@ -24,6 +24,7 @@
 
 ADTExecutable::ADTExecutable()
     : m_id("")
+    , m_type(-1)
     , m_name("")
     , m_category("")
     , m_icon("")

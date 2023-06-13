@@ -6,10 +6,14 @@
 
 #include <QDBusConnection>
 #include <QDBusInterface>
+#include <QString>
 
 class ADTModelBuilderStrategyDbusInfoDesktop : public ADTModelBuilderStrategyInterface
 {
 public:
+    static const QString LIST_METHOD;
+    static const QString INFO_METHOD;
+
     ADTModelBuilderStrategyDbusInfoDesktop(QString serviceName,
                                            QString path,
                                            QString interface,
@@ -18,12 +22,12 @@ public:
                                            TreeModelBuilderInterface *builder);
 
 public:
-    std::unique_ptr<TreeModel> buildModel();
+    std::unique_ptr<TreeModel> buildModel() override;
 
 private:
     QStringList getObjectsPathByInterface(QString interface);
 
-    std::unique_ptr<ADTExecutable> buildADTExecutableFromDesktopFile(QString path);
+    std::vector<std::unique_ptr<ADTExecutable> > buildADTExecutablesFromDesktopFile(QString path);
 
 private:
     QString m_serviceName;

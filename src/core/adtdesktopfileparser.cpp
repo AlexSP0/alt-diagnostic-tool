@@ -7,6 +7,7 @@
 
 ADTDesktopFileParser::ADTDesktopFileParser(QString data)
     : m_sections()
+    , m_testLists()
 {
     std::istringstream iStream(data.toStdString());
 
@@ -34,7 +35,13 @@ ADTDesktopFileParser::ADTDesktopFileParser(QString data)
     }
 }
 
-std::unique_ptr<ADTExecutable> ADTDesktopFileParser::buildExecutable()
+ADTDesktopFileParser::ADTDesktopFileParser(QString data, QStringList testLists)
+    : ADTDesktopFileParser{data}
+{
+    m_testLists = testLists;
+}
+
+std::unique_ptr<ADTExecutable> ADTDesktopFileParser::buildCategoryExecutable()
 {
     std::unique_ptr<ADTExecutable> newADTExecutable = std::make_unique<ADTExecutable>();
 
@@ -67,7 +74,63 @@ std::unique_ptr<ADTExecutable> ADTDesktopFileParser::buildExecutable()
 
     setDescription(newADTExecutable->m_id, newADTExecutable.get());
 
+    newADTExecutable->m_type = ADTExecutable::ExecutableType::categoryType;
+
     return newADTExecutable;
+}
+
+std::unique_ptr<ADTExecutable> ADTDesktopFileParser::buildTestExecutable(QString test, ADTExecutable *categoryExecutable)
+{
+    std::unique_ptr<ADTExecutable> result = std::make_unique<ADTExecutable>();
+
+    if (!categoryExecutable)
+    {
+        return nullptr;
+    }
+
+    result->m_id              = test;
+    result->m_type            = ADTExecutable::ExecutableType::executableType;
+    result->m_name            = test;
+    result->m_category        = categoryExecutable->m_category;
+    result->m_icon            = categoryExecutable->m_icon;
+    result->m_description     = categoryExecutable->m_description;
+    result->m_dbusServiceName = categoryExecutable->m_dbusServiceName;
+    result->m_dbusPath        = categoryExecutable->m_dbusPath;
+    result->m_dbusInteface    = categoryExecutable->m_dbusInteface;
+    result->m_method          = categoryExecutable->m_method;
+    result->m_args            = test;
+    result->m_exit_code       = categoryExecutable->m_exit_code;
+
+    return result;
+}
+
+std::vector<std::unique_ptr<ADTExecutable>> ADTDesktopFileParser::buildExecutables()
+{
+    std::vector<std::unique_ptr<ADTExecutable>> results;
+
+    std::unique_ptr<ADTExecutable> categoryExecutable = buildCategoryExecutable();
+
+    if (!categoryExecutable.get())
+    {
+        return results;
+    }
+
+    ADTExecutable *currentCategory = categoryExecutable.get();
+
+    results.push_back(std::move(categoryExecutable));
+
+    for (QString currentTest : m_testLists)
+    {
+        std::unique_ptr<ADTExecutable> test = buildTestExecutable(currentTest, currentCategory);
+
+        if (!test.get())
+        {
+            return results;
+        }
+        results.push_back(std::move(test));
+    }
+
+    return results;
 }
 
 QList<QString> ADTDesktopFileParser::getGroupsList() const

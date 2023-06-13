@@ -68,7 +68,7 @@ set(RESOURCES
     resources.qrc
 )
 set(TS_FILES
-    ${CMAKE_CURRENT_SOURCE_DIR}/i18n/app_ru.ts
+    ${CMAKE_CURRENT_SOURCE_DIR}/app_ru.ts
 )
 
 add_custom_target(app_ts
