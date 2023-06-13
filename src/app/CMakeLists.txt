@@ -28,6 +28,8 @@ set(HEADERS
     dbuschecker.h
 
     mainwindow.h
+    maintoolswidget.h
+    maintestswidget.h
     runtestsdialog.h
     statuscommonwidget.h
     adtexecutor.h
@@ -46,6 +48,8 @@ set(SOURCES
     dbuschecker.cpp
 
     mainwindow.cpp
+    maintoolswidget.cpp
+    maintestswidget.cpp
     runtestsdialog.cpp
     statuscommonwidget.cpp
     adtexecutor.cpp
@@ -60,6 +64,8 @@ set(SOURCES
 
 set(UI_FORMS
     mainwindow.ui
+    maintoolswidget.ui
+    maintestswidget.ui
     runtestsdialog.ui
 
     statuscommonwidget.ui

@@ -37,6 +37,11 @@ StatusCommonWidget::StatusCommonWidget(TreeItem *item, QWidget *parent)
     ui->testNameLabel->setText(treeItem->getExecutable()->m_name);
 }
 
+StatusCommonWidget::~StatusCommonWidget()
+{
+    delete ui;
+}
+
 ADTExecutable *StatusCommonWidget::getExecutable()
 {
     return treeItem->getExecutable();

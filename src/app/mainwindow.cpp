@@ -30,15 +30,15 @@ MainWindow::MainWindow(TreeModel *model, QWidget *parent)
 {
     ui->setupUi(this);
     treeProxyModel->setSourceModel(treeViewModel);
-    ui->checkListView->setModel(treeViewModel);
+    //ui->checkListView->setModel(treeViewModel);
 
     connect(runTestWindow.get(), &RunTestsDialog::exitPressed, this, &MainWindow::on_exitPushButton_clicked);
     connect(this, &MainWindow::runAllCheckedTests, runTestWindow.get(), &RunTestsDialog::runCheckedTests);
 
-    connect(ui->checkListView->selectionModel(),
-            &QItemSelectionModel::selectionChanged,
-            this,
-            &MainWindow::onSelectionChanged);
+    //    connect(ui->checkListView->selectionModel(),
+    //            &QItemSelectionModel::selectionChanged,
+    //            this,
+    //            &MainWindow::onSelectionChanged);
 }
 
 MainWindow::~MainWindow()
@@ -72,8 +72,8 @@ void MainWindow::onSelectionChanged(const QItemSelection &newSelection, const QI
     QModelIndex currentIndex = newSelection.indexes().at(0);
     TreeItem *currentItem    = static_cast<TreeItem *>(currentIndex.internalPointer());
 
-    ui->descriptionTextEdit->clear();
-    ui->descriptionTextEdit->setText(currentItem->getExecutable()->m_description);
+    //    ui->descriptionTextEdit->clear();
+    //    ui->descriptionTextEdit->setText(currentItem->getExecutable()->m_description);
 
     if (currentItem)
     {

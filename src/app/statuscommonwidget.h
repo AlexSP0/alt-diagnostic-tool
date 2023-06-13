@@ -36,6 +36,8 @@ class StatusCommonWidget : public QWidget
 public:
     StatusCommonWidget(TreeItem *item, QWidget *parent = nullptr);
 
+    ~StatusCommonWidget();
+
     ADTExecutable *getExecutable();
 
     void setText(QString text);
