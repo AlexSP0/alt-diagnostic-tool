@@ -52,7 +52,7 @@
        <verstretch>0</verstretch>
       </sizepolicy>
      </property>
-     <widget class="QWidget" name="commonPage_3">
+     <widget class="QWidget" name="commonPage">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
         <horstretch>0</horstretch>
@@ -73,7 +73,7 @@
         <number>0</number>
        </property>
        <item row="0" column="0">
-        <widget class="QScrollArea" name="summaryScrollArea_3">
+        <widget class="QScrollArea" name="summaryScrollArea">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
            <horstretch>0</horstretch>
@@ -83,7 +83,7 @@
          <property name="widgetResizable">
           <bool>true</bool>
          </property>
-         <widget class="QWidget" name="summaryScrollAreaWidgetContents_3">
+         <widget class="QWidget" name="summaryScrollAreaWidgetContents">
           <property name="geometry">
            <rect>
             <x>0</x>
@@ -97,7 +97,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="detailsPage_3">
+     <widget class="QWidget" name="detailsPage">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
         <horstretch>0</horstretch>
@@ -118,17 +118,17 @@
         <number>0</number>
        </property>
        <item row="0" column="0">
-        <widget class="QScrollArea" name="detailsScrollArea_3">
+        <widget class="QScrollArea" name="detailsScrollArea">
          <property name="widgetResizable">
           <bool>true</bool>
          </property>
-         <widget class="QWidget" name="detailsScrollAreaWidgetContents_3">
+         <widget class="QWidget" name="detailsScrollAreaWidgetContents">
           <property name="geometry">
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>98</width>
-            <height>28</height>
+            <width>731</width>
+            <height>406</height>
            </rect>
           </property>
          </widget>
@@ -139,9 +139,9 @@
     </widget>
    </item>
    <item row="3" column="0" colspan="2">
-    <layout class="QHBoxLayout" name="horizontalLayout_2">
+    <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <spacer name="horizontalSpacer_2">
+      <spacer name="horizontalSpacer">
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
@@ -154,21 +154,21 @@
       </spacer>
      </item>
      <item>
-      <widget class="QPushButton" name="testPushButton_2">
+      <widget class="QPushButton" name="testPushButton">
        <property name="text">
         <string>Run all tests</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="backPushButton_2">
+      <widget class="QPushButton" name="backPushButton">
        <property name="text">
         <string>Back</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QPushButton" name="exitPushButton_2">
+      <widget class="QPushButton" name="exitPushButton">
        <property name="text">
         <string>Exit</string>
        </property>

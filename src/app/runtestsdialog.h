@@ -93,8 +93,6 @@ private:
 private:
     void clearUi();
 
-    void updateStackedWidget();
-
     void updateCommonStatusWidgets();
 
     void updateWidgetStorage();
