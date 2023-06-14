@@ -12,3 +12,23 @@ MainToolsWidget::~MainToolsWidget()
 {
     delete ui;
 }
+
+void MainToolsWidget::setModel(QAbstractItemModel *model)
+{
+    ui->toolsListView->setModel(model);
+}
+
+QItemSelectionModel *MainToolsWidget::getSelectionModel()
+{
+    return ui->toolsListView->selectionModel();
+}
+
+void MainToolsWidget::clearDescription()
+{
+    ui->descriptionTextEdit->clear();
+}
+
+void MainToolsWidget::setDescription(QString description)
+{
+    ui->descriptionTextEdit->setText(description);
+}

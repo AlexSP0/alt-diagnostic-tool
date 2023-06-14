@@ -22,6 +22,8 @@
 #define MAINWINDOW_H
 
 #include "../core/treemodel.h"
+#include "maintestswidget.h"
+#include "maintoolswidget.h"
 #include "runtestsdialog.h"
 
 #include <memory>
@@ -36,7 +38,7 @@ class MainWindow;
 }
 QT_END_NAMESPACE
 
-class MainWindow : public QWidget
+class MainWindow : public QMainWindow
 {
 public:
     Q_OBJECT

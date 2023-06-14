@@ -21,24 +21,28 @@
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
 
+#include <QDebug>
+
 MainWindow::MainWindow(TreeModel *model, QWidget *parent)
-    : QWidget(parent)
-    , ui(new Ui::MainWindow)
+    : QMainWindow(parent)
+    , ui(new Ui::MainWindow())
     , treeViewModel(model)
     , treeProxyModel(std::make_unique<TreeProxyModel>())
     , runTestWindow(std::make_unique<RunTestsDialog>(treeViewModel))
 {
     ui->setupUi(this);
     treeProxyModel->setSourceModel(treeViewModel);
-    //ui->checkListView->setModel(treeViewModel);
+    ui->toolsPage->setModel(treeViewModel);
+
+    ui->stackedWidget->setCurrentIndex(0);
 
     connect(runTestWindow.get(), &RunTestsDialog::exitPressed, this, &MainWindow::on_exitPushButton_clicked);
     connect(this, &MainWindow::runAllCheckedTests, runTestWindow.get(), &RunTestsDialog::runCheckedTests);
 
-    //    connect(ui->checkListView->selectionModel(),
-    //            &QItemSelectionModel::selectionChanged,
-    //            this,
-    //            &MainWindow::onSelectionChanged);
+    connect(ui->toolsPage->getSelectionModel(),
+            &QItemSelectionModel::selectionChanged,
+            this,
+            &MainWindow::onSelectionChanged);
 }
 
 MainWindow::~MainWindow()
@@ -72,8 +76,8 @@ void MainWindow::onSelectionChanged(const QItemSelection &newSelection, const QI
     QModelIndex currentIndex = newSelection.indexes().at(0);
     TreeItem *currentItem    = static_cast<TreeItem *>(currentIndex.internalPointer());
 
-    //    ui->descriptionTextEdit->clear();
-    //    ui->descriptionTextEdit->setText(currentItem->getExecutable()->m_description);
+    ui->toolsPage->clearDescription();
+    ui->toolsPage->setDescription(currentItem->getExecutable()->m_description);
 
     if (currentItem)
     {
