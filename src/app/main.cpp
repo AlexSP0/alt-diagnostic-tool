@@ -68,7 +68,7 @@ int main(int argc, char **argv)
 
     auto model = modelBuilder.buildModel();
 
-    MainWindow w(model.get());
+    MainWindow w;
 
     w.show();
 

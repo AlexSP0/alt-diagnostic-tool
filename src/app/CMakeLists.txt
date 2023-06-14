@@ -30,10 +30,10 @@ set(HEADERS
     mainwindow.h
     maintoolswidget.h
     maintestswidget.h
-    runtestsdialog.h
     statuscommonwidget.h
     adtexecutor.h
     adtexecutorprivate.h
+    mainwindowcontrollerimpl.h
 
     treeproxymodel.h
     categoryproxymodel.h
@@ -41,6 +41,13 @@ set(HEADERS
     adtbuilderstrategies/adtmodelbuilder.h
     adtbuilderstrategies/adtmodelbuilderstrategyinterface.h
     adtbuilderstrategies/adtmodelbuilderstrategydbusinfodesktop.h
+
+    interfaces/mainwindowcontrollerinterface.h
+    interfaces/toolswidgetinterface.h
+    interfaces/testswidgetinterface.h
+    interfaces/mainwindowinterface.h
+
+
 )
 
 set(SOURCES
@@ -50,23 +57,27 @@ set(SOURCES
     mainwindow.cpp
     maintoolswidget.cpp
     maintestswidget.cpp
-    runtestsdialog.cpp
     statuscommonwidget.cpp
     adtexecutor.cpp
     adtexecutorprivate.cpp
+    mainwindowcontrollerimpl.cpp
 
     treeproxymodel.cpp
     categoryproxymodel.cpp
 
     adtbuilderstrategies/adtmodelbuilder.cpp
     adtbuilderstrategies/adtmodelbuilderstrategydbusinfodesktop.cpp
+
+    interfaces/mainwindowcontrollerinterface.cpp
+    interfaces/toolswidgetinterface.cpp
+    interfaces/testswidgetinterface.cpp
+    interfaces/mainwindowinterface.cpp
 )
 
 set(UI_FORMS
     mainwindow.ui
     maintoolswidget.ui
     maintestswidget.ui
-    runtestsdialog.ui
 
     statuscommonwidget.ui
 )

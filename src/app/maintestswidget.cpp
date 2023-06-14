@@ -1,6 +1,9 @@
 #include "maintestswidget.h"
 #include "ui_maintestswidget.h"
 
+#include <QStyle>
+#include <QThread>
+
 const int LAYOUT_STRETCH_INDEX  = 100;
 const int LAYOUT_STRETCH_FACTOR = 400;
 const int LAYOUT_INDEX          = 10;
@@ -10,20 +13,16 @@ MainTestsWidget::MainTestsWidget(QWidget *parent)
     , ui(new Ui::MainTestsWidget)
     , m_summaryLayout(new QVBoxLayout())
     , m_detailsLayout(new QVBoxLayout())
-    , m_detailsText(new QPlainTextEdit)
+    , m_detailsText(new QPlainTextEdit())
     , m_backToSummaryWidgetButton(new QPushButton())
-    , m_treeModel(nullptr)
-    , m_currentItemCategory(nullptr)
-    , m_statusWidgetsToDraw({})
-    , m_statusWidgetsForRun({})
+    , m_currentToolItem(nullptr)
 {
     ui->setupUi(this);
 
     ui->summaryScrollAreaWidgetContents->setLayout(m_summaryLayout);
     ui->detailsScrollAreaWidgetContents->setLayout(m_detailsLayout);
 
-    m_backToSummaryWidgetButton->setText("Back");
-    //connect(backToSummaryWidgetButton, &QPushButton::clicked, this, &RunTestsDialog::toggleWidgetsInStackedWidget);
+    m_backToSummaryWidgetButton->setText(tr("Back"));
 
     QHBoxLayout *detailsHButtonLayout = new QHBoxLayout();
     detailsHButtonLayout->addStretch();
@@ -32,9 +31,6 @@ MainTestsWidget::MainTestsWidget(QWidget *parent)
     m_detailsLayout->addWidget(m_detailsText);
     m_detailsLayout->insertLayout(LAYOUT_INDEX, detailsHButtonLayout);
     ui->detailsScrollAreaWidgetContents->setLayout(m_detailsLayout);
-
-    //connect(executor.get(), &ADTExecutor::beginTask, this, &RunTestsDialog::on_beginTask);
-    //connect(executor.get(), &ADTExecutor::finishTask, this, &RunTestsDialog::on_finishTask);
 }
 
 MainTestsWidget::~MainTestsWidget()
@@ -42,79 +38,32 @@ MainTestsWidget::~MainTestsWidget()
     delete ui;
 }
 
-void MainTestsWidget::setTreeModel(TreeModel *model)
+void MainTestsWidget::setToolItem(TreeItem *item)
 {
-    m_treeModel = model;
+    m_currentToolItem = item;
 }
 
-void MainTestsWidget::setCategory(TreeItem *item)
+void MainTestsWidget::enableButtons()
 {
-    m_currentItemCategory = item;
+
 }
 
-void MainTestsWidget::toggleWidgetsInStackedWidget()
+void MainTestsWidget::disableButtons()
 {
-    ui->stackedWidget->currentIndex() == 0 ? ui->stackedWidget->setCurrentIndex(1)
-                                           : ui->stackedWidget->setCurrentIndex(0);
+
 }
 
-void MainTestsWidget::clearUi()
+void MainTestsWidget::showDetails(QString detailsText)
 {
-    delete ui->summaryScrollAreaWidgetContents;
 
-    ui->summaryScrollAreaWidgetContents = new QWidget();
-
-    ui->summaryScrollArea->setWidget(ui->summaryScrollAreaWidgetContents);
-
-    m_summaryLayout = new QVBoxLayout();
-    m_summaryLayout->setAlignment(Qt::AlignTop);
-
-    ui->summaryScrollAreaWidgetContents->setLayout(m_summaryLayout);
-
-    ui->stackedWidget->setCurrentIndex(0);
 }
 
-void MainTestsWidget::updateWidgetStorage()
+void MainTestsWidget::showAllTest()
 {
-    m_statusWidgetsToDraw.clear();
 
-    if (m_currentItemCategory->childCount() == 0)
-    {
-        return;
-    }
-
-    for (int i = m_currentItemCategory->childCount() - 1; i >= 0; i--)
-    {
-        StatusCommonWidget *currentWidget = new StatusCommonWidget(m_currentItemCategory->child(i));
-
-        //        connect(currentWidget,
-        //                &StatusCommonWidget::detailsButtonClicked,
-        //                this,
-        //                &RunTestsDialog::on_Details_Button_clicked);
-
-        //        connect(currentWidget, &StatusCommonWidget::runButtonCLicked, this, &RunTestsDialog::on_runPushBitton_clicked);
-
-        m_statusWidgetsToDraw.push_back(currentWidget);
-    }
-
-    //DO it really need here&
-    m_statusWidgetsForRun.clear();
-
-    //TODO remove this loop
-    for (StatusCommonWidget *currentWidgetPtr : m_statusWidgetsToDraw)
-    {
-        m_statusWidgetsForRun.push_back(currentWidgetPtr);
-    }
 }
 
-void MainTestsWidget::updateCommonStatusWidgets()
+void MainTestsWidget::changeStatusWidgetIcon(StatusCommonWidget *widget, QIcon &icon)
 {
-    int i = 0;
-    for (auto &commonStatusWidget : m_statusWidgetsToDraw)
-    {
-        m_summaryLayout->insertWidget(i, commonStatusWidget, Qt::AlignTop);
-        i++;
-    }
 
-    m_summaryLayout->insertStretch(LAYOUT_STRETCH_INDEX, LAYOUT_STRETCH_FACTOR);
 }

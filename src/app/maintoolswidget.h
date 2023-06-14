@@ -5,24 +5,19 @@
 #include <QItemSelectionModel>
 #include <QWidget>
 
+#include "interfaces/toolswidgetinterface.h"
+
 namespace Ui
 {
 class MainToolsWidget;
 }
 
-class MainToolsWidget : public QWidget
+class MainToolsWidget : public QWidget, public ToolsWidgetInterface
 {
     Q_OBJECT
 public:
     MainToolsWidget(QWidget *parent = nullptr);
     ~MainToolsWidget();
-
-    void setModel(QAbstractItemModel *model);
-
-    QItemSelectionModel *getSelectionModel();
-
-    void clearDescription();
-    void setDescription(QString description);
 
 private:
     Ui::MainToolsWidget *ui;
@@ -32,6 +27,18 @@ private:
     MainToolsWidget(MainToolsWidget &&)      = delete;
     MainToolsWidget &operator=(const MainToolsWidget &) = delete;
     MainToolsWidget &operator=(MainToolsWidget &&) = delete;
+
+    // ToolsWidgetInterface interface
+public:
+    void setModel(QAbstractItemModel *model) override;
+
+    void enableButtons() override;
+    void disableButtons() override;
+
+    void enableExitButton() override;
+    void disableExitButton() override;
+
+    void setDescription(QString description) override;
 };
 
 #endif // MAINTOOLSWIDGET_H

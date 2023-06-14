@@ -7,7 +7,9 @@
 #include <QWidget>
 
 #include "../core/treemodel.h"
+#include "interfaces/testswidgetinterface.h"
 
+#include "adtexecutor.h"
 #include "statuscommonwidget.h"
 
 namespace Ui
@@ -15,15 +17,23 @@ namespace Ui
 class MainTestsWidget;
 }
 
-class MainTestsWidget : public QWidget
+class MainTestsWidget : public QWidget, public TestWidgetInterface
 {
     Q_OBJECT
 public:
     MainTestsWidget(QWidget *parent = nullptr);
     ~MainTestsWidget();
 
-    void setTreeModel(TreeModel *model);
-    void setCategory(TreeItem *item);
+    void setToolItem(TreeItem *item) override;
+
+    void enableButtons() override;
+    void disableButtons() override;
+
+    void showDetails(QString detailsText) override;
+
+    void showAllTest() override;
+
+    void changeStatusWidgetIcon(StatusCommonWidget *widget, QIcon &icon) override;
 
 private:
     Ui::MainTestsWidget *ui;
@@ -33,21 +43,7 @@ private:
     QPlainTextEdit *m_detailsText;
     QPushButton *m_backToSummaryWidgetButton;
 
-    TreeModel *m_treeModel;
-
-    TreeItem *m_currentItemCategory;
-
-    std::vector<StatusCommonWidget *> m_statusWidgetsToDraw;
-    std::vector<StatusCommonWidget *> m_statusWidgetsForRun;
-
-private:
-    void toggleWidgetsInStackedWidget();
-
-    void clearUi();
-
-    void updateWidgetStorage();
-
-    void updateCommonStatusWidgets();
+    TreeItem *m_currentToolItem;
 
 private:
     MainTestsWidget(const MainTestsWidget &) = delete;

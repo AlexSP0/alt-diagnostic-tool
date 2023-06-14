@@ -23,26 +23,11 @@
 
 #include <QDebug>
 
-MainWindow::MainWindow(TreeModel *model, QWidget *parent)
+MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow())
-    , treeViewModel(model)
-    , treeProxyModel(std::make_unique<TreeProxyModel>())
-    , runTestWindow(std::make_unique<RunTestsDialog>(treeViewModel))
 {
     ui->setupUi(this);
-    treeProxyModel->setSourceModel(treeViewModel);
-    ui->toolsPage->setModel(treeViewModel);
-
-    ui->stackedWidget->setCurrentIndex(0);
-
-    connect(runTestWindow.get(), &RunTestsDialog::exitPressed, this, &MainWindow::on_exitPushButton_clicked);
-    connect(this, &MainWindow::runAllCheckedTests, runTestWindow.get(), &RunTestsDialog::runCheckedTests);
-
-    connect(ui->toolsPage->getSelectionModel(),
-            &QItemSelectionModel::selectionChanged,
-            this,
-            &MainWindow::onSelectionChanged);
 }
 
 MainWindow::~MainWindow()
@@ -50,37 +35,10 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_exitPushButton_clicked()
+void MainWindow::toggleStackWidget()
 {
-    this->close();
-}
+    auto r = ui->stackedWidget->currentIndex();
 
-void MainWindow::on_runAllPushButton_clicked()
-{
-    runTestWindow->show();
-    emit runAllCheckedTests();
-}
-
-void MainWindow::on_browseCheckPushButton_clicked()
-{
-    runTestWindow->show();
-}
-
-void MainWindow::onSelectionChanged(const QItemSelection &newSelection, const QItemSelection &previousSelection)
-{
-    if (newSelection.isEmpty())
-    {
-        return;
-    }
-
-    QModelIndex currentIndex = newSelection.indexes().at(0);
-    TreeItem *currentItem    = static_cast<TreeItem *>(currentIndex.internalPointer());
-
-    ui->toolsPage->clearDescription();
-    ui->toolsPage->setDescription(currentItem->getExecutable()->m_description);
-
-    if (currentItem)
-    {
-        runTestWindow->setCategory(currentItem);
-    }
+    ui->stackedWidget->currentIndex() == 0 ? ui->stackedWidget->setCurrentIndex(1)
+                                           : ui->stackedWidget->setCurrentIndex(0);
 }
