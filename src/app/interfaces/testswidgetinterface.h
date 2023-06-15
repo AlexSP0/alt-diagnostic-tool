@@ -10,6 +10,15 @@
 class TestWidgetInterface
 {
 public:
+    enum TaskStatus
+    {
+        ready,
+        running,
+        finishedOk,
+        finishedFailed
+    };
+
+public:
     virtual ~TestWidgetInterface();
 
     virtual void setToolItem(TreeItem *item) = 0;
@@ -20,7 +29,7 @@ public:
     virtual void showDetails(QString detailsText) = 0;
     virtual void showAllTest()                    = 0;
 
-    virtual void changeStatusWidgetIcon(StatusCommonWidget *widget, QIcon &icon) = 0;
+    virtual void setWidgetStatus(ADTExecutable *task, TestWidgetInterface::TaskStatus status) = 0;
 
     virtual void setController(MainWindowControllerInterface *controller) = 0;
 };

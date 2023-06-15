@@ -29,10 +29,7 @@ MainTestsWidget::MainTestsWidget(QWidget *parent)
     QHBoxLayout *detailsHButtonLayout = new QHBoxLayout();
     detailsHButtonLayout->addStretch();
     detailsHButtonLayout->addWidget(m_backToSummaryWidgetButton);
-    connect(m_backToSummaryWidgetButton,
-            &QPushButton::clicked,
-            this,
-            &MainTestsWidget::on_backToSummaryPushButton_clicked);
+    connect(m_backToSummaryWidgetButton, &QPushButton::clicked, this, &MainTestsWidget::onBackToSummaryButtonClicked);
 
     m_detailsLayout->addWidget(m_detailsText);
     m_detailsLayout->insertLayout(LAYOUT_INDEX, detailsHButtonLayout);
@@ -85,11 +82,52 @@ void MainTestsWidget::showAllTest()
     ui->stackedWidget->setCurrentIndex(0);
 }
 
-void MainTestsWidget::changeStatusWidgetIcon(StatusCommonWidget *widget, QIcon &icon) {}
+void MainTestsWidget::setWidgetStatus(ADTExecutable *task, TaskStatus status)
+{
+    StatusCommonWidget *currentWidget = findWidgetByTask(task);
+
+    if (!currentWidget)
+    {
+        return;
+    }
+
+    QIcon icon;
+    QString text;
+
+    switch (status)
+    {
+    case TestWidgetInterface::TaskStatus::ready:
+        icon = style()->standardIcon(QStyle::SP_ComputerIcon);
+        text = task->m_name;
+        break;
+    case TestWidgetInterface::TaskStatus::running:
+        icon = style()->standardIcon(QStyle::SP_BrowserReload);
+        text = "Running: " + task->m_name;
+        break;
+    case TestWidgetInterface::TaskStatus::finishedOk:
+        icon = style()->standardIcon(QStyle::SP_DialogApplyButton);
+        text = task->m_name;
+        break;
+    case TestWidgetInterface::TaskStatus::finishedFailed:
+        icon = style()->standardIcon(QStyle::SP_DialogCloseButton);
+        text = task->m_name;
+        break;
+    }
+
+    currentWidget->setIcon(icon);
+    currentWidget->setText(text);
+}
 
 void MainTestsWidget::on_runAllTestPushButton_clicked()
 {
-    m_controller->runAllTestsWidget();
+    std::vector<ADTExecutable *> runningTests;
+
+    for (StatusCommonWidget *widget : m_statusWidgets.keys())
+    {
+        runningTests.push_back(widget->getExecutable());
+    }
+
+    m_controller->runTestsWidget(runningTests);
 }
 
 void MainTestsWidget::on_backPushButton_clicked()
@@ -97,19 +135,26 @@ void MainTestsWidget::on_backPushButton_clicked()
     m_controller->backTestsWigdet();
 }
 
-void MainTestsWidget::on_exitPushButton_clicked()
+void MainTestsWidget::onExitPushButtonClicked()
 {
     m_controller->exitTestsWidget();
 }
 
-void MainTestsWidget::on_runButtonCurrentStatusWidget_clicked(StatusCommonWidget *widget) {}
+void MainTestsWidget::onRunButtonCurrentStatusWidgetClicked(StatusCommonWidget *widget)
+{
+    std::vector<ADTExecutable *> runningTests;
 
-void MainTestsWidget::on_detailsButtonCurrentStatusWidget_clicked(StatusCommonWidget *widget)
+    runningTests.push_back(widget->getExecutable());
+
+    m_controller->runTestsWidget(runningTests);
+}
+
+void MainTestsWidget::onDetailsButtonCurrentStatusWidgetClicked(StatusCommonWidget *widget)
 {
     m_controller->detailsCurrentTest(widget->getExecutable());
 }
 
-void MainTestsWidget::on_backToSummaryPushButton_clicked()
+void MainTestsWidget::onBackToSummaryButtonClicked()
 {
     ui->stackedWidget->setCurrentIndex(0);
 }
@@ -135,12 +180,12 @@ void MainTestsWidget::updateStatusWidgets()
         connect(currentWidget,
                 &StatusCommonWidget::detailsButtonClicked,
                 this,
-                &MainTestsWidget::on_detailsButtonCurrentStatusWidget_clicked);
+                &MainTestsWidget::onDetailsButtonCurrentStatusWidgetClicked);
 
         connect(currentWidget,
                 &StatusCommonWidget::runButtonCLicked,
                 this,
-                &MainTestsWidget::on_runButtonCurrentStatusWidget_clicked);
+                &MainTestsWidget::onRunButtonCurrentStatusWidgetClicked);
 
         m_statusWidgets[currentWidget] = 0;
     }
@@ -172,4 +217,19 @@ void MainTestsWidget::clearUi()
     ui->summaryScrollAreaWidgetContents->setLayout(m_summaryLayout);
 
     ui->stackedWidget->setCurrentIndex(0);
+}
+
+StatusCommonWidget *MainTestsWidget::findWidgetByTask(ADTExecutable *task)
+{
+    for (StatusCommonWidget *currentWidget : m_statusWidgets.keys())
+    {
+        if (task == currentWidget->getExecutable())
+        {
+            return currentWidget;
+        }
+    }
+
+    qWarning() << "ERROR: can't find status widget by task!";
+
+    return nullptr;
 }

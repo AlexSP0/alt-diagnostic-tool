@@ -29,20 +29,11 @@
 class ADTExecutorPrivate
 {
 public:
-    ADTExecutorPrivate(std::vector<StatusCommonWidget *> *vectorWidgets);
+    ADTExecutorPrivate();
 
-    std::vector<StatusCommonWidget *> *widgets;
-
-    QString dbusServiceName;
-    QString dbusPath;
-    QString dbusInterfaceName;
-    QString dbusStdOutSignalName;
-    QString dbusStdErrSignalName;
+    std::vector<ADTExecutable *> executables;
 
     volatile bool stopFlag;
-
-    std::unique_ptr<QDBusConnection> dbus;
-    std::unique_ptr<QDBusInterface> dbusInterface;
 
 private:
     ADTExecutorPrivate(const ADTExecutorPrivate &) = delete;

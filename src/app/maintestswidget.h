@@ -35,18 +35,18 @@ public:
 
     void showAllTest() override;
 
-    void changeStatusWidgetIcon(StatusCommonWidget *widget, QIcon &icon) override;
+    void setWidgetStatus(ADTExecutable *task, TestWidgetInterface::TaskStatus status) override;
 
 private slots:
     void on_runAllTestPushButton_clicked();
 
     void on_backPushButton_clicked();
 
-    void on_exitPushButton_clicked();
+    void onExitPushButtonClicked();
 
-    void on_runButtonCurrentStatusWidget_clicked(StatusCommonWidget *widget);
-    void on_detailsButtonCurrentStatusWidget_clicked(StatusCommonWidget *widget);
-    void on_backToSummaryPushButton_clicked();
+    void onRunButtonCurrentStatusWidgetClicked(StatusCommonWidget *widget);
+    void onDetailsButtonCurrentStatusWidgetClicked(StatusCommonWidget *widget);
+    void onBackToSummaryButtonClicked();
 
 private:
     void updateStatusWidgets();
@@ -54,6 +54,8 @@ private:
     void updateListOfStatusCommonWidgets();
 
     void clearUi();
+
+    StatusCommonWidget *findWidgetByTask(ADTExecutable *task);
 
 private:
     Ui::MainTestsWidget *ui;

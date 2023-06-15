@@ -2,6 +2,7 @@
 #define MAINWINDOWCONTROLLERIMPL_H
 
 #include "../core/treemodel.h"
+#include "adtexecutor.h"
 #include "interfaces/mainwindowcontrollerinterface.h"
 #include "interfaces/mainwindowinterface.h"
 #include "interfaces/testswidgetinterface.h"
@@ -9,6 +10,7 @@
 
 class MainWindowControllerImpl : public MainWindowControllerInterface
 {
+    Q_OBJECT
 public:
     MainWindowControllerImpl(TreeModel *model,
                              MainWindowInterface *mainWindow,
@@ -25,13 +27,11 @@ public:
 
     void changeSelectedTool(TreeItem *item);
 
-    void runAllTestsWidget();
+    void runTestsWidget(std::vector<ADTExecutable *> tasks);
 
     void backTestsWigdet();
 
     void exitTestsWidget();
-
-    void runCurrentTest(ADTExecutable *test);
 
     void detailsCurrentTest(ADTExecutable *test);
 
@@ -45,6 +45,17 @@ private:
     TestWidgetInterface *m_testWidget;
 
     TreeItem *m_currentToolItem;
+
+    std::unique_ptr<ADTExecutor> m_executor;
+
+    QThread *m_workerThread;
+
+private slots:
+    void onAllTasksBegin();
+    void onAllTasksFinished();
+
+    void onBeginTask(ADTExecutable *task);
+    void onFinishTask(ADTExecutable *task);
 
 private:
     MainWindowControllerImpl(const MainWindowControllerImpl &) = delete;

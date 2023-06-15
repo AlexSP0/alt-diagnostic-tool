@@ -4,8 +4,9 @@
 #include "../core/adtexecutable.h"
 #include "../core/treeitem.h"
 
-class MainWindowControllerInterface
+class MainWindowControllerInterface : public QObject
 {
+    Q_OBJECT
 public:
     virtual ~MainWindowControllerInterface();
 
@@ -17,13 +18,11 @@ public:
 
     virtual void changeSelectedTool(TreeItem *item) = 0;
 
-    virtual void runAllTestsWidget() = 0;
+    virtual void runTestsWidget(std::vector<ADTExecutable *> tasks) = 0;
 
     virtual void backTestsWigdet() = 0;
 
     virtual void exitTestsWidget() = 0;
-
-    virtual void runCurrentTest(ADTExecutable *test) = 0;
 
     virtual void detailsCurrentTest(ADTExecutable *test) = 0;
 };

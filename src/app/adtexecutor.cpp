@@ -25,20 +25,13 @@
 #include <QThread>
 #include <QTimer>
 
-ADTExecutor::ADTExecutor(std::vector<StatusCommonWidget *> *vectorWidgets,
-                         QString serviceName,
-                         QString path,
-                         QString intefaceName)
-    : d(std::make_unique<ADTExecutorPrivate>(vectorWidgets))
-{
-    d->dbusServiceName   = serviceName;
-    d->dbusPath          = path;
-    d->dbusInterfaceName = intefaceName;
-}
+ADTExecutor::ADTExecutor()
+    : d(new ADTExecutorPrivate)
+{}
 
-int ADTExecutor::getAmountOfWidgets()
+int ADTExecutor::getAmountOfExecutables()
 {
-    return d->widgets->size();
+    return d->executables.size();
 }
 
 void ADTExecutor::cancelTasks()
@@ -51,11 +44,18 @@ void ADTExecutor::resetStopFlag()
     d->stopFlag = false;
 }
 
+void ADTExecutor::setTasks(std::vector<ADTExecutable *> &tasks)
+{
+    d->executables.clear();
+
+    d->executables.assign(tasks.begin(), tasks.end());
+}
+
 void ADTExecutor::runTasks()
 {
     emit allTaskBegin();
 
-    int tasksCount = d->widgets->size();
+    int tasksCount = d->executables.size();
 
     if (tasksCount == 0)
     {
@@ -68,20 +68,18 @@ void ADTExecutor::runTasks()
         return;
     }
 
-    for (StatusCommonWidget *widget : *d->widgets)
+    for (ADTExecutable *executable : d->executables)
     {
         if (d->stopFlag)
         {
             break;
         }
 
-        ADTExecutable *currentTask = widget->getExecutable();
+        emit beginTask(executable);
 
-        emit beginTask(widget);
+        executeTask(executable);
 
-        executeTask(currentTask);
-
-        emit finishTask(widget);
+        emit finishTask(executable);
     }
 
     this->moveToThread(QApplication::instance()->thread());
@@ -93,8 +91,6 @@ void ADTExecutor::runTasks()
 
 void ADTExecutor::executeTask(ADTExecutable *task)
 {
-    connectExecutableSignals(task);
-
     QDBusConnection dbus(QDBusConnection::systemBus());
 
     QDBusInterface dbusIface(task->m_dbusServiceName, task->m_dbusPath, task->m_dbusInteface, dbus);
@@ -115,49 +111,4 @@ void ADTExecutor::executeTask(ADTExecutable *task)
         task->m_exit_code = -1;
         task->m_stringStderr.append(reply.error().message());
     }
-
-    disconnectExecutableSignals(task);
-}
-
-void ADTExecutor::connectExecutableSignals(ADTExecutable *task)
-{
-    d->dbusInterface->connection().connect(d->dbusServiceName,
-                                           d->dbusPath,
-                                           d->dbusInterfaceName,
-                                           d->dbusStdOutSignalName,
-                                           task,
-                                           SLOT(getStdout(QString)));
-    d->dbusInterface->connection().connect(d->dbusServiceName,
-                                           d->dbusPath,
-                                           d->dbusInterfaceName,
-                                           d->dbusStdErrSignalName,
-                                           task,
-                                           SLOT(getStderr(QString)));
-}
-
-void ADTExecutor::disconnectExecutableSignals(ADTExecutable *task)
-{
-    d->dbusInterface->connection().disconnect(d->dbusServiceName,
-                                              d->dbusPath,
-                                              d->dbusInterfaceName,
-                                              d->dbusStdOutSignalName,
-                                              task,
-                                              SLOT(getStdout(QString)));
-
-    d->dbusInterface->connection().disconnect(d->dbusServiceName,
-                                              d->dbusPath,
-                                              d->dbusInterfaceName,
-                                              d->dbusStdErrSignalName,
-                                              task,
-                                              SLOT(getStderr(QString)));
-}
-
-void ADTExecutor::waitForAnswer(int mSeconds)
-{
-    QTimer timer;
-    timer.setSingleShot(true);
-    QEventLoop loop;
-    connect(&timer, &QTimer::timeout, &loop, &QEventLoop::quit);
-    timer.start(mSeconds);
-    loop.exec();
 }

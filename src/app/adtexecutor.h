@@ -30,16 +30,15 @@ class ADTExecutor : public QObject
 {
     Q_OBJECT
 public:
-    ADTExecutor(std::vector<StatusCommonWidget *> *vectorWidgets,
-                QString serviceName,
-                QString path,
-                QString intefaceName);
+    ADTExecutor();
 
-    int getAmountOfWidgets();
+    int getAmountOfExecutables();
 
     void cancelTasks();
 
     void resetStopFlag();
+
+    void setTasks(std::vector<ADTExecutable *> &tasks);
 
 public slots:
     void runTasks();
@@ -50,14 +49,9 @@ private:
 private:
     std::unique_ptr<ADTExecutorPrivate> d;
 
-    void connectExecutableSignals(ADTExecutable *task);
-    void disconnectExecutableSignals(ADTExecutable *task);
-
-    void waitForAnswer(int mSeconds);
-
 signals:
-    void beginTask(StatusCommonWidget *currentWidget);
-    void finishTask(StatusCommonWidget *currentWidget);
+    void beginTask(ADTExecutable *currentExecutable);
+    void finishTask(ADTExecutable *currentExecutable);
 
     void allTaskBegin();
     void allTasksFinished();
