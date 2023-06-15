@@ -24,6 +24,8 @@ public:
     MainTestsWidget(QWidget *parent = nullptr);
     ~MainTestsWidget();
 
+    void setController(MainWindowControllerInterface *controller) override;
+
     void setToolItem(TreeItem *item) override;
 
     void enableButtons() override;
@@ -35,8 +37,28 @@ public:
 
     void changeStatusWidgetIcon(StatusCommonWidget *widget, QIcon &icon) override;
 
+private slots:
+    void on_runAllTestPushButton_clicked();
+
+    void on_backPushButton_clicked();
+
+    void on_exitPushButton_clicked();
+
+    void on_runButtonCurrentStatusWidget_clicked(StatusCommonWidget *widget);
+    void on_detailsButtonCurrentStatusWidget_clicked(StatusCommonWidget *widget);
+    void on_backToSummaryPushButton_clicked();
+
+private:
+    void updateStatusWidgets();
+
+    void updateListOfStatusCommonWidgets();
+
+    void clearUi();
+
 private:
     Ui::MainTestsWidget *ui;
+
+    MainWindowControllerInterface *m_controller;
 
     QVBoxLayout *m_summaryLayout;
     QVBoxLayout *m_detailsLayout;
@@ -44,6 +66,8 @@ private:
     QPushButton *m_backToSummaryWidgetButton;
 
     TreeItem *m_currentToolItem;
+
+    QMap<StatusCommonWidget *, int> m_statusWidgets;
 
 private:
     MainTestsWidget(const MainTestsWidget &) = delete;

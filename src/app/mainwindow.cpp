@@ -26,6 +26,7 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow())
+    , m_controller(nullptr)
 {
     ui->setupUi(this);
 }
@@ -35,10 +36,28 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::closeAll()
+{
+    close();
+}
+
+void MainWindow::setController(MainWindowControllerInterface *controller)
+{
+    m_controller = controller;
+}
+
 void MainWindow::toggleStackWidget()
 {
-    auto r = ui->stackedWidget->currentIndex();
-
     ui->stackedWidget->currentIndex() == 0 ? ui->stackedWidget->setCurrentIndex(1)
                                            : ui->stackedWidget->setCurrentIndex(0);
+}
+
+ToolsWidgetInterface *MainWindow::getToolsWidget()
+{
+    return ui->toolsPage;
+}
+
+TestWidgetInterface *MainWindow::getTestWidget()
+{
+    return ui->testsPage;
 }

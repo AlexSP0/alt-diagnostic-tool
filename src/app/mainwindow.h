@@ -40,10 +40,19 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+    void closeAll() override;
+
+    void setController(MainWindowControllerInterface *controller);
+
     void toggleStackWidget() override;
+
+    ToolsWidgetInterface *getToolsWidget() override;
+    TestWidgetInterface *getTestWidget() override;
 
 private:
     Ui::MainWindow *ui;
+
+    MainWindowControllerInterface *m_controller;
 
 private:
     MainWindow(const MainWindow &) = delete;

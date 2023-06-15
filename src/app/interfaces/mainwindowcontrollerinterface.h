@@ -26,8 +26,6 @@ public:
     virtual void runCurrentTest(ADTExecutable *test) = 0;
 
     virtual void detailsCurrentTest(ADTExecutable *test) = 0;
-
-    virtual void backToListOfTest() = 0;
 };
 
 #endif

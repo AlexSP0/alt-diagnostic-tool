@@ -22,7 +22,9 @@
 #include "adtbuilderstrategies/adtmodelbuilder.h"
 #include "adtbuilderstrategies/adtmodelbuilderstrategydbusinfodesktop.h"
 #include "dbuschecker.h"
+#include "interfaces/mainwindowcontrollerinterface.h"
 #include "mainwindow.h"
+#include "mainwindowcontrollerimpl.h"
 
 #include <QApplication>
 #include <QMessageBox>
@@ -69,6 +71,9 @@ int main(int argc, char **argv)
     auto model = modelBuilder.buildModel();
 
     MainWindow w;
+
+    std::unique_ptr<MainWindowControllerInterface> controller(
+        new MainWindowControllerImpl(model.get(), &w, w.getToolsWidget(), w.getTestWidget()));
 
     w.show();
 

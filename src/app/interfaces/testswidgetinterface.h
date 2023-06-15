@@ -2,6 +2,7 @@
 #define TESTSWIDGETINTERFACE_H
 
 #include "../core/treemodel.h"
+#include "mainwindowcontrollerinterface.h"
 
 #include <statuscommonwidget.h>
 #include <QIcon>
@@ -20,6 +21,8 @@ public:
     virtual void showAllTest()                    = 0;
 
     virtual void changeStatusWidgetIcon(StatusCommonWidget *widget, QIcon &icon) = 0;
+
+    virtual void setController(MainWindowControllerInterface *controller) = 0;
 };
 
 #endif

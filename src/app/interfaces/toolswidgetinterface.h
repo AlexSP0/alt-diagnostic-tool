@@ -4,6 +4,8 @@
 #include <QAbstractItemModel>
 #include <QString>
 
+#include "mainwindowcontrollerinterface.h"
+
 class ToolsWidgetInterface
 {
 public:
@@ -18,6 +20,8 @@ public:
     virtual void disableExitButton() = 0;
 
     virtual void setDescription(QString description) = 0;
+
+    virtual void setController(MainWindowControllerInterface *controller) = 0;
 };
 
 #endif
