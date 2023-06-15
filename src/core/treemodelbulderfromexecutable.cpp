@@ -22,6 +22,9 @@ std::unique_ptr<TreeModel> TreeModelBulderFromExecutable::buildModel(std::vector
 
             categoryItem->setExecutable(std::move(elements.at(i)));
 
+            //Set task locale
+            categoryItem->getExecutable()->setLocate("ru_RU");
+
             continue;
         }
         if (elements.at(i)->m_type == ADTExecutable::ExecutableType::executableType)
@@ -43,6 +46,8 @@ std::unique_ptr<TreeModel> TreeModelBulderFromExecutable::buildModel(std::vector
             categoryItem->appendChild(checkItem);
 
             checkItem->setExecutable(std::move(elements.at(i)));
+            //Set task locale
+            checkItem->getExecutable()->setLocate("ru_RU");
         }
     }
 
