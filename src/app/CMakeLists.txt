@@ -47,7 +47,8 @@ set(HEADERS
     interfaces/testswidgetinterface.h
     interfaces/mainwindowinterface.h
 
-
+    parser/commandlineparser.h
+    parser/commandlineoptions.h
 )
 
 set(SOURCES
@@ -72,6 +73,9 @@ set(SOURCES
     interfaces/toolswidgetinterface.cpp
     interfaces/testswidgetinterface.cpp
     interfaces/mainwindowinterface.cpp
+
+    parser/commandlineparser.cpp
+    parser/commandlineoptions.cpp
 )
 
 set(UI_FORMS
