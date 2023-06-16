@@ -83,7 +83,7 @@
     </message>
     <message>
         <source>MainWindow</source>
-        <translation>MainWindow</translation>
+        <translation>ADT</translation>
     </message>
 </context>
 <context>

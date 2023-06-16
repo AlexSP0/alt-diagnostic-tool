@@ -83,7 +83,7 @@
     </message>
     <message>
         <source>MainWindow</source>
-        <translation>Гл окно</translation>
+        <translation>ADT</translation>
     </message>
 </context>
 <context>
