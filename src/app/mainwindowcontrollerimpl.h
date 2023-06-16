@@ -55,6 +55,8 @@ private:
 
     QThread *m_workerThread;
 
+    bool m_isWorkingThreadActive;
+
 private slots:
     void onAllTasksBegin();
     void onAllTasksFinished();

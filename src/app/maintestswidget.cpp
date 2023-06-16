@@ -71,6 +71,14 @@ void MainTestsWidget::disableButtons()
     ui->runAllTestPushButton->setEnabled(false);
 }
 
+void MainTestsWidget::setEnabledRunButtonOfStatusWidgets(bool isEnabled)
+{
+    for (StatusCommonWidget *widget : m_statusWidgets.keys())
+    {
+        widget->setEnabledRunButton(isEnabled);
+    }
+}
+
 void MainTestsWidget::showDetails(QString detailsText)
 {
     m_detailsText->clear();
@@ -116,7 +124,7 @@ void MainTestsWidget::setWidgetStatus(ADTExecutable *task, TaskStatus status)
     }
 
     currentWidget->setIcon(icon);
-    currentWidget->setText(text);
+    currentWidget->setText(text.trimmed());
 }
 
 std::vector<ADTExecutable *> MainTestsWidget::getTasks()

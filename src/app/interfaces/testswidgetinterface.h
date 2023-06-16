@@ -23,8 +23,9 @@ public:
 
     virtual void setToolItem(TreeItem *item) = 0;
 
-    virtual void enableButtons()  = 0;
-    virtual void disableButtons() = 0;
+    virtual void enableButtons()                                    = 0;
+    virtual void disableButtons()                                   = 0;
+    virtual void setEnabledRunButtonOfStatusWidgets(bool isEnabled) = 0;
 
     virtual void showDetails(QString detailsText) = 0;
     virtual void showAllTest()                    = 0;

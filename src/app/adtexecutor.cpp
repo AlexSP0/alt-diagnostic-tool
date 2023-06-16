@@ -24,6 +24,7 @@
 #include <QDBusReply>
 #include <QThread>
 #include <QTimer>
+#include <qdbusmessage.h>
 
 ADTExecutor::ADTExecutor()
     : d(new ADTExecutorPrivate)
@@ -97,13 +98,19 @@ void ADTExecutor::executeTask(ADTExecutable *task)
 
     task->clearReports();
 
-    QDBusReply<QStringList> reply = dbusIface.call(task->m_method, task->m_args);
+    QDBusMessage reply = dbusIface.call(task->m_method, task->m_args);
 
-    if (reply.error().type() == QDBusError::NoError)
+    QList<QVariant> replyValues = reply.arguments();
+
+    QStringList report = replyValues.takeFirst().toStringList();
+
+    int exitCode = replyValues.takeFirst().toInt();
+
+    if (reply.type() != QDBusMessage::ErrorMessage)
     {
-        task->m_exit_code = 0;
+        task->m_exit_code = exitCode;
 
-        for (QString &line : reply.value())
+        for (QString &line : report)
         {
             task->m_stringStdout.append(line);
         }
@@ -111,6 +118,6 @@ void ADTExecutor::executeTask(ADTExecutable *task)
     else
     {
         task->m_exit_code = -1;
-        task->m_stringStderr.append(reply.error().message());
+        task->m_stringStderr.append(reply.errorMessage());
     }
 }

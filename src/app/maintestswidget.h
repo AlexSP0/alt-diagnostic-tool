@@ -30,6 +30,7 @@ public:
 
     void enableButtons() override;
     void disableButtons() override;
+    virtual void setEnabledRunButtonOfStatusWidgets(bool isEnabled) override;
 
     void showDetails(QString detailsText) override;
 

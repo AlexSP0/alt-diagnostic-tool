@@ -13,6 +13,7 @@ MainWindowControllerImpl::MainWindowControllerImpl(TreeModel *model,
     , m_currentToolItem(nullptr)
     , m_executor(new ADTExecutor())
     , m_workerThread(nullptr)
+    , m_isWorkingThreadActive(false)
 {
     m_toolsWidget->setController(this);
     m_toolsWidget->setModel(model);
@@ -129,11 +130,15 @@ void MainWindowControllerImpl::clearToolReports(TreeItem *item)
 
 void MainWindowControllerImpl::onAllTasksBegin()
 {
+    m_isWorkingThreadActive = true;
+    m_testWidget->setEnabledRunButtonOfStatusWidgets(false);
     m_testWidget->disableButtons();
 }
 
 void MainWindowControllerImpl::onAllTasksFinished()
 {
+    m_isWorkingThreadActive = false;
+    m_testWidget->setEnabledRunButtonOfStatusWidgets(true);
     m_testWidget->enableButtons();
 }
 
