@@ -37,6 +37,8 @@ public:
 
     void setWidgetStatus(ADTExecutable *task, TestWidgetInterface::TaskStatus status) override;
 
+    std::vector<ADTExecutable *> getTasks() override;
+
 private slots:
     void on_runAllTestPushButton_clicked();
 
@@ -47,6 +49,8 @@ private slots:
     void onRunButtonCurrentStatusWidgetClicked(StatusCommonWidget *widget);
     void onDetailsButtonCurrentStatusWidgetClicked(StatusCommonWidget *widget);
     void onBackToSummaryButtonClicked();
+
+    void on_exitPushButton_clicked();
 
 private:
     void updateStatusWidgets();

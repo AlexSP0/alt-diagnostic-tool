@@ -76,6 +76,8 @@ public:
 
     void setLocate(QString locale);
 
+    void clearReports();
+
 public slots:
     void getStdout(QString out);
     void getStderr(QString err);

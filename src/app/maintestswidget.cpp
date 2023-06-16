@@ -73,6 +73,7 @@ void MainTestsWidget::disableButtons()
 
 void MainTestsWidget::showDetails(QString detailsText)
 {
+    m_detailsText->clear();
     m_detailsText->appendPlainText(detailsText);
     ui->stackedWidget->setCurrentIndex(1);
 }
@@ -118,16 +119,21 @@ void MainTestsWidget::setWidgetStatus(ADTExecutable *task, TaskStatus status)
     currentWidget->setText(text);
 }
 
-void MainTestsWidget::on_runAllTestPushButton_clicked()
+std::vector<ADTExecutable *> MainTestsWidget::getTasks()
 {
-    std::vector<ADTExecutable *> runningTests;
+    std::vector<ADTExecutable *> tasks;
 
     for (StatusCommonWidget *widget : m_statusWidgets.keys())
     {
-        runningTests.push_back(widget->getExecutable());
+        tasks.push_back(widget->getExecutable());
     }
 
-    m_controller->runTestsWidget(runningTests);
+    return tasks;
+}
+
+void MainTestsWidget::on_runAllTestPushButton_clicked()
+{
+    m_controller->runTestsWidget(getTasks());
 }
 
 void MainTestsWidget::on_backPushButton_clicked()
@@ -232,4 +238,9 @@ StatusCommonWidget *MainTestsWidget::findWidgetByTask(ADTExecutable *task)
     qWarning() << "ERROR: can't find status widget by task!";
 
     return nullptr;
+}
+
+void MainTestsWidget::on_exitPushButton_clicked()
+{
+    m_controller->exitTestsWidget();
 }

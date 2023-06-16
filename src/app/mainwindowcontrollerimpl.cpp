@@ -30,7 +30,11 @@ MainWindowControllerImpl::MainWindowControllerImpl(TreeModel *model,
 
 MainWindowControllerImpl::~MainWindowControllerImpl() {}
 
-void MainWindowControllerImpl::runAllToolsWidget() {}
+void MainWindowControllerImpl::runAllToolsWidget()
+{
+    m_mainWindow->toggleStackWidget();
+    runTestsWidget(m_testWidget->getTasks());
+}
 
 void MainWindowControllerImpl::chooseToolsWidget()
 {
@@ -87,6 +91,40 @@ void MainWindowControllerImpl::exitTestsWidget()
 void MainWindowControllerImpl::detailsCurrentTest(ADTExecutable *test)
 {
     m_testWidget->showDetails(test->m_stringStdout + test->m_stringStderr);
+}
+
+void MainWindowControllerImpl::clearAllReports()
+{
+    QModelIndex rootIndex = m_model->parent(QModelIndex());
+
+    TreeItem *rootItem = static_cast<TreeItem *>(rootIndex.internalPointer());
+
+    if (!rootItem)
+    {
+        qWarning() << "ERROR: can't get root item to clear all reports!";
+
+        return;
+    }
+
+    for (int i = rootItem->childCount() - 1; i >= 0; i--)
+    {
+        clearToolReports(rootItem->child(i));
+    }
+}
+
+void MainWindowControllerImpl::clearToolReports(TreeItem *item)
+{
+    if (item->childCount() == 0)
+    {
+        return;
+    }
+
+    for (int i = item->childCount() - 1; i >= 0; i--)
+    {
+        TreeItem *currentChild = item->child(i);
+
+        currentChild->getExecutable()->clearReports();
+    }
 }
 
 void MainWindowControllerImpl::onAllTasksBegin()

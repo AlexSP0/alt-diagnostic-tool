@@ -65,6 +65,14 @@ void ADTExecutable::setLocate(QString locale)
     }
 }
 
+void ADTExecutable::clearReports()
+{
+    m_stringStdout.clear();
+    m_stringStderr.clear();
+    m_bytesStdout.clear();
+    m_bytesStderr.clear();
+}
+
 void ADTExecutable::getStdout(QString out)
 {
     m_stringStdout.append(out);

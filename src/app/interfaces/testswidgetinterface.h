@@ -32,6 +32,8 @@ public:
     virtual void setWidgetStatus(ADTExecutable *task, TestWidgetInterface::TaskStatus status) = 0;
 
     virtual void setController(MainWindowControllerInterface *controller) = 0;
+
+    virtual std::vector<ADTExecutable *> getTasks() = 0;
 };
 
 #endif

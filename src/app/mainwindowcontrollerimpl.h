@@ -36,6 +36,11 @@ public:
     void detailsCurrentTest(ADTExecutable *test);
 
 private:
+    void clearAllReports();
+
+    void clearToolReports(TreeItem *item);
+
+private:
     TreeModel *m_model;
 
     MainWindowInterface *m_mainWindow;
