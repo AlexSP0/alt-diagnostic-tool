@@ -32,9 +32,9 @@ StatusCommonWidget::StatusCommonWidget(TreeItem *item, QWidget *parent)
 
     QIcon icon = style()->standardIcon(QStyle::SP_ComputerIcon);
 
-    ui->testIconLabel->setPixmap(icon.pixmap(QSize(16, 16)));
+    ui->testIconLabel->setPixmap(icon.pixmap(16, 16));
 
-    ui->testNameLabel->setText(treeItem->getExecutable()->m_name);
+    ui->testNameLabel->setText(treeItem->getExecutable()->m_name.trimmed());
 }
 
 StatusCommonWidget::~StatusCommonWidget()
@@ -55,6 +55,11 @@ void StatusCommonWidget::setText(QString text)
 void StatusCommonWidget::setIcon(QIcon &icon)
 {
     ui->testIconLabel->setPixmap(icon.pixmap(QSize(16, 16)));
+}
+
+void StatusCommonWidget::setEnabledRunButton(bool isEnabled)
+{
+    ui->runPushButton->setEnabled(isEnabled);
 }
 
 void StatusCommonWidget::on_detailsPushButton_clicked()

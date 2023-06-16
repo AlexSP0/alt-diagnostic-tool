@@ -44,6 +44,8 @@ public:
 
     void setIcon(QIcon &icon);
 
+    void setEnabledRunButton(bool isEnabled);
+
 signals:
     void detailsButtonClicked(StatusCommonWidget *widget);
 
