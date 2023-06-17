@@ -32,20 +32,6 @@
    <property name="verticalSpacing">
     <number>0</number>
    </property>
-   <item row="0" column="0">
-    <widget class="QLabel" name="testIconLabel">
-     <property name="text">
-      <string/>
-     </property>
-    </widget>
-   </item>
-   <item row="0" column="1">
-    <widget class="QLabel" name="testNameLabel">
-     <property name="text">
-      <string>TextLabel</string>
-     </property>
-    </widget>
-   </item>
    <item row="0" column="2">
     <spacer name="horizontalSpacer">
      <property name="orientation">
@@ -59,17 +45,31 @@
      </property>
     </spacer>
    </item>
-   <item row="0" column="3">
+   <item row="0" column="4">
     <widget class="QPushButton" name="runPushButton">
      <property name="text">
       <string>Run</string>
      </property>
     </widget>
    </item>
-   <item row="0" column="4">
+   <item row="0" column="1">
+    <widget class="QLabel" name="testNameLabel">
+     <property name="text">
+      <string>TextLabel</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="5">
     <widget class="QPushButton" name="detailsPushButton">
      <property name="text">
       <string>Details</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="3">
+    <widget class="QLabel" name="testIconLabel">
+     <property name="text">
+      <string/>
      </property>
     </widget>
    </item>
