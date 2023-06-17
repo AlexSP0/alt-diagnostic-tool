@@ -25,6 +25,8 @@
 #include "interfaces/mainwindowcontrollerinterface.h"
 #include "mainwindow.h"
 #include "mainwindowcontrollerimpl.h"
+#include "parser/commandlineoptions.h"
+#include "parser/commandlineparser.h"
 
 #include <QApplication>
 #include <QMessageBox>
@@ -48,7 +50,7 @@ int main(int argc, char **argv)
     app.setApplicationVersion("0.1.0");
 
     QTranslator translator;
-    bool flag = translator.load("app_ru", ".");
+    translator.load("app_ru", ".");
     app.installTranslator(&translator);
 
     if (!DBusChecker::checkDBusServiceOnSystemBus(DBUS_SERVICE_NAME, PATH_TO_DBUS_OBJECT, DBUS_INTERFACE_NAME))
@@ -61,6 +63,43 @@ int main(int argc, char **argv)
         exit(1);
     }
 
+    CommandLineParser parser(app);
+    CommandLineOptions options{};
+    QString errorMessage{};
+
+    CommandLineParser::CommandLineParseResult parserResult = parser.parseCommandLine(&options, &errorMessage);
+
+    switch (parserResult)
+    {
+    case CommandLineParser::CommandLineError:
+        printf("%s \n", qPrintable(errorMessage));
+        parser.showHelp();
+        return 1;
+    case CommandLineParser::CommandLineHelpRequested:
+        parser.showHelp();
+        return 0;
+    case CommandLineParser::CommandLineVersionRequested:
+        parser.showVersion();
+        return 0;
+    case CommandLineParser::CommandLineListOfObjectsRequested:
+        printf("List of objects requested \n");
+        return 0;
+    case CommandLineParser::CommandLineListOfTestsRequested:
+        printf("List of test requested for object: %s \n", qPrintable(options.objectName));
+        return 0;
+    case CommandLineParser::CommandLineRunAllTestsRequested:
+        printf("Run of test requested for object: %s \n", qPrintable(options.objectName));
+        return 0;
+    case CommandLineParser::CommandLineRunSpecifiedTestRequested:
+        printf("List of test requested for object: %s and test: %s \n",
+               qPrintable(options.objectName),
+               qPrintable(options.testName));
+        return 0;
+    case CommandLineParser::CommandLineOk:
+    default:
+        break;
+    }
+
     ADTModelBuilder modelBuilder(new ADTModelBuilderStrategyDbusInfoDesktop(DBUS_SERVICE_NAME,
                                                                             PATH_TO_DBUS_OBJECT,
                                                                             DBUS_INTERFACE_NAME,
@@ -70,12 +109,12 @@ int main(int argc, char **argv)
 
     auto model = modelBuilder.buildModel();
 
-    MainWindow w;
+    //    MainWindow w;
 
-    std::unique_ptr<MainWindowControllerInterface> controller(
-        new MainWindowControllerImpl(model.get(), &w, w.getToolsWidget(), w.getTestWidget()));
+    //    std::unique_ptr<MainWindowControllerInterface> controller(
+    //        new MainWindowControllerImpl(model.get(), &w, w.getToolsWidget(), w.getTestWidget()));
 
-    w.show();
+    //    w.show();
 
     return app.exec();
 }
