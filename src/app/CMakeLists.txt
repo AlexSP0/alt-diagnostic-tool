@@ -34,6 +34,7 @@ set(HEADERS
     adtexecutor.h
     adtexecutorprivate.h
     mainwindowcontrollerimpl.h
+    clcontroller.h
 
     treeproxymodel.h
     categoryproxymodel.h
@@ -46,6 +47,7 @@ set(HEADERS
     interfaces/toolswidgetinterface.h
     interfaces/testswidgetinterface.h
     interfaces/mainwindowinterface.h
+    interfaces/appcontrollerinterface.h
 
     parser/commandlineparser.h
     parser/commandlineoptions.h
@@ -62,6 +64,7 @@ set(SOURCES
     adtexecutor.cpp
     adtexecutorprivate.cpp
     mainwindowcontrollerimpl.cpp
+    clcontroller.cpp
 
     treeproxymodel.cpp
     categoryproxymodel.cpp
@@ -73,6 +76,7 @@ set(SOURCES
     interfaces/toolswidgetinterface.cpp
     interfaces/testswidgetinterface.cpp
     interfaces/mainwindowinterface.cpp
+    interfaces/appcontrollerinterface.cpp
 
     parser/commandlineparser.cpp
     parser/commandlineoptions.cpp

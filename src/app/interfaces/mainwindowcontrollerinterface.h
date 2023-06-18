@@ -25,6 +25,8 @@ public:
     virtual void exitTestsWidget() = 0;
 
     virtual void detailsCurrentTest(ADTExecutable *test) = 0;
+
+    virtual int runApp() = 0;
 };
 
 #endif

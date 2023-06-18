@@ -3,19 +3,20 @@
 
 #include "../core/treemodel.h"
 #include "adtexecutor.h"
+#include "interfaces/appcontrollerinterface.h"
 #include "interfaces/mainwindowcontrollerinterface.h"
 #include "interfaces/mainwindowinterface.h"
 #include "interfaces/testswidgetinterface.h"
 #include "interfaces/toolswidgetinterface.h"
+#include "parser/commandlineoptions.h"
 
-class MainWindowControllerImpl : public MainWindowControllerInterface
+#include <QApplication>
+
+class MainWindowControllerImpl : public MainWindowControllerInterface, public AppControllerInterface
 {
     Q_OBJECT
 public:
-    MainWindowControllerImpl(TreeModel *model,
-                             MainWindowInterface *mainWindow,
-                             ToolsWidgetInterface *toolsWidget,
-                             TestWidgetInterface *testWidget);
+    MainWindowControllerImpl(TreeModel *model, CommandLineOptions *options, QApplication *app);
 
     ~MainWindowControllerImpl();
 
@@ -34,6 +35,12 @@ public:
     void exitTestsWidget();
 
     void detailsCurrentTest(ADTExecutable *test);
+
+    int listObjects();
+    int listTestsOfObject(QString object);
+    int runAllTestsOfObject(QString object);
+    int runSpecifiedTestOfObject(QString object, QString test);
+    int runApp() override;
 
 private:
     void clearAllReports();
@@ -57,12 +64,19 @@ private:
 
     bool m_isWorkingThreadActive;
 
+    CommandLineOptions *m_options;
+
+    QApplication *m_application;
+
 private slots:
     void onAllTasksBegin();
     void onAllTasksFinished();
 
     void onBeginTask(ADTExecutable *task);
     void onFinishTask(ADTExecutable *task);
+
+private:
+    TreeItem *getToolById(QString id);
 
 private:
     MainWindowControllerImpl(const MainWindowControllerImpl &) = delete;

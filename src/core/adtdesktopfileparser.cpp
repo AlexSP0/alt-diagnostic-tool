@@ -88,9 +88,9 @@ std::unique_ptr<ADTExecutable> ADTDesktopFileParser::buildTestExecutable(QString
         return nullptr;
     }
 
-    result->m_id              = test;
+    result->m_id              = test.trimmed();
     result->m_type            = ADTExecutable::ExecutableType::executableType;
-    result->m_name            = test;
+    result->m_name            = test.trimmed();
     result->m_category        = categoryExecutable->m_category;
     result->m_icon            = categoryExecutable->m_icon;
     result->m_description     = categoryExecutable->m_description;
@@ -98,7 +98,7 @@ std::unique_ptr<ADTExecutable> ADTDesktopFileParser::buildTestExecutable(QString
     result->m_dbusPath        = categoryExecutable->m_dbusPath;
     result->m_dbusInteface    = categoryExecutable->m_dbusInteface;
     result->m_method          = categoryExecutable->m_method;
-    result->m_args            = test;
+    result->m_args            = test.trimmed();
     result->m_exit_code       = categoryExecutable->m_exit_code;
 
     return result;

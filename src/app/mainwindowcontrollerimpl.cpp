@@ -1,20 +1,24 @@
 #include "mainwindowcontrollerimpl.h"
+#include "mainwindow.h"
 
 #include <QThread>
 
-MainWindowControllerImpl::MainWindowControllerImpl(TreeModel *model,
-                                                   MainWindowInterface *mainWindow,
-                                                   ToolsWidgetInterface *toolsWidget,
-                                                   TestWidgetInterface *testWidget)
+MainWindowControllerImpl::MainWindowControllerImpl(TreeModel *model, CommandLineOptions *options, QApplication *app)
     : m_model(model)
-    , m_mainWindow(mainWindow)
-    , m_toolsWidget(toolsWidget)
-    , m_testWidget(testWidget)
+    , m_mainWindow(nullptr)
+    , m_toolsWidget(nullptr)
+    , m_testWidget(nullptr)
     , m_currentToolItem(nullptr)
     , m_executor(new ADTExecutor())
     , m_workerThread(nullptr)
     , m_isWorkingThreadActive(false)
+    , m_options(options)
+    , m_application(app)
 {
+    m_mainWindow  = new MainWindow();
+    m_toolsWidget = m_mainWindow->getToolsWidget();
+    m_testWidget  = m_mainWindow->getTestWidget();
+
     m_toolsWidget->setController(this);
     m_toolsWidget->setModel(model);
     m_toolsWidget->disableButtons();
@@ -29,7 +33,10 @@ MainWindowControllerImpl::MainWindowControllerImpl(TreeModel *model,
     connect(m_executor.get(), &ADTExecutor::allTasksFinished, this, &MainWindowControllerImpl::onAllTasksFinished);
 }
 
-MainWindowControllerImpl::~MainWindowControllerImpl() {}
+MainWindowControllerImpl::~MainWindowControllerImpl()
+{
+    delete m_mainWindow;
+}
 
 void MainWindowControllerImpl::runAllToolsWidget()
 {
@@ -92,6 +99,91 @@ void MainWindowControllerImpl::exitTestsWidget()
 void MainWindowControllerImpl::detailsCurrentTest(ADTExecutable *test)
 {
     m_testWidget->showDetails(test->m_stringStdout + test->m_stringStderr);
+}
+
+int MainWindowControllerImpl::listObjects()
+{
+    return runApp();
+}
+
+int MainWindowControllerImpl::listTestsOfObject(QString object)
+{
+    TreeItem *toolItem = getToolById(object);
+    if (!toolItem)
+    {
+        qWarning() << "ERROR: can't find tool with id: " + object;
+        //TO DO show messagebox with warning
+        return 1;
+    }
+
+    changeSelectedTool(toolItem);
+    m_mainWindow->toggleStackWidget();
+
+    return runApp();
+}
+
+int MainWindowControllerImpl::runAllTestsOfObject(QString object)
+{
+    TreeItem *toolItem = getToolById(object);
+    if (!toolItem)
+    {
+        qWarning() << "ERROR: can't find tool with id: " + object;
+        //TO DO show messagebox with warning
+        return 1;
+    }
+
+    changeSelectedTool(toolItem);
+    m_mainWindow->toggleStackWidget();
+
+    runTestsWidget(m_testWidget->getTasks());
+    return runApp();
+}
+
+int MainWindowControllerImpl::runSpecifiedTestOfObject(QString object, QString test)
+{
+    TreeItem *toolItem = getToolById(object);
+    if (!toolItem)
+    {
+        qWarning() << "ERROR: can't find tool with id: " + object;
+        //TO DO show messagebox with warning
+        return 1;
+    }
+
+    changeSelectedTool(toolItem);
+    m_mainWindow->toggleStackWidget();
+
+    std::vector<ADTExecutable *> tasks = m_testWidget->getTasks();
+
+    ADTExecutable *runningTest = nullptr;
+
+    for (ADTExecutable *currentTask : tasks)
+    {
+        if (currentTask->m_id == test)
+        {
+            runningTest = currentTask;
+        }
+    }
+
+    if (!runningTest)
+    {
+        qWarning() << "ERROR: can't find test with id: " + test + " in tool: " + object;
+        //TO DO show messagebox with warning
+        return 1;
+    }
+
+    runTestsWidget(std::vector<ADTExecutable *>{runningTest});
+    return runApp();
+}
+
+int MainWindowControllerImpl::runApp()
+{
+    auto mainWindow = dynamic_cast<MainWindow *>(m_mainWindow);
+
+    mainWindow->show();
+
+    m_application->exec();
+
+    return 0;
 }
 
 void MainWindowControllerImpl::clearAllReports()
@@ -157,4 +249,26 @@ void MainWindowControllerImpl::onFinishTask(ADTExecutable *task)
     {
         m_testWidget->setWidgetStatus(task, TestWidgetInterface::TaskStatus::finishedFailed);
     }
+}
+
+TreeItem *MainWindowControllerImpl::getToolById(QString id)
+{
+    TreeItem *rootItem = static_cast<TreeItem *>(m_model->parent(QModelIndex()).internalPointer());
+
+    if (rootItem->childCount() < 1)
+    {
+        qWarning() << "ERROR: where is not tests in this tool!";
+        return nullptr;
+    }
+
+    for (int i = 0; i < rootItem->childCount(); i++)
+    {
+        TreeItem *currentChild = rootItem->child(i);
+        if (currentChild->getExecutable()->m_id == id)
+        {
+            return currentChild;
+        }
+    }
+
+    return nullptr;
 }

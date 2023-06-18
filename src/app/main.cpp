@@ -35,7 +35,7 @@
 const QString DBUS_SERVICE_NAME    = "ru.basealt.alterator";
 const QString PATH_TO_DBUS_OBJECT  = "/ru/basealt/alterator";
 const QString DBUS_INTERFACE_NAME  = "ru.basealt.alterator.manager";
-const QString DBUS_GET_METHON_NAME = "get_objects";
+const QString DBUS_GET_METHOD_NAME = "get_objects";
 const QString DBUS_FIND_INTERFACE  = "ru.basealt.alterator.diag_interface";
 
 int main(int argc, char **argv)
@@ -83,18 +83,18 @@ int main(int argc, char **argv)
         return 0;
     case CommandLineParser::CommandLineListOfObjectsRequested:
         printf("List of objects requested \n");
-        return 0;
+        break;
     case CommandLineParser::CommandLineListOfTestsRequested:
         printf("List of test requested for object: %s \n", qPrintable(options.objectName));
-        return 0;
+        break;
     case CommandLineParser::CommandLineRunAllTestsRequested:
         printf("Run of test requested for object: %s \n", qPrintable(options.objectName));
-        return 0;
+        break;
     case CommandLineParser::CommandLineRunSpecifiedTestRequested:
         printf("List of test requested for object: %s and test: %s \n",
                qPrintable(options.objectName),
                qPrintable(options.testName));
-        return 0;
+        break;
     case CommandLineParser::CommandLineOk:
     default:
         break;
@@ -103,18 +103,13 @@ int main(int argc, char **argv)
     ADTModelBuilder modelBuilder(new ADTModelBuilderStrategyDbusInfoDesktop(DBUS_SERVICE_NAME,
                                                                             PATH_TO_DBUS_OBJECT,
                                                                             DBUS_INTERFACE_NAME,
-                                                                            DBUS_GET_METHON_NAME,
+                                                                            DBUS_GET_METHOD_NAME,
                                                                             DBUS_FIND_INTERFACE,
                                                                             new TreeModelBulderFromExecutable()));
 
     auto model = modelBuilder.buildModel();
 
-    //    MainWindow w;
+    std::unique_ptr<AppControllerInterface> controller(new MainWindowControllerImpl(model.get(), &options, &app));
 
-    //    std::unique_ptr<MainWindowControllerInterface> controller(
-    //        new MainWindowControllerImpl(model.get(), &w, w.getToolsWidget(), w.getTestWidget()));
-
-    //    w.show();
-
-    return app.exec();
+    return controller->runSpecifiedTestOfObject("diag2", "check_common_packages");
 }
