@@ -1,8 +1,10 @@
 #ifndef CLCONTROLLER_H
 #define CLCONTROLLER_H
 
+#include "../core/treemodel.h"
 #include "interfaces/appcontrollerinterface.h"
 #include "parser/commandlineoptions.h"
+
 #include <QString>
 
 class CLControllerPrivate;
@@ -10,7 +12,7 @@ class CLControllerPrivate;
 class CLController : public AppControllerInterface
 {
 public:
-    CLController(CommandLineOptions *options);
+    CLController(TreeModel *model, CommandLineOptions *options);
     ~CLController();
 
     int listObjects() override;

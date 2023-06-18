@@ -8,15 +8,18 @@ class CommandLineOptions
 public:
     enum Action
     {
-        none,
-        listOfTestInObject,
-        runAllTestInObject,
-        runSpecifiedTestOfObject
+        listOfObjects,
+        listOfTestFromSpecifiedObject,
+        runAllTestFromSpecifiedObject,
+        runSpecifiedTestFromSpecifiedObject
     };
-    Action action = Action::none;
+
+    Action action{Action::listOfObjects};
 
     QString objectName{};
+
     QString testName{};
+
     bool useGraphic{true};
 };
 

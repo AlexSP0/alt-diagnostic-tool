@@ -27,6 +27,7 @@ set(CMAKE_AUTORCC ON)
 set(HEADERS
     dbuschecker.h
 
+    adtapp.h
     mainwindow.h
     maintoolswidget.h
     maintestswidget.h
@@ -57,6 +58,7 @@ set(SOURCES
     main.cpp
     dbuschecker.cpp
 
+    adtapp.cpp
     mainwindow.cpp
     maintoolswidget.cpp
     maintestswidget.cpp

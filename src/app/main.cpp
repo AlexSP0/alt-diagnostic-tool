@@ -18,25 +18,13 @@
 **
 ***********************************************************************************************************************/
 
-#include "../core/treemodelbulderfromexecutable.h"
-#include "adtbuilderstrategies/adtmodelbuilder.h"
-#include "adtbuilderstrategies/adtmodelbuilderstrategydbusinfodesktop.h"
-#include "dbuschecker.h"
-#include "interfaces/mainwindowcontrollerinterface.h"
-#include "mainwindow.h"
-#include "mainwindowcontrollerimpl.h"
-#include "parser/commandlineoptions.h"
-#include "parser/commandlineparser.h"
+//#include "dbuschecker.h"
+
+#include "adtapp.h"
 
 #include <QApplication>
 #include <QMessageBox>
 #include <QTranslator>
-
-const QString DBUS_SERVICE_NAME    = "ru.basealt.alterator";
-const QString PATH_TO_DBUS_OBJECT  = "/ru/basealt/alterator";
-const QString DBUS_INTERFACE_NAME  = "ru.basealt.alterator.manager";
-const QString DBUS_GET_METHOD_NAME = "get_objects";
-const QString DBUS_FIND_INTERFACE  = "ru.basealt.alterator.diag_interface";
 
 int main(int argc, char **argv)
 {
@@ -53,63 +41,19 @@ int main(int argc, char **argv)
     translator.load("app_ru", ".");
     app.installTranslator(&translator);
 
-    if (!DBusChecker::checkDBusServiceOnSystemBus(DBUS_SERVICE_NAME, PATH_TO_DBUS_OBJECT, DBUS_INTERFACE_NAME))
-    {
-        QMessageBox errorMsgBox;
-        errorMsgBox.setText(QObject::tr("Cannot connect to service. Restart the service and run ADT again."));
-        errorMsgBox.setIcon(QMessageBox::Critical);
-        errorMsgBox.exec();
+    //    if (!DBusChecker::checkDBusServiceOnSystemBus(DBUS_SERVICE_NAME, PATH_TO_DBUS_OBJECT, DBUS_INTERFACE_NAME))
+    //    {
+    //        QMessageBox errorMsgBox;
+    //        errorMsgBox.setText(QObject::tr("Cannot connect to service. Restart the service and run ADT again."));
+    //        errorMsgBox.setIcon(QMessageBox::Critical);
+    //        errorMsgBox.exec();
 
-        exit(1);
-    }
+    //        exit(1);
+    //    }
 
-    CommandLineParser parser(app);
-    CommandLineOptions options{};
-    QString errorMessage{};
+    ADTApp adtApp(&app);
 
-    CommandLineParser::CommandLineParseResult parserResult = parser.parseCommandLine(&options, &errorMessage);
+    //return controller->runSpecifiedTestOfObject("diag2", "check_common_packages");
 
-    switch (parserResult)
-    {
-    case CommandLineParser::CommandLineError:
-        printf("%s \n", qPrintable(errorMessage));
-        parser.showHelp();
-        return 1;
-    case CommandLineParser::CommandLineHelpRequested:
-        parser.showHelp();
-        return 0;
-    case CommandLineParser::CommandLineVersionRequested:
-        parser.showVersion();
-        return 0;
-    case CommandLineParser::CommandLineListOfObjectsRequested:
-        printf("List of objects requested \n");
-        break;
-    case CommandLineParser::CommandLineListOfTestsRequested:
-        printf("List of test requested for object: %s \n", qPrintable(options.objectName));
-        break;
-    case CommandLineParser::CommandLineRunAllTestsRequested:
-        printf("Run of test requested for object: %s \n", qPrintable(options.objectName));
-        break;
-    case CommandLineParser::CommandLineRunSpecifiedTestRequested:
-        printf("List of test requested for object: %s and test: %s \n",
-               qPrintable(options.objectName),
-               qPrintable(options.testName));
-        break;
-    case CommandLineParser::CommandLineOk:
-    default:
-        break;
-    }
-
-    ADTModelBuilder modelBuilder(new ADTModelBuilderStrategyDbusInfoDesktop(DBUS_SERVICE_NAME,
-                                                                            PATH_TO_DBUS_OBJECT,
-                                                                            DBUS_INTERFACE_NAME,
-                                                                            DBUS_GET_METHOD_NAME,
-                                                                            DBUS_FIND_INTERFACE,
-                                                                            new TreeModelBulderFromExecutable()));
-
-    auto model = modelBuilder.buildModel();
-
-    std::unique_ptr<AppControllerInterface> controller(new MainWindowControllerImpl(model.get(), &options, &app));
-
-    return controller->runSpecifiedTestOfObject("diag2", "check_common_packages");
+    return adtApp.runApp();
 }

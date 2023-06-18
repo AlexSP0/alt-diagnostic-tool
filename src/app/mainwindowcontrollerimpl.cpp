@@ -103,7 +103,7 @@ void MainWindowControllerImpl::detailsCurrentTest(ADTExecutable *test)
 
 int MainWindowControllerImpl::listObjects()
 {
-    return runApp();
+    return 0;
 }
 
 int MainWindowControllerImpl::listTestsOfObject(QString object)
@@ -119,7 +119,7 @@ int MainWindowControllerImpl::listTestsOfObject(QString object)
     changeSelectedTool(toolItem);
     m_mainWindow->toggleStackWidget();
 
-    return runApp();
+    return 0;
 }
 
 int MainWindowControllerImpl::runAllTestsOfObject(QString object)
@@ -136,7 +136,7 @@ int MainWindowControllerImpl::runAllTestsOfObject(QString object)
     m_mainWindow->toggleStackWidget();
 
     runTestsWidget(m_testWidget->getTasks());
-    return runApp();
+    return 0;
 }
 
 int MainWindowControllerImpl::runSpecifiedTestOfObject(QString object, QString test)
@@ -172,18 +172,38 @@ int MainWindowControllerImpl::runSpecifiedTestOfObject(QString object, QString t
     }
 
     runTestsWidget(std::vector<ADTExecutable *>{runningTest});
-    return runApp();
+    return 0;
 }
 
 int MainWindowControllerImpl::runApp()
 {
+    int result = -1;
+
+    switch (m_options->action)
+    {
+    case CommandLineOptions::Action::listOfObjects:
+        result = listObjects();
+        break;
+    case CommandLineOptions::Action::listOfTestFromSpecifiedObject:
+        result = listTestsOfObject(m_options->objectName);
+        break;
+    case CommandLineOptions::Action::runAllTestFromSpecifiedObject:
+        result = runAllTestsOfObject(m_options->objectName);
+        break;
+    case CommandLineOptions::Action::runSpecifiedTestFromSpecifiedObject:
+        result = runSpecifiedTestOfObject(m_options->objectName, m_options->testName);
+        break;
+    default:
+        break;
+    }
+
     auto mainWindow = dynamic_cast<MainWindow *>(m_mainWindow);
 
     mainWindow->show();
 
     m_application->exec();
 
-    return 0;
+    return result;
 }
 
 void MainWindowControllerImpl::clearAllReports()

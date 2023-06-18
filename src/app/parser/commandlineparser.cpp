@@ -52,17 +52,31 @@ CommandLineParser::CommandLineParseResult CommandLineParser::parseCommandLine(Co
 
     const QCommandLineOption specifiedTestOption("t", QObject::tr("Specify test for running"), "test");
 
+    const QCommandLineOption useGraphicOption("g",
+                                              QObject::tr("if specified, the graphical user interface will be used. If "
+                                                          "not specified, the command line interface will be used "));
+
     d->parser->setSingleDashWordOptionMode(QCommandLineParser::ParseAsLongOptions);
     d->parser->addOption(objectListOption);
     d->parser->addOption(listOfObjectsOption);
     d->parser->addOption(runAllTestsOfSpecifiedObjectOption);
     d->parser->addOption(runSpecifiedTestOption);
     d->parser->addOption(specifiedTestOption);
+    d->parser->addOption(useGraphicOption);
 
     if (!d->parser->parse(d->application.arguments()))
     {
         *errorMessage = d->parser->errorText();
         return CommandLineError;
+    }
+
+    if (d->parser->isSet(useGraphicOption))
+    {
+        options->useGraphic = true;
+    }
+    else
+    {
+        options->useGraphic = false;
     }
 
     if (d->parser->isSet(versionOption))
@@ -77,6 +91,7 @@ CommandLineParser::CommandLineParseResult CommandLineParser::parseCommandLine(Co
 
     if (d->parser->isSet(listOfObjectsOption))
     {
+        options->action = CommandLineOptions::Action::listOfObjects;
         return CommandLineListOfObjectsRequested;
     }
 
@@ -90,6 +105,8 @@ CommandLineParser::CommandLineParseResult CommandLineParser::parseCommandLine(Co
             *errorMessage = QObject::tr("Bad object name: ") + objectName;
             return CommandLineError;
         }
+
+        options->action = CommandLineOptions::Action::listOfTestFromSpecifiedObject;
         return CommandLineListOfTestsRequested;
     }
 
@@ -104,12 +121,13 @@ CommandLineParser::CommandLineParseResult CommandLineParser::parseCommandLine(Co
             return CommandLineError;
         }
 
+        options->action = CommandLineOptions::Action::runAllTestFromSpecifiedObject;
         return CommandLineRunAllTestsRequested;
     }
 
     if (d->parser->isSet(runSpecifiedTestOption))
     {
-        const QString objectName = d->parser->value(runAllTestsOfSpecifiedObjectOption);
+        const QString objectName = d->parser->value(runSpecifiedTestOption);
         options->objectName      = objectName;
 
         if (options->objectName.isNull() || options->objectName.isEmpty())
@@ -132,6 +150,7 @@ CommandLineParser::CommandLineParseResult CommandLineParser::parseCommandLine(Co
             return CommandLineError;
         }
 
+        options->action = CommandLineOptions::Action::runSpecifiedTestFromSpecifiedObject;
         return CommandLineRunSpecifiedTestRequested;
     }
 
