@@ -145,6 +145,7 @@ void MainTestsWidget::setWidgetStatus(ADTExecutable *task, TaskStatus status)
 
     currentWidget->setIcon(icon);
     currentWidget->setText(text.trimmed());
+    ui->summaryScrollArea->ensureWidgetVisible(currentWidget);
 }
 
 std::vector<ADTExecutable *> MainTestsWidget::getTasks()
