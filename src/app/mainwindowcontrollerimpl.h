@@ -34,7 +34,7 @@
 
 class MainWindowControllerImplPrivate;
 
-class MainWindowControllerImpl : public MainWindowControllerInterface, public AppControllerInterface
+class MainWindowControllerImpl : public AppControllerInterface, public MainWindowControllerInterface
 {
     Q_OBJECT
 public:
@@ -73,11 +73,11 @@ private:
     MainWindowControllerImplPrivate *d;
 
 private slots:
-    void onAllTasksBegin();
-    void onAllTasksFinished();
+    void onAllTasksBegin() override;
+    void onAllTasksFinished() override;
 
-    void onBeginTask(ADTExecutable *task);
-    void onFinishTask(ADTExecutable *task);
+    void onBeginTask(ADTExecutable *task) override;
+    void onFinishTask(ADTExecutable *task) override;
 
 private:
     TreeItem *getToolById(QString id);

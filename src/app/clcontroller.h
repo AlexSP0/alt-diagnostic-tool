@@ -31,6 +31,7 @@ class CLControllerPrivate;
 
 class CLController : public AppControllerInterface
 {
+    Q_OBJECT
 public:
     CLController(TreeModel *model, CommandLineOptions *options);
     ~CLController();
@@ -44,6 +45,16 @@ public:
     int runSpecifiedTestOfObject(QString object, QString test) override;
 
     int runApp() override;
+
+private:
+    TreeItem *getToolById(QString id);
+
+private slots:
+    void onAllTasksBegin() override;
+    void onAllTasksFinished() override;
+
+    void onBeginTask(ADTExecutable *task) override;
+    void onFinishTask(ADTExecutable *task) override;
 
 private:
     CLControllerPrivate *d;

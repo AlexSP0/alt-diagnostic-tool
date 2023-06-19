@@ -4,9 +4,8 @@
 #include "../core/adtexecutable.h"
 #include "../core/treeitem.h"
 
-class MainWindowControllerInterface : public QObject
+class MainWindowControllerInterface
 {
-    Q_OBJECT
 public:
     virtual ~MainWindowControllerInterface();
 

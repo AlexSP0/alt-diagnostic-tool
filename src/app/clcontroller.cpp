@@ -19,6 +19,8 @@
 ***********************************************************************************************************************/
 
 #include "clcontroller.h"
+#include "../core/treeitem.h"
+#include "adtexecutor.h"
 
 #include <iostream>
 
@@ -28,11 +30,13 @@ public:
     CLControllerPrivate(TreeModel *model, CommandLineOptions *options)
         : m_options(options)
         , m_model(model)
+        , m_executor(new ADTExecutor())
     {}
-    ~CLControllerPrivate() {}
+    ~CLControllerPrivate() { delete m_executor; }
 
     CommandLineOptions *m_options;
     TreeModel *m_model;
+    ADTExecutor *m_executor;
 
 private:
     CLControllerPrivate(const CLControllerPrivate &) = delete;
@@ -43,7 +47,12 @@ private:
 
 CLController::CLController(TreeModel *model, CommandLineOptions *options)
     : d(new CLControllerPrivate(model, options))
-{}
+{
+    connect(d->m_executor, &ADTExecutor::beginTask, this, &CLController::onBeginTask);
+    connect(d->m_executor, &ADTExecutor::finishTask, this, &CLController::onFinishTask);
+    connect(d->m_executor, &ADTExecutor::allTaskBegin, this, &CLController::onAllTasksBegin);
+    connect(d->m_executor, &ADTExecutor::allTasksFinished, this, &CLController::onAllTasksFinished);
+}
 
 CLController::~CLController()
 {
@@ -52,25 +61,98 @@ CLController::~CLController()
 
 int CLController::listObjects()
 {
-    std::cout << "list all objects" << std::endl;
+    TreeItem *rootItem = static_cast<TreeItem *>(d->m_model->parent(QModelIndex()).internalPointer());
+
+    if (!rootItem)
+    {
+        std::cerr << "ERROR: can't get root item!" << std::endl;
+        return 1;
+    }
+
+    if (rootItem->childCount() < 1)
+    {
+        std::cerr << "There is no object!" << std::endl;
+        return 1;
+    }
+
+    for (int i = 0; i < rootItem->childCount(); i++)
+    {
+        std::cout << rootItem->child(i)->getExecutable()->m_id.toStdString() << std::endl;
+    }
+
     return 0;
 }
 
 int CLController::listTestsOfObject(QString object)
 {
-    std::cout << "list test of " << object.toStdString() << "object" << std::endl;
+    TreeItem *currentTool = getToolById(object);
+
+    if (!currentTool || currentTool->childCount() < 1)
+    {
+        std::cerr << "ERROR: can't find tests in object: " << object.toStdString() << std::endl;
+        return 1;
+    }
+
+    for (int i = 0; i < currentTool->childCount(); i++)
+    {
+        std::cout << currentTool->child(i)->getExecutable()->m_id.toStdString() << std::endl;
+    }
+
     return 0;
 }
 
 int CLController::runAllTestsOfObject(QString object)
 {
-    std::cout << "run all tests of " << object.toStdString() << "object" << std::endl;
+    TreeItem *currentTool = getToolById(object);
+
+    if (!currentTool || currentTool->childCount() < 1)
+    {
+        std::cerr << "ERROR: can't find tests in object: " << object.toStdString() << std::endl;
+        return 1;
+    }
+
+    std::vector<ADTExecutable *> tasks;
+    for (int i = 0; i < currentTool->childCount(); i++)
+    {
+        tasks.push_back(currentTool->child(i)->getExecutable());
+    }
+
+    if (!tasks.empty())
+    {
+        d->m_executor->resetStopFlag();
+        d->m_executor->setTasks(tasks);
+        d->m_executor->runTasks();
+    }
+
     return 0;
 }
 
 int CLController::runSpecifiedTestOfObject(QString object, QString test)
 {
-    std::cout << "run" << test.toStdString() << " test of " << object.toStdString() << "object" << std::endl;
+    TreeItem *currentTool = getToolById(object);
+
+    if (!currentTool || currentTool->childCount() < 1)
+    {
+        std::cerr << "ERROR: can't find tests in object: " << object.toStdString() << std::endl;
+        return 1;
+    }
+
+    std::vector<ADTExecutable *> tasks;
+    for (int i = 0; i < currentTool->childCount(); i++)
+    {
+        if (currentTool->child(i)->getExecutable()->m_id == test)
+        {
+            tasks.push_back(currentTool->child(i)->getExecutable());
+        }
+    }
+
+    if (!tasks.empty())
+    {
+        d->m_executor->resetStopFlag();
+        d->m_executor->setTasks(tasks);
+        d->m_executor->runTasks();
+    }
+
     return 0;
 }
 
@@ -97,4 +179,41 @@ int CLController::runApp()
     }
 
     return result;
+}
+
+TreeItem *CLController::getToolById(QString id)
+{
+    TreeItem *rootItem = static_cast<TreeItem *>(d->m_model->parent(QModelIndex()).internalPointer());
+
+    for (int i = 0; i < rootItem->childCount(); i++)
+    {
+        TreeItem *currentChild = rootItem->child(i);
+        if (currentChild->getExecutable()->m_id == id)
+        {
+            return currentChild;
+        }
+    }
+
+    return nullptr;
+}
+
+void CLController::onAllTasksBegin() {}
+
+void CLController::onAllTasksFinished() {}
+
+void CLController::onBeginTask(ADTExecutable *task)
+{
+    std::cout << "Running test: " << task->m_id.toStdString() << "...";
+}
+
+void CLController::onFinishTask(ADTExecutable *task)
+{
+    if (task->m_exit_code == 0)
+    {
+        std::cout << "OK" << std::endl;
+    }
+    else
+    {
+        std::cout << "ERROR" << std::endl;
+    }
 }
