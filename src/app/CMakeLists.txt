@@ -81,7 +81,6 @@ set(SOURCES
     interfaces/appcontrollerinterface.cpp
 
     parser/commandlineparser.cpp
-    parser/commandlineoptions.cpp
 )
 
 set(UI_FORMS
