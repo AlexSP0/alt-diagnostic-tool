@@ -33,7 +33,6 @@ set(HEADERS
     maintestswidget.h
     statuscommonwidget.h
     adtexecutor.h
-    adtexecutorprivate.h
     mainwindowcontrollerimpl.h
     clcontroller.h
 
@@ -64,7 +63,6 @@ set(SOURCES
     maintestswidget.cpp
     statuscommonwidget.cpp
     adtexecutor.cpp
-    adtexecutorprivate.cpp
     mainwindowcontrollerimpl.cpp
     clcontroller.cpp
 

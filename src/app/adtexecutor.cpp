@@ -21,14 +21,42 @@
 #include "adtexecutor.h"
 
 #include <QApplication>
+#include <QDBusConnection>
+#include <QDBusInterface>
 #include <QDBusReply>
 #include <QThread>
 #include <QTimer>
 #include <qdbusmessage.h>
 
+class ADTExecutorPrivate
+{
+public:
+    ADTExecutorPrivate()
+        : executables()
+        , stopFlag(false)
+    {}
+
+    ~ADTExecutorPrivate() {}
+
+    std::vector<ADTExecutable *> executables;
+
+    volatile bool stopFlag;
+
+private:
+    ADTExecutorPrivate(const ADTExecutorPrivate &) = delete;
+    ADTExecutorPrivate(ADTExecutorPrivate &&)      = delete;
+    ADTExecutorPrivate &operator=(const ADTExecutorPrivate &) = delete;
+    ADTExecutorPrivate &operator=(ADTExecutorPrivate &&) = delete;
+};
+
 ADTExecutor::ADTExecutor()
     : d(new ADTExecutorPrivate)
 {}
+
+ADTExecutor::~ADTExecutor()
+{
+    delete d;
+}
 
 int ADTExecutor::getAmountOfExecutables()
 {

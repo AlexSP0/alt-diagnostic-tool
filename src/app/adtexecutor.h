@@ -21,16 +21,19 @@
 #ifndef ADTEXECUTOR_H
 #define ADTEXECUTOR_H
 
-#include "adtexecutorprivate.h"
 #include "statuscommonwidget.h"
 
 #include <QObject>
+
+class ADTExecutorPrivate;
 
 class ADTExecutor : public QObject
 {
     Q_OBJECT
 public:
     ADTExecutor();
+
+    ~ADTExecutor();
 
     int getAmountOfExecutables();
 
@@ -47,7 +50,7 @@ private:
     void executeTask(ADTExecutable *task);
 
 private:
-    std::unique_ptr<ADTExecutorPrivate> d;
+    ADTExecutorPrivate *d;
 
 signals:
     void beginTask(ADTExecutable *currentExecutable);
@@ -55,6 +58,12 @@ signals:
 
     void allTaskBegin();
     void allTasksFinished();
+
+private:
+    ADTExecutor(const ADTExecutor &) = delete;
+    ADTExecutor(ADTExecutor &&)      = delete;
+    ADTExecutor &operator=(const ADTExecutor &) = delete;
+    ADTExecutor &operator=(ADTExecutor &&) = delete;
 };
 
 #endif // ADTEXECUTOR_H
