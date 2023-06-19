@@ -32,6 +32,8 @@
 
 #include <QApplication>
 
+class MainWindowControllerImplPrivate;
+
 class MainWindowControllerImpl : public MainWindowControllerInterface, public AppControllerInterface
 {
     Q_OBJECT
@@ -68,25 +70,7 @@ private:
     void clearToolReports(TreeItem *item);
 
 private:
-    TreeModel *m_model;
-
-    MainWindowInterface *m_mainWindow;
-
-    ToolsWidgetInterface *m_toolsWidget;
-
-    TestWidgetInterface *m_testWidget;
-
-    TreeItem *m_currentToolItem;
-
-    std::unique_ptr<ADTExecutor> m_executor;
-
-    QThread *m_workerThread;
-
-    bool m_isWorkingThreadActive;
-
-    CommandLineOptions *m_options;
-
-    QApplication *m_application;
+    MainWindowControllerImplPrivate *d;
 
 private slots:
     void onAllTasksBegin();

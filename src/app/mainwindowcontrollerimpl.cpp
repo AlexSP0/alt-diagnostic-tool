@@ -23,55 +23,90 @@
 
 #include <QThread>
 
-MainWindowControllerImpl::MainWindowControllerImpl(TreeModel *model, CommandLineOptions *options, QApplication *app)
-    : m_model(model)
-    , m_mainWindow(nullptr)
-    , m_toolsWidget(nullptr)
-    , m_testWidget(nullptr)
-    , m_currentToolItem(nullptr)
-    , m_executor(new ADTExecutor())
-    , m_workerThread(nullptr)
-    , m_isWorkingThreadActive(false)
-    , m_options(options)
-    , m_application(app)
+class MainWindowControllerImplPrivate
 {
-    m_mainWindow  = new MainWindow();
-    m_toolsWidget = m_mainWindow->getToolsWidget();
-    m_testWidget  = m_mainWindow->getTestWidget();
+public:
+    MainWindowControllerImplPrivate(TreeModel *model, CommandLineOptions *options, QApplication *app)
+        : m_model(model)
+        , m_mainWindow(nullptr)
+        , m_toolsWidget(nullptr)
+        , m_testWidget(nullptr)
+        , m_currentToolItem(nullptr)
+        , m_executor(new ADTExecutor())
+        , m_workerThread(nullptr)
+        , m_isWorkingThreadActive(false)
+        , m_options(options)
+        , m_application(app)
+    {
+        m_mainWindow  = new MainWindow();
+        m_toolsWidget = m_mainWindow->getToolsWidget();
+        m_testWidget  = m_mainWindow->getTestWidget();
+    }
+    ~MainWindowControllerImplPrivate() { delete m_mainWindow; }
 
-    m_toolsWidget->setController(this);
-    m_toolsWidget->setModel(model);
-    m_toolsWidget->disableButtons();
+    TreeModel *m_model;
 
-    m_testWidget->setController(this);
+    MainWindowInterface *m_mainWindow;
 
-    m_mainWindow->setController(this);
+    ToolsWidgetInterface *m_toolsWidget;
 
-    connect(m_executor.get(), &ADTExecutor::beginTask, this, &MainWindowControllerImpl::onBeginTask);
-    connect(m_executor.get(), &ADTExecutor::finishTask, this, &MainWindowControllerImpl::onFinishTask);
-    connect(m_executor.get(), &ADTExecutor::allTaskBegin, this, &MainWindowControllerImpl::onAllTasksBegin);
-    connect(m_executor.get(), &ADTExecutor::allTasksFinished, this, &MainWindowControllerImpl::onAllTasksFinished);
+    TestWidgetInterface *m_testWidget;
+
+    TreeItem *m_currentToolItem;
+
+    std::unique_ptr<ADTExecutor> m_executor;
+
+    QThread *m_workerThread;
+
+    bool m_isWorkingThreadActive;
+
+    CommandLineOptions *m_options;
+
+    QApplication *m_application;
+
+private:
+    MainWindowControllerImplPrivate(const MainWindowControllerImplPrivate &) = delete;
+    MainWindowControllerImplPrivate(MainWindowControllerImplPrivate &&)      = delete;
+    MainWindowControllerImplPrivate &operator=(const MainWindowControllerImplPrivate &) = delete;
+    MainWindowControllerImplPrivate &operator=(MainWindowControllerImplPrivate &&) = delete;
+};
+
+MainWindowControllerImpl::MainWindowControllerImpl(TreeModel *model, CommandLineOptions *options, QApplication *app)
+    : d(new MainWindowControllerImplPrivate(model, options, app))
+{
+    d->m_toolsWidget->setController(this);
+    d->m_toolsWidget->setModel(model);
+    d->m_toolsWidget->disableButtons();
+
+    d->m_testWidget->setController(this);
+
+    d->m_mainWindow->setController(this);
+
+    connect(d->m_executor.get(), &ADTExecutor::beginTask, this, &MainWindowControllerImpl::onBeginTask);
+    connect(d->m_executor.get(), &ADTExecutor::finishTask, this, &MainWindowControllerImpl::onFinishTask);
+    connect(d->m_executor.get(), &ADTExecutor::allTaskBegin, this, &MainWindowControllerImpl::onAllTasksBegin);
+    connect(d->m_executor.get(), &ADTExecutor::allTasksFinished, this, &MainWindowControllerImpl::onAllTasksFinished);
 }
 
 MainWindowControllerImpl::~MainWindowControllerImpl()
 {
-    delete m_mainWindow;
+    delete d;
 }
 
 void MainWindowControllerImpl::runAllToolsWidget()
 {
-    m_mainWindow->toggleStackWidget();
-    runTestsWidget(m_testWidget->getTasks());
+    d->m_mainWindow->toggleStackWidget();
+    runTestsWidget(d->m_testWidget->getTasks());
 }
 
 void MainWindowControllerImpl::chooseToolsWidget()
 {
-    m_mainWindow->toggleStackWidget();
+    d->m_mainWindow->toggleStackWidget();
 }
 
 void MainWindowControllerImpl::exitToolsWidget()
 {
-    m_mainWindow->closeAll();
+    d->m_mainWindow->closeAll();
 }
 
 void MainWindowControllerImpl::changeSelectedTool(TreeItem *item)
@@ -81,44 +116,44 @@ void MainWindowControllerImpl::changeSelectedTool(TreeItem *item)
         return;
     }
 
-    m_currentToolItem = item;
+    d->m_currentToolItem = item;
 
-    m_toolsWidget->setDescription(item->getExecutable()->m_description);
+    d->m_toolsWidget->setDescription(item->getExecutable()->m_description);
 
-    m_toolsWidget->enableButtons();
+    d->m_toolsWidget->enableButtons();
 
-    m_testWidget->setToolItem(item);
+    d->m_testWidget->setToolItem(item);
 }
 
 void MainWindowControllerImpl::runTestsWidget(std::vector<ADTExecutable *> tasks)
 {
-    m_executor->setTasks(tasks);
+    d->m_executor->setTasks(tasks);
 
-    m_executor->resetStopFlag();
+    d->m_executor->resetStopFlag();
 
-    m_workerThread = new QThread();
+    d->m_workerThread = new QThread();
 
-    connect(m_workerThread, &QThread::started, m_executor.get(), &ADTExecutor::runTasks);
-    connect(m_workerThread, &QThread::finished, m_workerThread, &QObject::deleteLater);
+    connect(d->m_workerThread, &QThread::started, d->m_executor.get(), &ADTExecutor::runTasks);
+    connect(d->m_workerThread, &QThread::finished, d->m_workerThread, &QObject::deleteLater);
 
-    m_executor->moveToThread(m_workerThread);
+    d->m_executor->moveToThread(d->m_workerThread);
 
-    m_workerThread->start();
+    d->m_workerThread->start();
 }
 
 void MainWindowControllerImpl::backTestsWigdet()
 {
-    m_mainWindow->toggleStackWidget();
+    d->m_mainWindow->toggleStackWidget();
 }
 
 void MainWindowControllerImpl::exitTestsWidget()
 {
-    m_mainWindow->closeAll();
+    d->m_mainWindow->closeAll();
 }
 
 void MainWindowControllerImpl::detailsCurrentTest(ADTExecutable *test)
 {
-    m_testWidget->showDetails(test->m_stringStdout + test->m_stringStderr);
+    d->m_testWidget->showDetails(test->m_stringStdout + test->m_stringStderr);
 }
 
 int MainWindowControllerImpl::listObjects()
@@ -137,7 +172,7 @@ int MainWindowControllerImpl::listTestsOfObject(QString object)
     }
 
     changeSelectedTool(toolItem);
-    m_mainWindow->toggleStackWidget();
+    d->m_mainWindow->toggleStackWidget();
 
     return 0;
 }
@@ -153,9 +188,9 @@ int MainWindowControllerImpl::runAllTestsOfObject(QString object)
     }
 
     changeSelectedTool(toolItem);
-    m_mainWindow->toggleStackWidget();
+    d->m_mainWindow->toggleStackWidget();
 
-    runTestsWidget(m_testWidget->getTasks());
+    runTestsWidget(d->m_testWidget->getTasks());
     return 0;
 }
 
@@ -170,9 +205,9 @@ int MainWindowControllerImpl::runSpecifiedTestOfObject(QString object, QString t
     }
 
     changeSelectedTool(toolItem);
-    m_mainWindow->toggleStackWidget();
+    d->m_mainWindow->toggleStackWidget();
 
-    std::vector<ADTExecutable *> tasks = m_testWidget->getTasks();
+    std::vector<ADTExecutable *> tasks = d->m_testWidget->getTasks();
 
     ADTExecutable *runningTest = nullptr;
 
@@ -199,36 +234,36 @@ int MainWindowControllerImpl::runApp()
 {
     int result = -1;
 
-    switch (m_options->action)
+    switch (d->m_options->action)
     {
     case CommandLineOptions::Action::listOfObjects:
         result = listObjects();
         break;
     case CommandLineOptions::Action::listOfTestFromSpecifiedObject:
-        result = listTestsOfObject(m_options->objectName);
+        result = listTestsOfObject(d->m_options->objectName);
         break;
     case CommandLineOptions::Action::runAllTestFromSpecifiedObject:
-        result = runAllTestsOfObject(m_options->objectName);
+        result = runAllTestsOfObject(d->m_options->objectName);
         break;
     case CommandLineOptions::Action::runSpecifiedTestFromSpecifiedObject:
-        result = runSpecifiedTestOfObject(m_options->objectName, m_options->testName);
+        result = runSpecifiedTestOfObject(d->m_options->objectName, d->m_options->testName);
         break;
     default:
         break;
     }
 
-    auto mainWindow = dynamic_cast<MainWindow *>(m_mainWindow);
+    auto mainWindow = dynamic_cast<MainWindow *>(d->m_mainWindow);
 
     mainWindow->show();
 
-    m_application->exec();
+    d->m_application->exec();
 
     return result;
 }
 
 void MainWindowControllerImpl::clearAllReports()
 {
-    QModelIndex rootIndex = m_model->parent(QModelIndex());
+    QModelIndex rootIndex = d->m_model->parent(QModelIndex());
 
     TreeItem *rootItem = static_cast<TreeItem *>(rootIndex.internalPointer());
 
@@ -262,38 +297,38 @@ void MainWindowControllerImpl::clearToolReports(TreeItem *item)
 
 void MainWindowControllerImpl::onAllTasksBegin()
 {
-    m_isWorkingThreadActive = true;
-    m_testWidget->setEnabledRunButtonOfStatusWidgets(false);
-    m_testWidget->disableButtons();
+    d->m_isWorkingThreadActive = true;
+    d->m_testWidget->setEnabledRunButtonOfStatusWidgets(false);
+    d->m_testWidget->disableButtons();
 }
 
 void MainWindowControllerImpl::onAllTasksFinished()
 {
-    m_isWorkingThreadActive = false;
-    m_testWidget->setEnabledRunButtonOfStatusWidgets(true);
-    m_testWidget->enableButtons();
+    d->m_isWorkingThreadActive = false;
+    d->m_testWidget->setEnabledRunButtonOfStatusWidgets(true);
+    d->m_testWidget->enableButtons();
 }
 
 void MainWindowControllerImpl::onBeginTask(ADTExecutable *task)
 {
-    m_testWidget->setWidgetStatus(task, TestWidgetInterface::TaskStatus::running);
+    d->m_testWidget->setWidgetStatus(task, TestWidgetInterface::TaskStatus::running);
 }
 
 void MainWindowControllerImpl::onFinishTask(ADTExecutable *task)
 {
     if (task->m_exit_code == 0)
     {
-        m_testWidget->setWidgetStatus(task, TestWidgetInterface::TaskStatus::finishedOk);
+        d->m_testWidget->setWidgetStatus(task, TestWidgetInterface::TaskStatus::finishedOk);
     }
     else
     {
-        m_testWidget->setWidgetStatus(task, TestWidgetInterface::TaskStatus::finishedFailed);
+        d->m_testWidget->setWidgetStatus(task, TestWidgetInterface::TaskStatus::finishedFailed);
     }
 }
 
 TreeItem *MainWindowControllerImpl::getToolById(QString id)
 {
-    TreeItem *rootItem = static_cast<TreeItem *>(m_model->parent(QModelIndex()).internalPointer());
+    TreeItem *rootItem = static_cast<TreeItem *>(d->m_model->parent(QModelIndex()).internalPointer());
 
     if (rootItem->childCount() < 1)
     {
