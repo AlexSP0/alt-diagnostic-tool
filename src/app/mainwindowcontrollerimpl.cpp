@@ -1,5 +1,5 @@
 #include "mainwindowcontrollerimpl.h"
-#include "mainwindow.h"
+#include "mainwindow/mainwindow.h"
 
 #include <QThread>
 

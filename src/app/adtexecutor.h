@@ -21,7 +21,7 @@
 #ifndef ADTEXECUTOR_H
 #define ADTEXECUTOR_H
 
-#include "statuscommonwidget.h"
+#include "mainwindow/statuscommonwidget.h"
 
 #include <QObject>
 

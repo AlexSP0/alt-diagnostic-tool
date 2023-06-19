@@ -4,7 +4,7 @@
 #include "../core/treemodel.h"
 #include "mainwindowcontrollerinterface.h"
 
-#include <statuscommonwidget.h>
+#include "mainwindow/statuscommonwidget.h"
 #include <QIcon>
 
 class TestWidgetInterface

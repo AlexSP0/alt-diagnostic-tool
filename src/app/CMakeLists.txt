@@ -28,10 +28,11 @@ set(HEADERS
     dbuschecker.h
 
     adtapp.h
-    mainwindow.h
-    maintoolswidget.h
-    maintestswidget.h
-    statuscommonwidget.h
+
+    mainwindow/mainwindow.h
+    mainwindow/maintoolswidget.h
+    mainwindow/maintestswidget.h
+    mainwindow/statuscommonwidget.h
     adtexecutor.h
     mainwindowcontrollerimpl.h
     clcontroller.h
@@ -58,10 +59,11 @@ set(SOURCES
     dbuschecker.cpp
 
     adtapp.cpp
-    mainwindow.cpp
-    maintoolswidget.cpp
-    maintestswidget.cpp
-    statuscommonwidget.cpp
+
+    mainwindow/mainwindow.cpp
+    mainwindow/maintoolswidget.cpp
+    mainwindow/maintestswidget.cpp
+    mainwindow/statuscommonwidget.cpp
     adtexecutor.cpp
     mainwindowcontrollerimpl.cpp
     clcontroller.cpp
@@ -82,11 +84,11 @@ set(SOURCES
 )
 
 set(UI_FORMS
-    mainwindow.ui
-    maintoolswidget.ui
-    maintestswidget.ui
+    mainwindow/mainwindow.ui
+    mainwindow/maintoolswidget.ui
+    mainwindow/maintestswidget.ui
 
-    statuscommonwidget.ui
+    mainwindow/statuscommonwidget.ui
 )
 set(RESOURCES
     resources.qrc
