@@ -19,6 +19,7 @@
 ***********************************************************************************************************************/
 
 #include "statuscommonwidget.h"
+#include "clickablelabel.h"
 #include "ui_statuscommonwidget.h"
 
 #include <QStyle>
@@ -35,6 +36,8 @@ StatusCommonWidget::StatusCommonWidget(TreeItem *item, QWidget *parent)
     ui->testIconLabel->setPixmap(icon.pixmap(16, 16));
 
     ui->testNameLabel->setText(treeItem->getExecutable()->m_name.trimmed());
+
+    connect(ui->testNameLabel, &ClickableLabel::doubleClicked, this, &StatusCommonWidget::on_runPushButton_clicked);
 }
 
 StatusCommonWidget::~StatusCommonWidget()

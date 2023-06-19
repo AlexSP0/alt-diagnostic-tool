@@ -28,17 +28,18 @@ set(HEADERS
     dbuschecker.h
 
     adtapp.h
-
-    mainwindow/mainwindow.h
-    mainwindow/maintoolswidget.h
-    mainwindow/maintestswidget.h
-    mainwindow/statuscommonwidget.h
     adtexecutor.h
     mainwindowcontrollerimpl.h
     clcontroller.h
 
     treeproxymodel.h
     categoryproxymodel.h
+
+    mainwindow/mainwindow.h
+    mainwindow/maintoolswidget.h
+    mainwindow/maintestswidget.h
+    mainwindow/statuscommonwidget.h
+    mainwindow/clickablelabel.h
 
     adtbuilderstrategies/adtmodelbuilder.h
     adtbuilderstrategies/adtmodelbuilderstrategyinterface.h
@@ -59,17 +60,18 @@ set(SOURCES
     dbuschecker.cpp
 
     adtapp.cpp
-
-    mainwindow/mainwindow.cpp
-    mainwindow/maintoolswidget.cpp
-    mainwindow/maintestswidget.cpp
-    mainwindow/statuscommonwidget.cpp
     adtexecutor.cpp
     mainwindowcontrollerimpl.cpp
     clcontroller.cpp
 
     treeproxymodel.cpp
     categoryproxymodel.cpp
+
+    mainwindow/mainwindow.cpp
+    mainwindow/maintoolswidget.cpp
+    mainwindow/maintestswidget.cpp
+    mainwindow/statuscommonwidget.cpp
+    mainwindow/clickablelabel.cpp
 
     adtbuilderstrategies/adtmodelbuilder.cpp
     adtbuilderstrategies/adtmodelbuilderstrategydbusinfodesktop.cpp

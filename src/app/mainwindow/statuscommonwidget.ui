@@ -53,7 +53,7 @@
     </widget>
    </item>
    <item row="0" column="1">
-    <widget class="QLabel" name="testNameLabel">
+    <widget class="ClickableLabel" name="testNameLabel">
      <property name="text">
       <string>TextLabel</string>
      </property>
@@ -75,6 +75,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>ClickableLabel</class>
+   <extends>QLabel</extends>
+   <header>clickablelabel.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
