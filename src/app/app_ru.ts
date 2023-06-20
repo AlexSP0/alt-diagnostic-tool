@@ -2,6 +2,17 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ru_RU">
 <context>
+    <name>DetailsDialog</name>
+    <message>
+        <source>Test result</source>
+        <translation>Результат тестирования</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation>Закрыть</translation>
+    </message>
+</context>
+<context>
     <name>MainTestsWidget</name>
     <message>
         <source>ADT - Tests</source>
@@ -58,30 +69,6 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <source>ADT</source>
-        <translation>ADT</translation>
-    </message>
-    <message>
-        <source>Available tools:</source>
-        <translation>Доступные инструменты</translation>
-    </message>
-    <message>
-        <source>Choose tool</source>
-        <translation>Выбрать инструмент</translation>
-    </message>
-    <message>
-        <source>Description:</source>
-        <translation>Описание:</translation>
-    </message>
-    <message>
-        <source>Run all</source>
-        <translation>Запустить все</translation>
-    </message>
-    <message>
-        <source>Exit</source>
-        <translation>Выход</translation>
-    </message>
-    <message>
         <source>MainWindow</source>
         <translation>ADT</translation>
     </message>
@@ -89,35 +76,40 @@
 <context>
     <name>QObject</name>
     <message>
-        <source>Cannot connect to service. Restart the service and run ADT again.</source>
-        <translation>Невозможно подключиться к службе. Перезапустите службу и запустите ADT снова.</translation>
-    </message>
-</context>
-<context>
-    <name>RunTestsDialog</name>
-    <message>
-        <source>Проверки</source>
-        <translation>Тесты</translation>
+        <source>List of available objects</source>
+        <translation>Список доступных инструментов</translation>
     </message>
     <message>
-        <source>Available tests:</source>
-        <translation>Доступные тесты:</translation>
+        <source>Test list of specified object.</source>
+        <translation>Список тестов, доступных для данного инструмента</translation>
     </message>
     <message>
-        <source>Filter</source>
-        <translation>Фильтр</translation>
+        <source>Run all tests of speccified object</source>
+        <translation>Запуск всех тестов указанного инструмента</translation>
     </message>
     <message>
-        <source>Run all tests</source>
-        <translation>Запустить все тесты</translation>
+        <source>Run specicfied test of specified object. Must specify test name with -t option</source>
+        <translation>Запуск указанного теста инструмента. Должна быть указано имя теста с помощью опции -t</translation>
     </message>
     <message>
-        <source>Back</source>
-        <translation>Назад</translation>
+        <source>Specify test for running</source>
+        <translation>Имя теста для запуска</translation>
     </message>
     <message>
-        <source>Exit</source>
-        <translation>Выход</translation>
+        <source>if specified, the graphical user interface will be used. If not specified, the command line interface will be used </source>
+        <translation>Если указана данная опция, то будет использоваться графический интерфейс, в противном случае - командная строка</translation>
+    </message>
+    <message>
+        <source>Bad object name: </source>
+        <translation>Неправильное имя инструмента</translation>
+    </message>
+    <message>
+        <source>Missing test name for object: </source>
+        <translation>Не указано имя теста</translation>
+    </message>
+    <message>
+        <source>Bad test name: </source>
+        <translation>Неправильное имя теста</translation>
     </message>
 </context>
 <context>
@@ -125,10 +117,6 @@
     <message>
         <source>Form</source>
         <translation>Форма</translation>
-    </message>
-    <message>
-        <source>test</source>
-        <translation>тест</translation>
     </message>
     <message>
         <source>Run</source>

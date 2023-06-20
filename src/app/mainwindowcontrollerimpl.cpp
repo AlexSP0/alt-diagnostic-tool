@@ -19,6 +19,7 @@
 ***********************************************************************************************************************/
 
 #include "mainwindowcontrollerimpl.h"
+#include "mainwindow/detailsdialog.h"
 #include "mainwindow/mainwindow.h"
 
 #include <QThread>
@@ -31,6 +32,7 @@ public:
         , m_mainWindow(nullptr)
         , m_toolsWidget(nullptr)
         , m_testWidget(nullptr)
+        , m_detailsDialog(new DetailsDialog())
         , m_currentToolItem(nullptr)
         , m_executor(new ADTExecutor())
         , m_workerThread(nullptr)
@@ -42,7 +44,11 @@ public:
         m_toolsWidget = m_mainWindow->getToolsWidget();
         m_testWidget  = m_mainWindow->getTestWidget();
     }
-    ~MainWindowControllerImplPrivate() { delete m_mainWindow; }
+    ~MainWindowControllerImplPrivate()
+    {
+        delete m_mainWindow;
+        delete m_detailsDialog;
+    }
 
     TreeModel *m_model;
 
@@ -51,6 +57,8 @@ public:
     ToolsWidgetInterface *m_toolsWidget;
 
     TestWidgetInterface *m_testWidget;
+
+    DetailsDialog *m_detailsDialog;
 
     TreeItem *m_currentToolItem;
 
@@ -153,7 +161,10 @@ void MainWindowControllerImpl::exitTestsWidget()
 
 void MainWindowControllerImpl::detailsCurrentTest(ADTExecutable *test)
 {
-    d->m_testWidget->showDetails(test->m_stringStdout + test->m_stringStderr);
+    //d->m_testWidget->showDetails(test->m_stringStdout + test->m_stringStderr);
+    d->m_detailsDialog->clearDetailsText();
+    d->m_detailsDialog->setDetailsText(test->m_stringStdout + test->m_stringStderr);
+    d->m_detailsDialog->show();
 }
 
 int MainWindowControllerImpl::listObjects()

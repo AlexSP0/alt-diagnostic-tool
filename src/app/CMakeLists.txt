@@ -40,6 +40,7 @@ set(HEADERS
     mainwindow/maintestswidget.h
     mainwindow/statuscommonwidget.h
     mainwindow/clickablelabel.h
+    mainwindow/detailsdialog.h
 
     adtbuilderstrategies/adtmodelbuilder.h
     adtbuilderstrategies/adtmodelbuilderstrategyinterface.h
@@ -72,6 +73,7 @@ set(SOURCES
     mainwindow/maintestswidget.cpp
     mainwindow/statuscommonwidget.cpp
     mainwindow/clickablelabel.cpp
+    mainwindow/detailsdialog.cpp
 
     adtbuilderstrategies/adtmodelbuilder.cpp
     adtbuilderstrategies/adtmodelbuilderstrategydbusinfodesktop.cpp
@@ -91,12 +93,14 @@ set(UI_FORMS
     mainwindow/maintestswidget.ui
 
     mainwindow/statuscommonwidget.ui
+    mainwindow/detailsdialog.ui
 )
 set(RESOURCES
     resources.qrc
 )
 set(TS_FILES
     ${CMAKE_CURRENT_SOURCE_DIR}/app_ru.ts
+    ${CMAKE_CURRENT_SOURCE_DIR}/app_en.ts
 )
 
 add_custom_target(app_ts
