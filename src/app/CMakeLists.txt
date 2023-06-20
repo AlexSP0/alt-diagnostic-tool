@@ -39,8 +39,9 @@ set(HEADERS
     mainwindow/maintoolswidget.h
     mainwindow/maintestswidget.h
     mainwindow/statuscommonwidget.h
-    mainwindow/clickablelabel.h
+    mainwindow/doubleclickablelabel.h
     mainwindow/detailsdialog.h
+    mainwindow/clickablehighlightlabel.h
 
     adtbuilderstrategies/adtmodelbuilder.h
     adtbuilderstrategies/adtmodelbuilderstrategyinterface.h
@@ -72,8 +73,9 @@ set(SOURCES
     mainwindow/maintoolswidget.cpp
     mainwindow/maintestswidget.cpp
     mainwindow/statuscommonwidget.cpp
-    mainwindow/clickablelabel.cpp
+    mainwindow/doubleclickablelabel.cpp
     mainwindow/detailsdialog.cpp
+    mainwindow/clickablehighlightlabel.cpp
 
     adtbuilderstrategies/adtmodelbuilder.cpp
     adtbuilderstrategies/adtmodelbuilderstrategydbusinfodesktop.cpp

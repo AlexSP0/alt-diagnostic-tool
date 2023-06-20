@@ -19,7 +19,7 @@
 ***********************************************************************************************************************/
 
 #include "statuscommonwidget.h"
-#include "clickablelabel.h"
+#include "clickablehighlightlabel.h"
 #include "ui_statuscommonwidget.h"
 
 #include <QStyle>
@@ -40,7 +40,10 @@ StatusCommonWidget::StatusCommonWidget(TreeItem *item, QWidget *parent)
 
     m_defaultColor = QWidget::palette().color(QWidget::backgroundRole());
 
-    connect(ui->testNameLabel, &ClickableLabel::doubleClicked, this, &StatusCommonWidget::on_runPushButton_clicked);
+    connect(ui->testNameLabel,
+            &ClickableHighlightLabel::doubleClicked,
+            this,
+            &StatusCommonWidget::on_runPushButton_clicked);
 }
 
 StatusCommonWidget::~StatusCommonWidget()

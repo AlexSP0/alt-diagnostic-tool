@@ -23,21 +23,17 @@
 
 #include <QLabel>
 
-class ClickableLabel : public QLabel
+class DoubleClickableLabel : public QLabel
 {
     Q_OBJECT
 public:
-    ClickableLabel(QWidget *parent = nullptr);
+    DoubleClickableLabel(QWidget *parent = nullptr);
 
 signals:
     void doubleClicked();
 
 protected:
-    void mouseDoubleClickEvent(QMouseEvent *event)
-    {
-        QLabel::mouseDoubleClickEvent(event);
-        emit this->doubleClicked();
-    }
+    void mouseDoubleClickEvent(QMouseEvent *event);
 };
 
 #endif // CLICKABLELABEL_H

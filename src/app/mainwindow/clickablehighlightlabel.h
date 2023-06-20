@@ -18,6 +18,32 @@
 **
 ***********************************************************************************************************************/
 
-#include "clickablelabel.h"
+#ifndef CLICKABLEHIGHLIGHTLABEL_H
+#define CLICKABLEHIGHLIGHTLABEL_H
 
-ClickableLabel::ClickableLabel(QWidget *parent) {}
+#include <QEvent>
+#include <QLabel>
+
+class ClickableHighlightLabel : public QLabel
+{
+    Q_OBJECT
+public:
+    ClickableHighlightLabel(QWidget *parent = nullptr);
+
+    void setHighlightColor(QColor color);
+
+signals:
+    void clicked();
+    void doubleClicked();
+
+protected:
+    void enterEvent(QEvent *event) override;
+    void leaveEvent(QEvent *event) override;
+    void mouseDoubleClickEvent(QMouseEvent *event);
+
+private:
+    QColor m_standartColor;
+    QColor m_highlightColor;
+};
+
+#endif // CLICKABLEHIGHLIGHTLABEL_H
