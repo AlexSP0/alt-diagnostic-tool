@@ -28,6 +28,7 @@ StatusCommonWidget::StatusCommonWidget(TreeItem *item, QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::StatusCommonWidget)
     , treeItem(item)
+    , m_defaultColor()
 {
     ui->setupUi(this);
 
@@ -36,6 +37,8 @@ StatusCommonWidget::StatusCommonWidget(TreeItem *item, QWidget *parent)
     ui->testIconLabel->setPixmap(icon.pixmap(16, 16));
 
     ui->testNameLabel->setText(treeItem->getExecutable()->m_name.trimmed());
+
+    m_defaultColor = QWidget::palette().color(QWidget::backgroundRole());
 
     connect(ui->testNameLabel, &ClickableLabel::doubleClicked, this, &StatusCommonWidget::on_runPushButton_clicked);
 }
@@ -63,6 +66,42 @@ void StatusCommonWidget::setIcon(QIcon &icon)
 void StatusCommonWidget::setEnabledRunButton(bool isEnabled)
 {
     ui->runPushButton->setEnabled(isEnabled);
+}
+
+void StatusCommonWidget::setWidgetStatus(StatusCommonWidget::WidgetStatus status)
+{
+    QIcon icon;
+    QString text;
+    QPalette pal = QPalette();
+
+    switch (status)
+    {
+    case WidgetStatus::ready:
+        icon = style()->standardIcon(QStyle::SP_ComputerIcon);
+        text = treeItem->getExecutable()->m_name;
+        pal.setColor(QPalette::Window, m_defaultColor);
+        break;
+    case WidgetStatus::running:
+        icon = style()->standardIcon(QStyle::SP_BrowserReload);
+        text = "Running: " + treeItem->getExecutable()->m_name;
+        pal.setColor(QPalette::Window, Qt::darkGreen);
+        break;
+    case WidgetStatus::finishedOk:
+        icon = style()->standardIcon(QStyle::SP_DialogApplyButton);
+        text = treeItem->getExecutable()->m_name;
+        pal.setColor(QPalette::Window, m_defaultColor);
+        break;
+    case WidgetStatus::finishedFailed:
+        icon = style()->standardIcon(QStyle::SP_DialogCloseButton);
+        text = treeItem->getExecutable()->m_name;
+        pal.setColor(QPalette::Window, Qt::darkGray);
+        break;
+    }
+
+    setIcon(icon);
+    setText(text.trimmed());
+    setAutoFillBackground(true);
+    setPalette(pal);
 }
 
 void StatusCommonWidget::on_detailsPushButton_clicked()

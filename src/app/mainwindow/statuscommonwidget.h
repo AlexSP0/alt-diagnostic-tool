@@ -34,6 +34,15 @@ class StatusCommonWidget : public QWidget
     Q_OBJECT
 
 public:
+    enum WidgetStatus
+    {
+        ready,
+        running,
+        finishedOk,
+        finishedFailed
+    };
+
+public:
     StatusCommonWidget(TreeItem *item, QWidget *parent = nullptr);
 
     ~StatusCommonWidget();
@@ -45,6 +54,8 @@ public:
     void setIcon(QIcon &icon);
 
     void setEnabledRunButton(bool isEnabled);
+
+    void setWidgetStatus(StatusCommonWidget::WidgetStatus status);
 
 signals:
     void detailsButtonClicked(StatusCommonWidget *widget);
@@ -60,6 +71,8 @@ private:
     Ui::StatusCommonWidget *ui;
 
     TreeItem *treeItem;
+
+    QColor m_defaultColor;
 
 private:
     StatusCommonWidget(const StatusCommonWidget &) = delete;

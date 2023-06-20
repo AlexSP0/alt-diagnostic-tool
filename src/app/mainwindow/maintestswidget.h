@@ -56,7 +56,7 @@ public:
 
     void showAllTest() override;
 
-    void setWidgetStatus(ADTExecutable *task, TestWidgetInterface::TaskStatus status) override;
+    void setWidgetStatus(ADTExecutable *task, StatusCommonWidget::WidgetStatus status, bool moveScroll = true) override;
 
     std::vector<ADTExecutable *> getTasks() override;
 

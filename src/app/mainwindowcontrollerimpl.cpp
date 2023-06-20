@@ -322,18 +322,18 @@ void MainWindowControllerImpl::onAllTasksFinished()
 
 void MainWindowControllerImpl::onBeginTask(ADTExecutable *task)
 {
-    d->m_testWidget->setWidgetStatus(task, TestWidgetInterface::TaskStatus::running);
+    d->m_testWidget->setWidgetStatus(task, StatusCommonWidget::WidgetStatus::running);
 }
 
 void MainWindowControllerImpl::onFinishTask(ADTExecutable *task)
 {
     if (task->m_exit_code == 0)
     {
-        d->m_testWidget->setWidgetStatus(task, TestWidgetInterface::TaskStatus::finishedOk);
+        d->m_testWidget->setWidgetStatus(task, StatusCommonWidget::WidgetStatus::finishedOk);
     }
     else
     {
-        d->m_testWidget->setWidgetStatus(task, TestWidgetInterface::TaskStatus::finishedFailed);
+        d->m_testWidget->setWidgetStatus(task, StatusCommonWidget::WidgetStatus::finishedFailed);
     }
 }
 

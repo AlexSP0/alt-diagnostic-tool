@@ -111,7 +111,7 @@ void MainTestsWidget::showAllTest()
     ui->stackedWidget->setCurrentIndex(0);
 }
 
-void MainTestsWidget::setWidgetStatus(ADTExecutable *task, TaskStatus status)
+void MainTestsWidget::setWidgetStatus(ADTExecutable *task, StatusCommonWidget::WidgetStatus status, bool moveScroll)
 {
     StatusCommonWidget *currentWidget = findWidgetByTask(task);
 
@@ -120,32 +120,12 @@ void MainTestsWidget::setWidgetStatus(ADTExecutable *task, TaskStatus status)
         return;
     }
 
-    QIcon icon;
-    QString text;
+    currentWidget->setWidgetStatus(status);
 
-    switch (status)
+    if (moveScroll)
     {
-    case TestWidgetInterface::TaskStatus::ready:
-        icon = style()->standardIcon(QStyle::SP_ComputerIcon);
-        text = task->m_name;
-        break;
-    case TestWidgetInterface::TaskStatus::running:
-        icon = style()->standardIcon(QStyle::SP_BrowserReload);
-        text = "Running: " + task->m_name;
-        break;
-    case TestWidgetInterface::TaskStatus::finishedOk:
-        icon = style()->standardIcon(QStyle::SP_DialogApplyButton);
-        text = task->m_name;
-        break;
-    case TestWidgetInterface::TaskStatus::finishedFailed:
-        icon = style()->standardIcon(QStyle::SP_DialogCloseButton);
-        text = task->m_name;
-        break;
+        ui->summaryScrollArea->ensureWidgetVisible(currentWidget);
     }
-
-    currentWidget->setIcon(icon);
-    currentWidget->setText(text.trimmed());
-    ui->summaryScrollArea->ensureWidgetVisible(currentWidget);
 }
 
 std::vector<ADTExecutable *> MainTestsWidget::getTasks()
