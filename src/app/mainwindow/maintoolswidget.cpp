@@ -22,6 +22,7 @@
 #include "ui_maintoolswidget.h"
 
 #include <QDebug>
+#include <QMouseEvent>
 
 MainToolsWidget::MainToolsWidget(QWidget *parent)
     : QWidget(parent)
@@ -29,6 +30,8 @@ MainToolsWidget::MainToolsWidget(QWidget *parent)
     , m_controller(nullptr)
 {
     ui->setupUi(this);
+
+    ui->toolsListView->viewport()->installEventFilter(this);
 }
 
 void MainToolsWidget::setController(MainWindowControllerInterface *controller)
@@ -76,6 +79,23 @@ void MainToolsWidget::setModel(QAbstractItemModel *model)
 void MainToolsWidget::setDescription(QString description)
 {
     ui->descriptionTextEdit->setText(description);
+}
+
+bool MainToolsWidget::eventFilter(QObject *watched, QEvent *event)
+{
+    if (watched == ui->toolsListView->viewport() && event->type() == QEvent::MouseButtonDblClick)
+    {
+        QMouseEvent *mouseEvent = static_cast<QMouseEvent *>(event);
+        QModelIndex index       = ui->toolsListView->indexAt(mouseEvent->pos());
+
+        if (index.isValid())
+        {
+            TreeItem *selectedItem = static_cast<TreeItem *>(index.internalPointer());
+            m_controller->changeSelectedTool(selectedItem);
+            on_browseCheckPushButton_clicked();
+        }
+    }
+    return QWidget::eventFilter(watched, event);
 }
 
 void MainToolsWidget::on_runAllPushButton_clicked()

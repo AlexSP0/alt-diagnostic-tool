@@ -52,6 +52,8 @@ public:
 
     void setDescription(QString description) override;
 
+    bool eventFilter(QObject *watched, QEvent *event);
+
 private slots:
     void on_runAllPushButton_clicked();
 
