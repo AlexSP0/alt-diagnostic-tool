@@ -33,6 +33,48 @@ class StatusCommonWidget : public QWidget
 {
     Q_OBJECT
 
+    struct WidgetBackgroundColor
+    {
+        WidgetBackgroundColor() {}
+        WidgetBackgroundColor(int r, int g, int b)
+        {
+            red   = r;
+            green = g;
+            blue  = b;
+        }
+        int red   = 0;
+        int green = 0;
+        int blue  = 0;
+    };
+
+    struct TestOkColor : public WidgetBackgroundColor
+    {
+        TestOkColor()
+            : WidgetBackgroundColor(253, 253, 253)
+        {}
+    };
+
+    struct TestFailedColor : public WidgetBackgroundColor
+    {
+        TestFailedColor()
+            : WidgetBackgroundColor(186, 189, 182)
+        {}
+    };
+
+    struct TestReadyColor : public WidgetBackgroundColor
+    {
+        TestReadyColor()
+            : WidgetBackgroundColor(186, 189, 182)
+        {}
+    };
+
+    struct TestRunningColor : public WidgetBackgroundColor
+    {
+        TestRunningColor()
+            : WidgetBackgroundColor(181, 199, 164)
+        {}
+    };
+
 public:
     enum WidgetStatus
     {

@@ -74,37 +74,40 @@ void StatusCommonWidget::setEnabledRunButton(bool isEnabled)
 void StatusCommonWidget::setWidgetStatus(StatusCommonWidget::WidgetStatus status)
 {
     QIcon icon;
+    WidgetBackgroundColor backColor;
     QString text;
     QPalette pal = QPalette();
 
     switch (status)
     {
     case WidgetStatus::ready:
-        icon = style()->standardIcon(QStyle::SP_ComputerIcon);
-        text = treeItem->getExecutable()->m_name;
-        pal.setColor(QPalette::Window, m_defaultColor);
+        icon      = style()->standardIcon(QStyle::SP_ComputerIcon);
+        text      = treeItem->getExecutable()->m_name;
+        backColor = TestReadyColor();
         break;
     case WidgetStatus::running:
-        icon = style()->standardIcon(QStyle::SP_BrowserReload);
-        text = "Running: " + treeItem->getExecutable()->m_name;
-        pal.setColor(QPalette::Window, Qt::darkGreen);
+        icon      = style()->standardIcon(QStyle::SP_BrowserReload);
+        text      = "Running: " + treeItem->getExecutable()->m_name;
+        backColor = TestRunningColor();
         break;
     case WidgetStatus::finishedOk:
-        icon = style()->standardIcon(QStyle::SP_DialogApplyButton);
-        text = treeItem->getExecutable()->m_name;
-        pal.setColor(QPalette::Window, m_defaultColor);
+        icon      = style()->standardIcon(QStyle::SP_DialogApplyButton);
+        text      = treeItem->getExecutable()->m_name;
+        backColor = TestOkColor();
         break;
     case WidgetStatus::finishedFailed:
-        icon = style()->standardIcon(QStyle::SP_DialogCloseButton);
-        text = treeItem->getExecutable()->m_name;
-        pal.setColor(QPalette::Window, Qt::darkGray);
+        icon      = style()->standardIcon(QStyle::SP_DialogCloseButton);
+        text      = treeItem->getExecutable()->m_name;
+        backColor = TestFailedColor();
         break;
     }
 
+    QColor color(backColor.red, backColor.green, backColor.blue);
+    pal.setColor(QPalette::Window, color);
+    setPalette(pal);
     setIcon(icon);
     setText(text.trimmed());
     setAutoFillBackground(true);
-    setPalette(pal);
 }
 
 void StatusCommonWidget::on_detailsPushButton_clicked()
