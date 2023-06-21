@@ -17,6 +17,7 @@ BuildRequires: qt5-base-devel
 BuildRequires: qt5-declarative-devel
 BuildRequires: qt5-tools-devel
 BuildRequires: qt5-base-common
+BuildRequires: boost-devel-headers
 BuildRequires: doxygen
 
 Source0: %name-%version.tar
