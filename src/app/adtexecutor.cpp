@@ -120,32 +120,32 @@ void ADTExecutor::runTasks()
 
 void ADTExecutor::executeTask(ADTExecutable *task)
 {
-    QDBusConnection dbus(QDBusConnection::systemBus());
+    //    QDBusConnection dbus(QDBusConnection::systemBus());
 
-    QDBusInterface dbusIface(task->m_dbusServiceName, task->m_dbusPath, task->m_dbusInteface, dbus);
+    //    QDBusInterface dbusIface(task->m_dbusServiceName, task->m_dbusPath, task->m_dbusInteface, dbus);
 
-    task->clearReports();
+    //    task->clearReports();
 
-    QDBusMessage reply = dbusIface.call(task->m_method, task->m_args);
+    //    QDBusMessage reply = dbusIface.call(task->m_method, task->m_args);
 
-    QList<QVariant> replyValues = reply.arguments();
+    //    QList<QVariant> replyValues = reply.arguments();
 
-    QStringList report = replyValues.takeFirst().toStringList();
+    //    QStringList report = replyValues.takeFirst().toStringList();
 
-    int exitCode = replyValues.takeFirst().toInt();
+    //    int exitCode = replyValues.takeFirst().toInt();
 
-    if (reply.type() != QDBusMessage::ErrorMessage)
-    {
-        task->m_exit_code = exitCode;
+    //    if (reply.type() != QDBusMessage::ErrorMessage)
+    //    {
+    //        task->m_exit_code = exitCode;
 
-        for (QString &line : report)
-        {
-            task->m_stringStdout.append(line);
-        }
-    }
-    else
-    {
-        task->m_exit_code = -1;
-        task->m_stringStderr.append(reply.errorMessage());
-    }
+    //        for (QString &line : report)
+    //        {
+    //            task->m_stringStdout.append(line);
+    //        }
+    //    }
+    //    else
+    //    {
+    //        task->m_exit_code = -1;
+    //        task->m_stringStderr.append(reply.errorMessage());
+    //    }
 }

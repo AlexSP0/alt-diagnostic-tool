@@ -26,13 +26,9 @@ ADTExecutable::ADTExecutable()
     : m_id("")
     , m_type(-1)
     , m_name("")
-    , m_category("")
+    , m_toolId("")
     , m_icon("")
     , m_description("")
-    , m_dbusServiceName("")
-    , m_dbusPath("")
-    , m_dbusInteface("")
-    , m_method("")
     , m_args("")
     , m_exit_code(-1)
     , m_stringStdout("")
@@ -40,7 +36,6 @@ ADTExecutable::ADTExecutable()
     , m_bytesStdout({})
     , m_bytesStderr({})
     , m_nameLocaleStorage()
-    , m_categoryLocaleStorage()
     , m_descriptionLocaleStorage()
 {}
 
@@ -50,12 +45,6 @@ void ADTExecutable::setLocate(QString locale)
     if (nameIt != m_nameLocaleStorage.end())
     {
         m_name = *nameIt;
-    }
-
-    auto categoryIt = m_categoryLocaleStorage.find(locale);
-    if (categoryIt != m_categoryLocaleStorage.end())
-    {
-        m_category = *categoryIt;
     }
 
     auto descriptionIt = m_descriptionLocaleStorage.find(locale);

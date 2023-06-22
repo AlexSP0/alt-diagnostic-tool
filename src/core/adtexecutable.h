@@ -31,13 +31,9 @@ class ADTExecutable : public QObject
     Q_PROPERTY(QString id MEMBER m_id)
     Q_PROPERTY(int type MEMBER m_type)
     Q_PROPERTY(QString name MEMBER m_name)
-    Q_PROPERTY(QString category MEMBER m_category)
+    Q_PROPERTY(QString toolId MEMBER m_toolId)
     Q_PROPERTY(QString icon MEMBER m_icon)
     Q_PROPERTY(QString description MEMBER m_description)
-    Q_PROPERTY(QString dbusServiceName MEMBER m_dbusServiceName)
-    Q_PROPERTY(QString dbusPath MEMBER m_dbusPath)
-    Q_PROPERTY(QString dbusInterface MEMBER m_dbusInteface)
-    Q_PROPERTY(QString dbusMethod MEMBER m_method)
     Q_PROPERTY(QString args MEMBER m_args)
     Q_PROPERTY(int m_exit_code MEMBER m_exit_code)
 
@@ -51,13 +47,9 @@ public:
     QString m_id;
     int m_type;
     QString m_name;
-    QString m_category;
+    QString m_toolId;
     QString m_icon;
     QString m_description;
-    QString m_dbusServiceName;
-    QString m_dbusPath;
-    QString m_dbusInteface;
-    QString m_method;
     QString m_args;
     int m_exit_code;
 
@@ -68,7 +60,6 @@ public:
     QByteArray m_bytesStderr;
 
     QMap<QString, QString> m_nameLocaleStorage;
-    QMap<QString, QString> m_categoryLocaleStorage;
     QMap<QString, QString> m_descriptionLocaleStorage;
 
 public:

@@ -90,36 +90,35 @@ std::vector<std::unique_ptr<ADTExecutable>> ADTModelBuilderStrategyDbusInfoDeskt
 {
     QDBusInterface iface(m_serviceName, path, m_findInterface, *m_dbus.get());
 
-    QDBusReply<QStringList> testsListReply = iface.call(ADTModelBuilderStrategyDbusInfoDesktop::LIST_METHOD);
+    QDBusReply<QByteArray> testsListReply = iface.call(ADTModelBuilderStrategyDbusInfoDesktop::LIST_METHOD);
 
-    QStringList testsList = testsListReply.value();
+    QByteArray testsList = testsListReply.value();
 
-    if (testsList.empty())
+    QString listResultMethod = QString::fromStdString(testsList.toStdString());
+
+    if (listResultMethod.isEmpty())
     {
         qWarning() << "ERROR! Can't get list of tests from object with path: " << path;
 
         return std::vector<std::unique_ptr<ADTExecutable>>();
     }
 
-    QDBusReply<QStringList> reply = iface.call(ADTModelBuilderStrategyDbusInfoDesktop::INFO_METHOD);
+    QStringList listOfTests = listResultMethod.split("\n");
 
-    QStringList infoList = reply.value();
+    QDBusReply<QByteArray> reply = iface.call(ADTModelBuilderStrategyDbusInfoDesktop::INFO_METHOD);
 
-    if (infoList.empty())
+    QByteArray infoList = reply.value();
+
+    QString listInfo = QString::fromStdString(infoList.toStdString());
+
+    if (listInfo.isEmpty())
     {
         qWarning() << "ERROR! Can't get info from object with path: " << path;
 
         return std::vector<std::unique_ptr<ADTExecutable>>();
     }
 
-    QString resultString;
-
-    for (QString line : infoList)
-    {
-        resultString.append(line);
-    }
-
-    ADTDesktopFileParser parser(resultString, testsList);
+    ADTDesktopFileParser parser(listInfo, listOfTests);
 
     return parser.buildExecutables();
 }

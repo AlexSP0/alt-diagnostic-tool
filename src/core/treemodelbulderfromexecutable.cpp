@@ -18,28 +18,29 @@ std::unique_ptr<TreeModel> TreeModelBulderFromExecutable::buildModel(std::vector
 
             rootItem->appendChild(categoryItem);
 
-            categoriesMap[elements.at(i)->m_category] = categoryItem;
+            categoriesMap[elements.at(i)->m_id] = categoryItem;
 
             categoryItem->setExecutable(std::move(elements.at(i)));
 
             //Set task locale
             categoryItem->getExecutable()->setLocate("ru_RU");
-
-            continue;
         }
-        if (elements.at(i)->m_type == ADTExecutable::ExecutableType::executableType)
+    }
+    for (size_t i = 0; i < elements.size(); i++)
+    {
+        if (elements.at(i) != NULL && elements.at(i)->m_type == ADTExecutable::ExecutableType::executableType)
         {
-            auto it = categoriesMap.find(elements.at(i)->m_category);
+            auto it = categoriesMap.find(elements.at(i)->m_toolId);
 
             if (it == categoriesMap.end())
             {
-                qWarning() << "ERROR! Can't find category: " << elements.at(i)->m_category
+                qWarning() << "ERROR! Can't find category: " << elements.at(i)->m_id
                            << " for element: " << elements.at(i)->m_id;
 
                 continue;
             }
 
-            TreeItem *categoryItem = categoriesMap[elements.at(i)->m_category];
+            TreeItem *categoryItem = categoriesMap[elements.at(i)->m_toolId];
 
             TreeItem *checkItem = new TreeItem(QList<QVariant>{}, TreeItem::checkItem, categoryItem);
 

@@ -5,6 +5,11 @@
 
 #include <QDebug>
 
+const QString ADTDesktopFileParser::NAME_SECTION_NAME        = "name";
+const QString ADTDesktopFileParser::ICON_SECTION_NAME        = "icon";
+const QString ADTDesktopFileParser::DESCRIPTION_SECTION_NAME = "description";
+const QString ADTDesktopFileParser::ARGS_SECTION_NAME        = "args";
+
 ADTDesktopFileParser::ADTDesktopFileParser(QString data)
     : m_sections()
     , m_testLists()
@@ -21,6 +26,10 @@ ADTDesktopFileParser::ADTDesktopFileParser(QString data)
             for (auto &key : section.second)
             {
                 Section &currentSections = m_sections[QString(section.first.c_str())];
+
+                QString kcurrentSections = section.first.c_str();
+                QString keyName          = QString(key.first.c_str());
+                QString keyValue         = key.second.get_value("").c_str();
 
                 currentSections.insert(getKeyNameWithoutLocale(QString(key.first.c_str())),
                                        IniFileKey{getKeyNameWithoutLocale(QString(key.first.c_str())),
@@ -52,27 +61,26 @@ std::unique_ptr<ADTExecutable> ADTDesktopFileParser::buildCategoryExecutable()
         return nullptr;
     }
 
-    newADTExecutable->m_id = groups.at(0);
+    newADTExecutable->m_id = getToolName();
+
+    newADTExecutable->m_toolId = newADTExecutable->m_id;
 
     QList<QString> listOfKeys = getKeysListOfGroup(newADTExecutable->m_id);
 
     if (listOfKeys.empty())
     {
-        return nullptr;
-    }
+        qWarning() << "ERROR! Can't get list of keys for: " << newADTExecutable->m_id;
 
-    if (!setDbusFields(newADTExecutable->m_id, newADTExecutable.get()))
-    {
         return nullptr;
     }
 
     setIcon(newADTExecutable->m_id, newADTExecutable.get());
 
-    setName(newADTExecutable->m_id, newADTExecutable.get());
+    setNames(newADTExecutable->m_id, newADTExecutable.get());
 
-    setCategory(newADTExecutable->m_id, newADTExecutable.get());
+    setDescriptions(newADTExecutable->m_id, newADTExecutable.get());
 
-    setDescription(newADTExecutable->m_id, newADTExecutable.get());
+    setArgs(newADTExecutable->m_id, newADTExecutable.get());
 
     newADTExecutable->m_type = ADTExecutable::ExecutableType::categoryType;
 
@@ -88,18 +96,36 @@ std::unique_ptr<ADTExecutable> ADTDesktopFileParser::buildTestExecutable(QString
         return nullptr;
     }
 
-    result->m_id              = test.trimmed();
-    result->m_type            = ADTExecutable::ExecutableType::executableType;
-    result->m_name            = test.trimmed();
-    result->m_category        = categoryExecutable->m_category;
-    result->m_icon            = categoryExecutable->m_icon;
-    result->m_description     = categoryExecutable->m_description;
-    result->m_dbusServiceName = categoryExecutable->m_dbusServiceName;
-    result->m_dbusPath        = categoryExecutable->m_dbusPath;
-    result->m_dbusInteface    = categoryExecutable->m_dbusInteface;
-    result->m_method          = categoryExecutable->m_method;
-    result->m_args            = test.trimmed();
-    result->m_exit_code       = categoryExecutable->m_exit_code;
+    result->m_id        = test.trimmed();
+    result->m_type      = ADTExecutable::ExecutableType::executableType;
+    result->m_name      = test.trimmed();
+    result->m_toolId    = categoryExecutable->m_id;
+    result->m_icon      = categoryExecutable->m_icon;
+    result->m_exit_code = categoryExecutable->m_exit_code;
+
+    auto testSection = m_sections.find(test);
+
+    if (testSection == m_sections.end())
+    {
+        //No section for test found
+        return nullptr;
+    }
+
+    if (!setNames(test, result.get()))
+    {
+        qWarning() << "ERROR! Can't names for test : " << test << " in tool: " << categoryExecutable->m_id;
+
+        return nullptr;
+    }
+    if (!setDescriptions(test, result.get()))
+    {
+        qWarning() << "ERROR! Can't descriptions for test : " << test << " in tool: " << categoryExecutable->m_id;
+
+        return nullptr;
+    }
+
+    if (!setArgs(test, result.get()))
+    {}
 
     return result;
 }
@@ -123,11 +149,10 @@ std::vector<std::unique_ptr<ADTExecutable>> ADTDesktopFileParser::buildExecutabl
     {
         std::unique_ptr<ADTExecutable> test = buildTestExecutable(currentTest, currentCategory);
 
-        if (!test.get())
+        if (test.get())
         {
-            return results;
+            results.push_back(std::move(test));
         }
-        results.push_back(std::move(test));
     }
 
     return results;
@@ -138,7 +163,7 @@ QList<QString> ADTDesktopFileParser::getGroupsList() const
     return m_sections.keys();
 }
 
-QList<QString> ADTDesktopFileParser::getKeysListOfGroup(QString group) const
+QList<QString> ADTDesktopFileParser::getKeysListOfGroup(QString group)
 {
     return m_sections[group].keys();
 }
@@ -169,52 +194,10 @@ QString ADTDesktopFileParser::getKeyNameWithoutLocale(QString keyName)
     return keyName.mid(0, indexOfOpeningBracket);
 }
 
-bool ADTDesktopFileParser::setDbusFields(QString &category, ADTExecutable *object)
+bool ADTDesktopFileParser::setIcon(QString &test, ADTExecutable *object)
 {
-    Section section = m_sections[category];
-
-    auto dbusServiceNameIt = section.find("dbusServiceName");
-    if (dbusServiceNameIt == section.end())
-    {
-        return false;
-    }
-    object->m_dbusServiceName = dbusServiceNameIt->value.toString();
-
-    auto dbusPathNameIt = section.find("dbusPath");
-    if (dbusPathNameIt == section.end())
-    {
-        return false;
-    }
-    object->m_dbusPath = dbusPathNameIt->value.toString();
-
-    auto dbusInterfaceIt = section.find("dbusInteface");
-    if (dbusInterfaceIt == section.end())
-    {
-        return false;
-    }
-    object->m_dbusInteface = dbusInterfaceIt->value.toString();
-
-    auto dbusMethodIt = section.find("dbusMethod");
-    if (dbusMethodIt == section.end())
-    {
-        return false;
-    }
-    object->m_method = dbusMethodIt->value.toString();
-
-    auto dbusMethodArgsIt = section.find("args");
-    if (dbusMethodArgsIt == section.end())
-    {
-        return false;
-    }
-    object->m_args = dbusMethodArgsIt->value.toString();
-
-    return true;
-}
-
-bool ADTDesktopFileParser::setIcon(QString &category, ADTExecutable *object)
-{
-    Section section = m_sections[category];
-    auto iconIt     = section.find("icon");
+    Section section = m_sections[test];
+    auto iconIt     = section.find(ADTDesktopFileParser::ICON_SECTION_NAME);
 
     if (iconIt == section.end())
     {
@@ -228,10 +211,10 @@ bool ADTDesktopFileParser::setIcon(QString &category, ADTExecutable *object)
     return true;
 }
 
-bool ADTDesktopFileParser::setName(QString &category, ADTExecutable *object)
+bool ADTDesktopFileParser::setNames(QString &test, ADTExecutable *object)
 {
-    Section section = m_sections[category];
-    auto nameIt     = section.find("name");
+    Section section = m_sections[test];
+    auto nameIt     = section.find(ADTDesktopFileParser::NAME_SECTION_NAME);
 
     if (nameIt == section.end())
     {
@@ -239,7 +222,7 @@ bool ADTDesktopFileParser::setName(QString &category, ADTExecutable *object)
         return false;
     }
 
-    QList<IniFileKey> listOfKeys = section.values("name");
+    QList<IniFileKey> listOfKeys = section.values(ADTDesktopFileParser::NAME_SECTION_NAME);
 
     for (IniFileKey &currentIniFileKey : listOfKeys)
     {
@@ -253,35 +236,10 @@ bool ADTDesktopFileParser::setName(QString &category, ADTExecutable *object)
     return true;
 }
 
-bool ADTDesktopFileParser::setCategory(QString &category, ADTExecutable *object)
+bool ADTDesktopFileParser::setDescriptions(QString &test, ADTExecutable *object)
 {
-    Section section = m_sections[category];
-    auto nameIt     = section.find("category");
-
-    if (nameIt == section.end())
-    {
-        object->m_category = "";
-        return false;
-    }
-
-    QList<IniFileKey> listOfKeys = section.values("category");
-
-    for (IniFileKey &currentIniFileKey : listOfKeys)
-    {
-        if (currentIniFileKey.keyLocale.isEmpty())
-        {
-            object->m_category = currentIniFileKey.value.toString();
-        }
-        object->m_categoryLocaleStorage.insert(currentIniFileKey.keyLocale, currentIniFileKey.value.toString());
-    }
-
-    return true;
-}
-
-bool ADTDesktopFileParser::setDescription(QString &category, ADTExecutable *object)
-{
-    Section section = m_sections[category];
-    auto nameIt     = section.find("description");
+    Section section = m_sections[test];
+    auto nameIt     = section.find(ADTDesktopFileParser::DESCRIPTION_SECTION_NAME);
 
     if (nameIt == section.end())
     {
@@ -289,7 +247,7 @@ bool ADTDesktopFileParser::setDescription(QString &category, ADTExecutable *obje
         return false;
     }
 
-    QList<IniFileKey> listOfKeys = section.values("description");
+    QList<IniFileKey> listOfKeys = section.values(ADTDesktopFileParser::DESCRIPTION_SECTION_NAME);
 
     for (IniFileKey &currentIniFileKey : listOfKeys)
     {
@@ -301,4 +259,49 @@ bool ADTDesktopFileParser::setDescription(QString &category, ADTExecutable *obje
     }
 
     return true;
+}
+
+bool ADTDesktopFileParser::setArgs(QString &test, ADTExecutable *object)
+{
+    Section section = m_sections[test];
+    auto nameIt     = section.find(ADTDesktopFileParser::ARGS_SECTION_NAME);
+
+    if (nameIt == section.end())
+    {
+        object->m_description = "";
+        return false;
+    }
+
+    QList<IniFileKey> listOfKeys = section.values(ADTDesktopFileParser::ARGS_SECTION_NAME);
+
+    if (!listOfKeys.empty())
+    {
+        object->m_args = listOfKeys.at(0).value.toString();
+    }
+
+    return true;
+}
+
+QString ADTDesktopFileParser::getToolName()
+{
+    for (QString currentSection : m_sections.keys())
+    {
+        bool found = false;
+
+        for (QString currentTestName : m_testLists)
+        {
+            if (currentTestName == currentSection)
+            {
+                found = true;
+            }
+        }
+
+        if (!found)
+        {
+            return currentSection;
+        }
+    }
+    qWarning() << "ERROR! Can't find tool name!";
+
+    return QString();
 }

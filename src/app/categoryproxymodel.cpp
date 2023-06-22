@@ -33,7 +33,7 @@ bool CategoryProxyModel::filterAcceptsRow(int source_row, const QModelIndex &sou
         auto data = source_index.data(Qt::UserRole + 1);
         if (data.isValid())
         {
-            return data.value<ADTExecutable *>()->m_category == selectedCategory;
+            return data.value<ADTExecutable *>()->m_id == selectedCategory;
         }
     }
 

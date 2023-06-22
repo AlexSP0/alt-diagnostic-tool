@@ -35,7 +35,7 @@ const QString DBUS_SERVICE_NAME    = "ru.basealt.alterator";
 const QString PATH_TO_DBUS_OBJECT  = "/ru/basealt/alterator";
 const QString DBUS_INTERFACE_NAME  = "ru.basealt.alterator.manager";
 const QString DBUS_GET_METHOD_NAME = "get_objects";
-const QString DBUS_FIND_INTERFACE  = "ru.basealt.alterator.diag_interface";
+const QString DBUS_FIND_INTERFACE  = "ru.basealt.alterator.adt_interface";
 
 class ADTAppPrivate
 {
