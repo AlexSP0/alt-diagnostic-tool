@@ -31,11 +31,12 @@
 #include <iostream>
 #include <memory>
 
-const QString DBUS_SERVICE_NAME    = "ru.basealt.alterator";
-const QString PATH_TO_DBUS_OBJECT  = "/ru/basealt/alterator";
-const QString DBUS_INTERFACE_NAME  = "ru.basealt.alterator.manager";
-const QString DBUS_GET_METHOD_NAME = "get_objects";
-const QString DBUS_FIND_INTERFACE  = "ru.basealt.alterator.adt_interface";
+const QString DBUS_SERVICE_NAME         = "ru.basealt.alterator";
+const QString PATH_TO_DBUS_OBJECT       = "/ru/basealt/alterator";
+const QString DBUS_INTERFACE_NAME       = "ru.basealt.alterator.manager";
+const QString DBUS_GET_METHOD_NAME      = "get_objects";
+const QString DBUS_FIND_INTERFACE       = "ru.basealt.alterator.diag1";
+const QString DBUS_RUN_TASK_METHOD_NAME = "run";
 
 class ADTAppPrivate
 {
@@ -124,6 +125,7 @@ void ADTApp::buildModel()
                                                                             DBUS_INTERFACE_NAME,
                                                                             DBUS_GET_METHOD_NAME,
                                                                             DBUS_FIND_INTERFACE,
+                                                                            DBUS_RUN_TASK_METHOD_NAME,
                                                                             new TreeModelBulderFromExecutable()));
     d->m_model = std::move(modelBuilder.buildModel());
 }

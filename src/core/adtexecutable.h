@@ -35,6 +35,10 @@ class ADTExecutable : public QObject
     Q_PROPERTY(QString icon MEMBER m_icon)
     Q_PROPERTY(QString description MEMBER m_description)
     Q_PROPERTY(QString args MEMBER m_args)
+    Q_PROPERTY(QString dbusServiceName MEMBER m_dbusServiceName)
+    Q_PROPERTY(QString dbusPath MEMBER m_dbusPath)
+    Q_PROPERTY(QString dbusInterfaceName MEMBER m_dbusInterfaceName)
+    Q_PROPERTY(QString dbusRunMethodName MEMBER m_dbusServiceName)
     Q_PROPERTY(int m_exit_code MEMBER m_exit_code)
 
 public:
@@ -52,6 +56,11 @@ public:
     QString m_description;
     QString m_args;
     int m_exit_code;
+
+    QString m_dbusServiceName;
+    QString m_dbusPath;
+    QString m_dbusInterfaceName;
+    QString m_dbusRunMethodName;
 
     QString m_stringStdout;
     QString m_stringStderr;

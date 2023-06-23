@@ -28,8 +28,12 @@ public:
     static const QString ARGS_SECTION_NAME;
 
 public:
-    ADTDesktopFileParser(QString data);
-    ADTDesktopFileParser(QString data, QStringList testLists);
+    ADTDesktopFileParser(QString data,
+                         QStringList testLists,
+                         QString dbusServiceName,
+                         QString dbusPath,
+                         QString dbusInterfaceName,
+                         QString dbusMethodName);
 
     std::unique_ptr<ADTExecutable> buildCategoryExecutable();
     std::unique_ptr<ADTExecutable> buildTestExecutable(QString test, ADTExecutable *categoryExecutable);
@@ -41,6 +45,8 @@ public:
     QString getKeyLocale(QString keyName);
 
 private:
+    ADTDesktopFileParser(QString data);
+
     QString getKeyNameWithoutLocale(QString keyName);
     bool setIcon(QString &test, ADTExecutable *object);
     bool setNames(QString &test, ADTExecutable *object);
@@ -52,6 +58,11 @@ private:
     Sections m_sections;
 
     QStringList m_testLists;
+
+    QString m_dbusServiceName;
+    QString m_dbusPath;
+    QString m_dbusInterfaceName;
+    QString m_dbusMethodName;
 };
 
 #endif // ADTDESKTOPFILEPARSER_H

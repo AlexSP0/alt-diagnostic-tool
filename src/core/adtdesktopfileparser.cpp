@@ -13,6 +13,10 @@ const QString ADTDesktopFileParser::ARGS_SECTION_NAME        = "args";
 ADTDesktopFileParser::ADTDesktopFileParser(QString data)
     : m_sections()
     , m_testLists()
+    , m_dbusServiceName()
+    , m_dbusPath()
+    , m_dbusInterfaceName()
+    , m_dbusMethodName()
 {
     std::istringstream iStream(data.toStdString());
 
@@ -44,10 +48,19 @@ ADTDesktopFileParser::ADTDesktopFileParser(QString data)
     }
 }
 
-ADTDesktopFileParser::ADTDesktopFileParser(QString data, QStringList testLists)
+ADTDesktopFileParser::ADTDesktopFileParser(QString data,
+                                           QStringList testLists,
+                                           QString dbusServiceName,
+                                           QString dbusPath,
+                                           QString dbusInterfaceName,
+                                           QString dbusMethodName)
     : ADTDesktopFileParser{data}
 {
-    m_testLists = testLists;
+    m_testLists         = testLists;
+    m_dbusServiceName   = dbusServiceName;
+    m_dbusPath          = dbusPath;
+    m_dbusInterfaceName = dbusInterfaceName;
+    m_dbusMethodName    = dbusMethodName;
 }
 
 std::unique_ptr<ADTExecutable> ADTDesktopFileParser::buildCategoryExecutable()
@@ -102,6 +115,12 @@ std::unique_ptr<ADTExecutable> ADTDesktopFileParser::buildTestExecutable(QString
     result->m_toolId    = categoryExecutable->m_id;
     result->m_icon      = categoryExecutable->m_icon;
     result->m_exit_code = categoryExecutable->m_exit_code;
+
+    result->m_dbusServiceName   = m_dbusServiceName;
+    result->m_dbusInterfaceName = m_dbusInterfaceName;
+    result->m_dbusPath          = m_dbusPath;
+    result->m_dbusRunMethodName = m_dbusMethodName;
+    result->m_args              = result->m_id;
 
     auto testSection = m_sections.find(test);
 

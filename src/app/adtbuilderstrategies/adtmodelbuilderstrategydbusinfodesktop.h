@@ -19,6 +19,7 @@ public:
                                            QString interface,
                                            QString getMethodName,
                                            QString findInterface,
+                                           QString runTaskMethodName,
                                            TreeModelBuilderInterface *builder);
 
 public:
@@ -27,7 +28,7 @@ public:
 private:
     QStringList getObjectsPathByInterface(QString interface);
 
-    std::vector<std::unique_ptr<ADTExecutable> > buildADTExecutablesFromDesktopFile(QString path);
+    std::vector<std::unique_ptr<ADTExecutable>> buildADTExecutablesFromDesktopFile(QString path);
 
 private:
     QString m_serviceName;
@@ -35,6 +36,7 @@ private:
     QString m_interface;
     QString m_get_method_name;
     QString m_findInterface;
+    QString m_runTaskMethodName;
 
     std::unique_ptr<TreeModelBuilderInterface> m_treeModelBuilder;
 

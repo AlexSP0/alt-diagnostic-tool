@@ -33,12 +33,14 @@ ADTModelBuilderStrategyDbusInfoDesktop::ADTModelBuilderStrategyDbusInfoDesktop(Q
                                                                                QString interface,
                                                                                QString getMethodName,
                                                                                QString findInterface,
+                                                                               QString runTaskMethodName,
                                                                                TreeModelBuilderInterface *builder)
     : m_serviceName(serviceName)
     , m_path(path)
     , m_interface(interface)
     , m_get_method_name(getMethodName)
     , m_findInterface(findInterface)
+    , m_runTaskMethodName(runTaskMethodName)
     , m_treeModelBuilder(builder)
     , m_implementedInterfacesPath()
     , m_dbus(new QDBusConnection(QDBusConnection::systemBus()))
@@ -58,8 +60,7 @@ std::unique_ptr<TreeModel> ADTModelBuilderStrategyDbusInfoDesktop::buildModel()
 
     for (QString currentPath : listOfObjects)
     {
-        std::vector<std::unique_ptr<ADTExecutable>> currentExecutables = std::move(
-            buildADTExecutablesFromDesktopFile(currentPath));
+        std::vector<std::unique_ptr<ADTExecutable>> currentExecutables = buildADTExecutablesFromDesktopFile(currentPath);
         if (!currentExecutables.empty())
         {
             for (auto &currentExe : currentExecutables)
@@ -118,7 +119,7 @@ std::vector<std::unique_ptr<ADTExecutable>> ADTModelBuilderStrategyDbusInfoDeskt
         return std::vector<std::unique_ptr<ADTExecutable>>();
     }
 
-    ADTDesktopFileParser parser(listInfo, listOfTests);
+    ADTDesktopFileParser parser(listInfo, listOfTests, m_serviceName, path, m_findInterface, m_runTaskMethodName);
 
     return parser.buildExecutables();
 }
