@@ -87,7 +87,7 @@ void StatusCommonWidget::setWidgetStatus(StatusCommonWidget::WidgetStatus status
         break;
     case WidgetStatus::running:
         icon      = style()->standardIcon(QStyle::SP_BrowserReload);
-        text      = "Running: " + treeItem->getExecutable()->m_name;
+        text      = QString(tr("Running:")) + QString(" ") + treeItem->getExecutable()->m_name;
         backColor = TestRunningColor();
         break;
     case WidgetStatus::finishedOk:

@@ -30,7 +30,7 @@ class ADTAppPrivate;
 class ADTApp
 {
 public:
-    ADTApp(QApplication *application);
+    ADTApp(QApplication *application, QString locale);
     ~ADTApp();
 
     int runApp();

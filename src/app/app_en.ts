@@ -126,6 +126,10 @@
         <source>Details</source>
         <translation>Details</translation>
     </message>
+    <message>
+        <source>Running:</source>
+        <translation>Running:</translation>
+    </message>
 </context>
 <context>
     <name>main</name>

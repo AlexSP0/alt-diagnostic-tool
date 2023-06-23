@@ -126,6 +126,10 @@
         <source>Details</source>
         <translation>Отчет</translation>
     </message>
+    <message>
+        <source>Running:</source>
+        <translation type="unfinished">Выполняется:</translation>
+    </message>
 </context>
 <context>
     <name>main</name>

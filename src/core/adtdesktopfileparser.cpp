@@ -48,6 +48,19 @@ ADTDesktopFileParser::ADTDesktopFileParser(QString data)
     }
 }
 
+QString ADTDesktopFileParser::getDefaulValue(QList<IniFileKey> iniFileKey)
+{
+    for (IniFileKey &currentIniFileKey : iniFileKey)
+    {
+        if (currentIniFileKey.keyLocale.isEmpty())
+        {
+            return currentIniFileKey.value.toString();
+        }
+    }
+
+    return QString();
+}
+
 ADTDesktopFileParser::ADTDesktopFileParser(QString data,
                                            QStringList testLists,
                                            QString dbusServiceName,
@@ -89,9 +102,17 @@ std::unique_ptr<ADTExecutable> ADTDesktopFileParser::buildCategoryExecutable()
 
     setIcon(newADTExecutable->m_id, newADTExecutable.get());
 
-    setNames(newADTExecutable->m_id, newADTExecutable.get());
+    if (!setNames(newADTExecutable->m_id, newADTExecutable.get()))
+    {
+        qWarning() << "ERROR! Can't get name for category object: " << newADTExecutable->m_id;
+        return nullptr;
+    }
 
-    setDescriptions(newADTExecutable->m_id, newADTExecutable.get());
+    if (!setDescriptions(newADTExecutable->m_id, newADTExecutable.get()))
+    {
+        qWarning() << "ERROR! Can't get description for category object: " << newADTExecutable->m_id;
+        return nullptr;
+    }
 
     setArgs(newADTExecutable->m_id, newADTExecutable.get());
 
@@ -243,12 +264,16 @@ bool ADTDesktopFileParser::setNames(QString &test, ADTExecutable *object)
 
     QList<IniFileKey> listOfKeys = section.values(ADTDesktopFileParser::NAME_SECTION_NAME);
 
+    QString defaultName = getDefaulValue(listOfKeys);
+    if (defaultName.isEmpty())
+    {
+        return false;
+    }
+
+    object->m_name = defaultName;
+
     for (IniFileKey &currentIniFileKey : listOfKeys)
     {
-        if (currentIniFileKey.keyLocale.isEmpty())
-        {
-            object->m_name = currentIniFileKey.value.toString();
-        }
         object->m_nameLocaleStorage.insert(currentIniFileKey.keyLocale, currentIniFileKey.value.toString());
     }
 
@@ -268,12 +293,16 @@ bool ADTDesktopFileParser::setDescriptions(QString &test, ADTExecutable *object)
 
     QList<IniFileKey> listOfKeys = section.values(ADTDesktopFileParser::DESCRIPTION_SECTION_NAME);
 
+    QString defaultDescription = getDefaulValue(listOfKeys);
+    if (defaultDescription.isEmpty())
+    {
+        return false;
+    }
+
+    object->m_description = defaultDescription;
+
     for (IniFileKey &currentIniFileKey : listOfKeys)
     {
-        if (currentIniFileKey.keyLocale.isEmpty())
-        {
-            object->m_description = currentIniFileKey.value.toString();
-        }
         object->m_descriptionLocaleStorage.insert(currentIniFileKey.keyLocale, currentIniFileKey.value.toString());
     }
 
@@ -287,7 +316,7 @@ bool ADTDesktopFileParser::setArgs(QString &test, ADTExecutable *object)
 
     if (nameIt == section.end())
     {
-        object->m_description = "";
+        object->m_args = "";
         return false;
     }
 
@@ -296,9 +325,10 @@ bool ADTDesktopFileParser::setArgs(QString &test, ADTExecutable *object)
     if (!listOfKeys.empty())
     {
         object->m_args = listOfKeys.at(0).value.toString();
+        return true;
     }
 
-    return true;
+    return false;
 }
 
 QString ADTDesktopFileParser::getToolName()

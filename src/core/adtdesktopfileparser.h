@@ -35,18 +35,21 @@ public:
                          QString dbusInterfaceName,
                          QString dbusMethodName);
 
-    std::unique_ptr<ADTExecutable> buildCategoryExecutable();
-    std::unique_ptr<ADTExecutable> buildTestExecutable(QString test, ADTExecutable *categoryExecutable);
-    std::vector<std::unique_ptr<ADTExecutable>> buildExecutables();
-
     QList<QString> getGroupsList() const;
     QList<QString> getKeysListOfGroup(QString group);
 
     QString getKeyLocale(QString keyName);
+    std::vector<std::unique_ptr<ADTExecutable>> buildExecutables();
 
 private:
     ADTDesktopFileParser(QString data);
 
+    std::unique_ptr<ADTExecutable> buildCategoryExecutable();
+    std::unique_ptr<ADTExecutable> buildTestExecutable(QString test, ADTExecutable *categoryExecutable);
+
+    QString getDefaulValue(QList<IniFileKey> iniFileKey);
+
+private:
     QString getKeyNameWithoutLocale(QString keyName);
     bool setIcon(QString &test, ADTExecutable *object);
     bool setNames(QString &test, ADTExecutable *object);

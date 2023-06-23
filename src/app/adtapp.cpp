@@ -41,12 +41,13 @@ const QString DBUS_RUN_TASK_METHOD_NAME = "run";
 class ADTAppPrivate
 {
 public:
-    ADTAppPrivate(QApplication *app)
+    ADTAppPrivate(QApplication *app, QString locale)
         : m_application(app)
         , m_model(nullptr)
         , m_parser(new CommandLineParser(*app))
         , m_options(new CommandLineOptions())
         , m_parseErrorMessage{}
+        , m_locale(locale)
         , m_appController(nullptr)
         , m_parserResult{}
     {}
@@ -56,6 +57,7 @@ public:
     std::unique_ptr<CommandLineParser> m_parser;
     std::unique_ptr<CommandLineOptions> m_options;
     QString m_parseErrorMessage;
+    QString m_locale;
     std::unique_ptr<AppControllerInterface> m_appController;
 
     CommandLineParser::CommandLineParseResult m_parserResult;
@@ -67,8 +69,8 @@ private:
     ADTAppPrivate &operator=(ADTAppPrivate &&) = delete;
 };
 
-ADTApp::ADTApp(QApplication *application)
-    : d(new ADTAppPrivate(application))
+ADTApp::ADTApp(QApplication *application, QString locale)
+    : d(new ADTAppPrivate(application, locale))
 {}
 
 ADTApp::~ADTApp()
@@ -128,4 +130,5 @@ void ADTApp::buildModel()
                                                                             DBUS_RUN_TASK_METHOD_NAME,
                                                                             new TreeModelBulderFromExecutable()));
     d->m_model = std::move(modelBuilder.buildModel());
+    d->m_model->setLocaleForElements(d->m_locale);
 }

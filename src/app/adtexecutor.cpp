@@ -126,7 +126,7 @@ void ADTExecutor::executeTask(ADTExecutable *task)
 
     task->clearReports();
 
-    QDBusMessage reply = dbusIface.call(task->m_dbusRunMethodName, task->m_args);
+    QDBusMessage reply = dbusIface.call(task->m_dbusRunMethodName, task->m_id);
 
     QList<QVariant> replyValues = reply.arguments();
 
