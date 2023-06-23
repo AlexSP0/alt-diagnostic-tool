@@ -21,9 +21,6 @@ std::unique_ptr<TreeModel> TreeModelBulderFromExecutable::buildModel(std::vector
             categoriesMap[elements.at(i)->m_id] = categoryItem;
 
             categoryItem->setExecutable(std::move(elements.at(i)));
-
-            //Set task locale
-            categoryItem->getExecutable()->setLocate("ru_RU");
         }
     }
     for (size_t i = 0; i < elements.size(); i++)
@@ -47,8 +44,6 @@ std::unique_ptr<TreeModel> TreeModelBulderFromExecutable::buildModel(std::vector
             categoryItem->appendChild(checkItem);
 
             checkItem->setExecutable(std::move(elements.at(i)));
-            //Set task locale
-            checkItem->getExecutable()->setLocate("ru_RU");
         }
     }
 

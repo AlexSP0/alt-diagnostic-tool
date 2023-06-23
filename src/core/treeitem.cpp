@@ -128,3 +128,8 @@ void TreeItem::setIcon(QIcon i)
 {
     icon = i;
 }
+
+void TreeItem::setlocaleForExecutable(QString locale)
+{
+    task->setLocale(locale);
+}

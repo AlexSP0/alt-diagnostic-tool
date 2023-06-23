@@ -63,10 +63,13 @@ public:
     int rowCount(const QModelIndex &parent = QModelIndex()) const;
     int columnCount(const QModelIndex &parent = QModelIndex()) const;
 
-private:
-    void setupExampleData();
+    void setLocaleForElements(QString locale);
 
+private:
     TreeItem *rootItem;
+
+private:
+    void setLocaleForItem(TreeItem *item, QString locale);
 
 private:
     TreeModel(const TreeModel &) = delete;

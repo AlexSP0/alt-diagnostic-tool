@@ -43,7 +43,7 @@ ADTExecutable::ADTExecutable()
     , m_descriptionLocaleStorage()
 {}
 
-void ADTExecutable::setLocate(QString locale)
+void ADTExecutable::setLocale(QString locale)
 {
     auto nameIt = m_nameLocaleStorage.find(locale);
     if (nameIt != m_nameLocaleStorage.end())

@@ -74,7 +74,7 @@ public:
 public:
     ADTExecutable();
 
-    void setLocate(QString locale);
+    void setLocale(QString locale);
 
     void clearReports();
 

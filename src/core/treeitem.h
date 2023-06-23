@@ -81,6 +81,7 @@ public:
     ItemType getItemType();
     QIcon getIcon();
     void setIcon(QIcon i);
+    void setlocaleForExecutable(QString locale);
 
 private:
     QList<TreeItem *> childItems;

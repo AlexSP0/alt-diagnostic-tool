@@ -66,6 +66,14 @@ int TreeModel::columnCount(const QModelIndex &parent) const
         return rootItem->columnCount();
 }
 
+void TreeModel::setLocaleForElements(QString locale)
+{
+    for (int i = 0; i < rootItem->childCount(); i++)
+    {
+        setLocaleForItem(rootItem->child(i), locale);
+    }
+}
+
 QVariant TreeModel::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid())
@@ -167,22 +175,12 @@ int TreeModel::rowCount(const QModelIndex &parent) const
     return parentItem->childCount();
 }
 
-void TreeModel::setupExampleData()
+void TreeModel::setLocaleForItem(TreeItem *item, QString locale)
 {
-    rootItem->appendChild(
-        new TreeItem(QList<QVariant>{QVariant("firstCategory")}, TreeItem::ItemType::categoryItem, rootItem));
-    rootItem->appendChild(
-        new TreeItem(QList<QVariant>{QVariant("secondCategory")}, TreeItem::ItemType::categoryItem, rootItem));
-    auto firstChild = rootItem->child(0);
-    firstChild->setChecked(true);
-    auto secondChild = rootItem->child(1);
-    secondChild->setChecked(true);
+    item->setlocaleForExecutable(locale);
 
-    firstChild->appendChild(
-        new TreeItem(QList<QVariant>{QVariant("firstTest")}, TreeItem::ItemType::checkItem, firstChild));
-    secondChild->appendChild(
-        new TreeItem(QList<QVariant>{QVariant("secondTest")}, TreeItem::ItemType::checkItem, secondChild));
-
-    auto firstTest = firstChild->child(0);
-    firstTest->setChecked(true);
+    for (int i = 0; i < item->childCount(); i++)
+    {
+        setLocaleForItem(item->child(i), locale);
+    }
 }
