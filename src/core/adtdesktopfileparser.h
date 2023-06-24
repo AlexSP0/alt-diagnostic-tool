@@ -22,6 +22,7 @@ public:
 
     const QString DEFAULT_ICON = "system-run";
 
+    static const QString DESKTOP_ENTRY_SECTION_NAME;
     static const QString NAME_SECTION_NAME;
     static const QString ICON_SECTION_NAME;
     static const QString DESCRIPTION_SECTION_NAME;
@@ -51,10 +52,10 @@ private:
 
 private:
     QString getKeyNameWithoutLocale(QString keyName);
-    bool setIcon(QString &test, ADTExecutable *object);
-    bool setNames(QString &test, ADTExecutable *object);
-    bool setDescriptions(QString &test, ADTExecutable *object);
-    bool setArgs(QString &test, ADTExecutable *object);
+    bool setIcon(const QString &test, ADTExecutable *object);
+    bool setNames(const QString &test, ADTExecutable *object);
+    bool setDescriptions(const QString &test, ADTExecutable *object);
+    bool setArgs(const QString &test, ADTExecutable *object);
     QString getToolName();
 
 private:
