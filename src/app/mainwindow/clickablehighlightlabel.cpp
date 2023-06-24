@@ -26,7 +26,12 @@ ClickableHighlightLabel::ClickableHighlightLabel(QWidget *parent)
     , m_standartColor(Qt::gray)
     , m_highlightColor(Qt::lightGray)
 {
-    m_standartColor = QWidget::palette().color(QWidget::foregroundRole());
+    m_highlightColor = QColor(0, 0, 0);
+
+    m_standartColor = QColor(66, 66, 66);
+
+    QEvent event(QEvent::Type::None);
+    leaveEvent(&event);
 }
 
 void ClickableHighlightLabel::setHighlightColor(QColor color)
