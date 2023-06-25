@@ -59,16 +59,16 @@ CommandLineParser::CommandLineParseResult CommandLineParser::parseCommandLine(Co
 
     const QCommandLineOption versionOption = d->parser->addVersionOption();
 
-    const QCommandLineOption listOfObjectsOption("l", QObject::tr("List of available objects"));
+    const QCommandLineOption listOfObjectsOption("l", QObject::tr("List of available tools"));
 
-    const QCommandLineOption objectListOption("o", QObject::tr("Test list of specified object."), "object");
+    const QCommandLineOption objectListOption("o", QObject::tr("Test list of specified tool."), "tool");
 
-    const QCommandLineOption runAllTestsOfSpecifiedObjectOption("a",
-                                                                QObject::tr("Run all tests of speccified object"),
-                                                                "object");
-
-    const QCommandLineOption runSpecifiedTestOption(
-        "r", QObject::tr("Run specicfied test of specified object. Must specify test name with -t option"), "object");
+    const QCommandLineOption
+        runSpecifiedTestOption("r",
+                               QObject::tr(
+                                   "Runs the tests for the specified instrument. If no specific test is specified with "
+                                   "the -t option, all tests for the specified instrument are run."),
+                               "tool");
 
     const QCommandLineOption specifiedTestOption("t", QObject::tr("Specify test for running"), "test");
 
@@ -79,7 +79,6 @@ CommandLineParser::CommandLineParseResult CommandLineParser::parseCommandLine(Co
     d->parser->setSingleDashWordOptionMode(QCommandLineParser::ParseAsLongOptions);
     d->parser->addOption(objectListOption);
     d->parser->addOption(listOfObjectsOption);
-    d->parser->addOption(runAllTestsOfSpecifiedObjectOption);
     d->parser->addOption(runSpecifiedTestOption);
     d->parser->addOption(specifiedTestOption);
     d->parser->addOption(useGraphicOption);
@@ -130,21 +129,6 @@ CommandLineParser::CommandLineParseResult CommandLineParser::parseCommandLine(Co
         return CommandLineListOfTestsRequested;
     }
 
-    if (d->parser->isSet(runAllTestsOfSpecifiedObjectOption))
-    {
-        const QString objectName = d->parser->value(runAllTestsOfSpecifiedObjectOption);
-        options->objectName      = objectName;
-
-        if (options->objectName.isNull() || options->objectName.isEmpty())
-        {
-            *errorMessage = QObject::tr("Bad object name: ") + objectName;
-            return CommandLineError;
-        }
-
-        options->action = CommandLineOptions::Action::runAllTestFromSpecifiedObject;
-        return CommandLineRunAllTestsRequested;
-    }
-
     if (d->parser->isSet(runSpecifiedTestOption))
     {
         const QString objectName = d->parser->value(runSpecifiedTestOption);
@@ -156,22 +140,24 @@ CommandLineParser::CommandLineParseResult CommandLineParser::parseCommandLine(Co
             return CommandLineError;
         }
 
-        if (!d->parser->isSet(specifiedTestOption))
+        if (d->parser->isSet(specifiedTestOption))
         {
-            *errorMessage = QObject::tr("Missing test name for object: ") + objectName;
-            return CommandLineError;
-        }
+            const QString testName = d->parser->value(specifiedTestOption);
+            options->testName      = testName;
+            if (options->testName.isNull() || options->testName.isEmpty())
+            {
+                *errorMessage = QObject::tr("Bad test name: ") + testName;
+                return CommandLineError;
+            }
 
-        const QString testName = d->parser->value(specifiedTestOption);
-        options->testName      = testName;
-        if (options->testName.isNull() || options->testName.isEmpty())
+            options->action = CommandLineOptions::Action::runSpecifiedTestFromSpecifiedObject;
+            return CommandLineRunSpecifiedTestRequested;
+        }
+        else
         {
-            *errorMessage = QObject::tr("Bad test name: ") + testName;
-            return CommandLineError;
+            options->action = CommandLineOptions::Action::runAllTestFromSpecifiedObject;
+            return CommandLineRunAllTestsRequested;
         }
-
-        options->action = CommandLineOptions::Action::runSpecifiedTestFromSpecifiedObject;
-        return CommandLineRunSpecifiedTestRequested;
     }
 
     return CommandLineOk;
