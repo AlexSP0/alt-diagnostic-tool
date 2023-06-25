@@ -32,6 +32,8 @@ public:
 
     void setHighlightColor(QColor color);
 
+    void disabledDoubleClick(bool disableFLag);
+
 signals:
     void clicked();
     void doubleClicked();
@@ -44,6 +46,7 @@ protected:
 private:
     QColor m_standartColor;
     QColor m_highlightColor;
+    bool m_isDisabledDoubleClickOnLabel;
 };
 
 #endif // CLICKABLEHIGHLIGHTLABEL_H

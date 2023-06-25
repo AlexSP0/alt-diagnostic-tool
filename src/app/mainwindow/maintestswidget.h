@@ -82,6 +82,8 @@ private:
 
     StatusCommonWidget *findWidgetByTask(ADTExecutable *task);
 
+    void disableRunTestByDoubleClick(bool flag);
+
 private:
     Ui::MainTestsWidget *ui;
 

@@ -110,6 +110,11 @@ void StatusCommonWidget::setWidgetStatus(StatusCommonWidget::WidgetStatus status
     setAutoFillBackground(true);
 }
 
+void StatusCommonWidget::disableRunTestByDoubleClick(bool flag)
+{
+    ui->testNameLabel->disabledDoubleClick(flag);
+}
+
 void StatusCommonWidget::on_detailsPushButton_clicked()
 {
     emit detailsButtonClicked(this);

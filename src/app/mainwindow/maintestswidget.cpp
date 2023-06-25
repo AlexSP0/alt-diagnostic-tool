@@ -82,6 +82,7 @@ void MainTestsWidget::enableButtons()
     ui->backPushButton->setEnabled(true);
     ui->exitPushButton->setEnabled(true);
     ui->runAllTestPushButton->setEnabled(true);
+    disableRunTestByDoubleClick(false);
 }
 
 void MainTestsWidget::disableButtons()
@@ -89,6 +90,7 @@ void MainTestsWidget::disableButtons()
     ui->backPushButton->setEnabled(false);
     ui->exitPushButton->setEnabled(false);
     ui->runAllTestPushButton->setEnabled(false);
+    disableRunTestByDoubleClick(true);
 }
 
 void MainTestsWidget::setEnabledRunButtonOfStatusWidgets(bool isEnabled)
@@ -247,6 +249,14 @@ StatusCommonWidget *MainTestsWidget::findWidgetByTask(ADTExecutable *task)
     qWarning() << "ERROR: can't find status widget by task!";
 
     return nullptr;
+}
+
+void MainTestsWidget::disableRunTestByDoubleClick(bool flag)
+{
+    for (StatusCommonWidget *currentWidget : m_statusWidgets.keys())
+    {
+        currentWidget->disableRunTestByDoubleClick(flag);
+    }
 }
 
 void MainTestsWidget::on_exitPushButton_clicked()

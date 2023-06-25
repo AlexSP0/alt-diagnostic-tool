@@ -99,6 +99,8 @@ public:
 
     void setWidgetStatus(StatusCommonWidget::WidgetStatus status);
 
+    void disableRunTestByDoubleClick(bool flag);
+
 signals:
     void detailsButtonClicked(StatusCommonWidget *widget);
 

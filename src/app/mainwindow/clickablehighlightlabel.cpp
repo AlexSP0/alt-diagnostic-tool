@@ -25,6 +25,7 @@ ClickableHighlightLabel::ClickableHighlightLabel(QWidget *parent)
     : QLabel(parent)
     , m_standartColor(Qt::gray)
     , m_highlightColor(Qt::lightGray)
+    , m_isDisabledDoubleClickOnLabel(false)
 {
     m_highlightColor = QColor(0, 0, 0);
 
@@ -37,6 +38,11 @@ ClickableHighlightLabel::ClickableHighlightLabel(QWidget *parent)
 void ClickableHighlightLabel::setHighlightColor(QColor color)
 {
     m_highlightColor = color;
+}
+
+void ClickableHighlightLabel::disabledDoubleClick(bool disableFLag)
+{
+    m_isDisabledDoubleClickOnLabel = disableFLag;
 }
 
 void ClickableHighlightLabel::enterEvent(QEvent *event)
@@ -58,5 +64,8 @@ void ClickableHighlightLabel::leaveEvent(QEvent *event)
 void ClickableHighlightLabel::mouseDoubleClickEvent(QMouseEvent *event)
 {
     QLabel::mouseDoubleClickEvent(event);
-    emit this->doubleClicked();
+    if (!m_isDisabledDoubleClickOnLabel)
+    {
+        emit this->doubleClicked();
+    }
 }
