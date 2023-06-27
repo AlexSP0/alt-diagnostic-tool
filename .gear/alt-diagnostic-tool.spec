@@ -35,11 +35,14 @@ ALT Linux diagnostic tool template.
 %install
 %cmakeinstall_std
 
+install -v -p -m 644 D %_builddir/%name-%version/40-adt.rules %buildroot%_datadir/polkit-1/40-adt.rules
+
 %files
 %doc README.md
 %doc INSTALL.md
 
 %_bindir/alt-diagnostic-tool
+%_datadir/polkit-1/40-adt.rules
 
 %changelog
 * Wed Dec 07 2022 Vladimir Rubanov <august@altlinux.org> 0.1.0-alt1

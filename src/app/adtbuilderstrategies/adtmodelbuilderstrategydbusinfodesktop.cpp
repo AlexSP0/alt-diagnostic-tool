@@ -53,7 +53,9 @@ std::unique_ptr<TreeModel> ADTModelBuilderStrategyDbusInfoDesktop::buildModel()
 
     if (listOfObjects.isEmpty())
     {
-        return nullptr;
+        qWarning() << "ERRROR! Can't get list of tools!";
+
+        return std::unique_ptr<TreeModel>(new TreeModel());
     }
 
     std::vector<std::unique_ptr<ADTExecutable>> adtExecutables;
