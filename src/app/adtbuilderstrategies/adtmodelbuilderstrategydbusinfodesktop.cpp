@@ -93,35 +93,41 @@ std::vector<std::unique_ptr<ADTExecutable>> ADTModelBuilderStrategyDbusInfoDeskt
 {
     QDBusInterface iface(m_serviceName, path, m_findInterface, *m_dbus.get());
 
-    QDBusReply<QByteArray> testsListReply = iface.call(ADTModelBuilderStrategyDbusInfoDesktop::LIST_METHOD);
+    QDBusReply<QStringList> testsListReply = iface.call(ADTModelBuilderStrategyDbusInfoDesktop::LIST_METHOD);
 
-    QByteArray testsList = testsListReply.value();
+    QStringList testsList = testsListReply.value();
 
-    QString listResultMethod = QString::fromStdString(testsList.toStdString());
+    for (QString &currentTestName : testsList)
+    {
+        currentTestName = currentTestName.trimmed();
+    }
 
-    if (listResultMethod.isEmpty())
+    if (testsList.isEmpty())
     {
         qWarning() << "ERROR! Can't get list of tests from object with path: " << path;
 
         return std::vector<std::unique_ptr<ADTExecutable>>();
     }
 
-    QStringList listOfTests = listResultMethod.split("\n");
+    QDBusReply<QStringList> reply = iface.call(ADTModelBuilderStrategyDbusInfoDesktop::INFO_METHOD);
 
-    QDBusReply<QByteArray> reply = iface.call(ADTModelBuilderStrategyDbusInfoDesktop::INFO_METHOD);
+    QStringList infoList = reply.value();
 
-    QByteArray infoList = reply.value();
-
-    QString listInfo = QString::fromStdString(infoList.toStdString());
-
-    if (listInfo.isEmpty())
+    if (infoList.isEmpty())
     {
         qWarning() << "ERROR! Can't get info from object with path: " << path;
 
         return std::vector<std::unique_ptr<ADTExecutable>>();
     }
 
-    ADTDesktopFileParser parser(listInfo, listOfTests, m_serviceName, path, m_findInterface, m_runTaskMethodName);
+    QString infoResult;
+
+    for (QString currentLine : infoList)
+    {
+        infoResult = infoResult + currentLine;
+    }
+
+    ADTDesktopFileParser parser(infoResult, testsList, m_serviceName, path, m_findInterface, m_runTaskMethodName);
 
     return parser.buildExecutables();
 }

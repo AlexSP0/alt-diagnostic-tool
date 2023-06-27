@@ -36,10 +36,6 @@ ALT Linux diagnostic tool template.
 %cmakeinstall_std
 install -v -p -m 644 -D %_builddir/%name-%version/40-adt.rules %buildroot%_datadir/polkit-1/rules.d/40-adt.rules
 
-pwd
-
-install -v -p -m 644 D %_builddir/%name-%version/40-adt.rules %buildroot%_datadir/polkit-1/40-adt.rules
-
 %files
 %doc README.md
 %doc INSTALL.md
