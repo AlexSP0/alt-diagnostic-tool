@@ -42,15 +42,17 @@ public:
 
     ~MainWindowControllerImpl();
 
-    void runAllToolsWidget();
+    void runAllToolsWidget() override;
 
-    void chooseToolsWidget();
+    void chooseToolsWidget() override;
 
-    void exitToolsWidget();
+    void exitToolsWidget() override;
 
-    void changeSelectedTool(TreeItem *item);
+    void changeSelectedTool(TreeItem *item) override;
 
-    void runTestsWidget(std::vector<ADTExecutable *> tasks);
+    TreeItem *changeSelectedToolByIndex(QModelIndex index) override;
+
+    void runTestsWidget(std::vector<ADTExecutable *> tasks) override;
 
     void backTestsWigdet();
 

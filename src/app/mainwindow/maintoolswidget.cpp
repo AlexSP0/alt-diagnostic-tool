@@ -90,8 +90,14 @@ bool MainToolsWidget::eventFilter(QObject *watched, QEvent *event)
 
         if (index.isValid())
         {
-            TreeItem *selectedItem = static_cast<TreeItem *>(index.internalPointer());
+            TreeItem *selectedItem = m_controller->changeSelectedToolByIndex(index);
+            if (!selectedItem)
+            {
+                return false;
+            }
+
             m_controller->changeSelectedTool(selectedItem);
+
             on_browseCheckPushButton_clicked();
         }
     }
@@ -121,11 +127,11 @@ void MainToolsWidget::onSelectionChanged(const QItemSelection &newSelection, con
     }
 
     QModelIndex currentIndex = newSelection.indexes().at(0);
-    TreeItem *currentItem    = static_cast<TreeItem *>(currentIndex.internalPointer());
+    TreeItem *currentItem    = m_controller->changeSelectedToolByIndex(currentIndex);
 
     if (!currentItem)
     {
-        qWarning() << "ERROR: Can't get item from selection model!";
+        return;
     }
 
     m_controller->changeSelectedTool(currentItem);

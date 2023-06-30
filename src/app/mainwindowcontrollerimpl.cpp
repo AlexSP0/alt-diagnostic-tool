@@ -19,8 +19,10 @@
 ***********************************************************************************************************************/
 
 #include "mainwindowcontrollerimpl.h"
+#include "categoryproxymodel.h"
 #include "mainwindow/detailsdialog.h"
 #include "mainwindow/mainwindow.h"
+#include "treeproxymodel.h"
 
 #include <QThread>
 
@@ -39,6 +41,7 @@ public:
         , m_isWorkingThreadActive(false)
         , m_options(options)
         , m_application(app)
+        , m_proxyModel(new QSortFilterProxyModel())
     {
         m_mainWindow  = new MainWindow();
         m_toolsWidget = m_mainWindow->getToolsWidget();
@@ -46,8 +49,9 @@ public:
     }
     ~MainWindowControllerImplPrivate()
     {
-        delete m_mainWindow;
+        delete m_proxyModel;
         delete m_detailsDialog;
+        delete m_mainWindow;
     }
 
     TreeModel *m_model;
@@ -72,6 +76,8 @@ public:
 
     QApplication *m_application;
 
+    QSortFilterProxyModel *m_proxyModel;
+
 private:
     MainWindowControllerImplPrivate(const MainWindowControllerImplPrivate &) = delete;
     MainWindowControllerImplPrivate(MainWindowControllerImplPrivate &&)      = delete;
@@ -83,7 +89,9 @@ MainWindowControllerImpl::MainWindowControllerImpl(TreeModel *model, CommandLine
     : d(new MainWindowControllerImplPrivate(model, options, app))
 {
     d->m_toolsWidget->setController(this);
-    d->m_toolsWidget->setModel(model);
+    d->m_proxyModel->setSourceModel(d->m_model);
+    d->m_proxyModel->sort(Qt::DisplayRole);
+    d->m_toolsWidget->setModel(d->m_proxyModel);
     d->m_toolsWidget->disableButtons();
 
     d->m_testWidget->setController(this);
@@ -131,6 +139,25 @@ void MainWindowControllerImpl::changeSelectedTool(TreeItem *item)
     d->m_toolsWidget->enableButtons();
 
     d->m_testWidget->setToolItem(item);
+}
+
+TreeItem *MainWindowControllerImpl::changeSelectedToolByIndex(QModelIndex index)
+{
+    if (!index.isValid())
+    {
+        return nullptr;
+    }
+
+    QModelIndex currentSourceModelIndex = d->m_proxyModel->mapToSource(index);
+
+    TreeItem *item = static_cast<TreeItem *>(currentSourceModelIndex.internalPointer());
+
+    if (!item)
+    {
+        qWarning() << "ERROR! Can't get TreeItem by index!";
+        return nullptr;
+    }
+    return item;
 }
 
 void MainWindowControllerImpl::runTestsWidget(std::vector<ADTExecutable *> tasks)

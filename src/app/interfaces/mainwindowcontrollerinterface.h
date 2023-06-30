@@ -17,6 +17,8 @@ public:
 
     virtual void changeSelectedTool(TreeItem *item) = 0;
 
+    virtual TreeItem *changeSelectedToolByIndex(QModelIndex index) = 0;
+
     virtual void runTestsWidget(std::vector<ADTExecutable *> tasks) = 0;
 
     virtual void backTestsWigdet() = 0;
