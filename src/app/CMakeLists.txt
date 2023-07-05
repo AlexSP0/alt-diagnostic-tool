@@ -25,12 +25,11 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
 set(HEADERS
-    dbuschecker.h
-
     adtapp.h
     adtexecutor.h
     mainwindowcontrollerimpl.h
     clcontroller.h
+    adtservicechecker.h
 
     treeproxymodel.h
     categoryproxymodel.h
@@ -59,12 +58,12 @@ set(HEADERS
 
 set(SOURCES
     main.cpp
-    dbuschecker.cpp
 
     adtapp.cpp
     adtexecutor.cpp
     mainwindowcontrollerimpl.cpp
     clcontroller.cpp
+    adtservicechecker.cpp
 
     treeproxymodel.cpp
     categoryproxymodel.cpp

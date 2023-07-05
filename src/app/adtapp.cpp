@@ -22,6 +22,7 @@
 #include "../core/treemodelbulderfromexecutable.h"
 #include "adtbuilderstrategies/adtmodelbuilder.h"
 #include "adtbuilderstrategies/adtmodelbuilderstrategydbusinfodesktop.h"
+#include "adtservicechecker.h"
 #include "clcontroller.h"
 #include "interfaces/appcontrollerinterface.h"
 #include "mainwindowcontrollerimpl.h"
@@ -50,6 +51,8 @@ public:
         , m_locale(locale)
         , m_appController(nullptr)
         , m_parserResult{}
+        , m_serviceChecker(new ADTServiceChecker(DBUS_SERVICE_NAME, PATH_TO_DBUS_OBJECT, DBUS_INTERFACE_NAME))
+
     {}
 
     QApplication *m_application;
@@ -61,6 +64,8 @@ public:
     std::unique_ptr<AppControllerInterface> m_appController;
 
     CommandLineParser::CommandLineParseResult m_parserResult;
+
+    std::unique_ptr<ADTServiceChecker> m_serviceChecker;
 
 private:
     ADTAppPrivate(const ADTAppPrivate &) = delete;
