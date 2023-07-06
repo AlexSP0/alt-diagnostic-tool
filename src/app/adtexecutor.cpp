@@ -34,6 +34,8 @@ public:
     ADTExecutorPrivate()
         : executables()
         , stopFlag(false)
+        , waitFlag(false)
+        , isRunning(false)
     {}
 
     ~ADTExecutorPrivate() {}
@@ -41,6 +43,8 @@ public:
     std::vector<ADTExecutable *> executables;
 
     volatile bool stopFlag;
+    volatile bool waitFlag;
+    volatile bool isRunning;
 
 private:
     ADTExecutorPrivate(const ADTExecutorPrivate &) = delete;
@@ -73,6 +77,21 @@ void ADTExecutor::resetStopFlag()
     d->stopFlag = false;
 }
 
+void ADTExecutor::wait()
+{
+    d->waitFlag = true;
+}
+
+void ADTExecutor::resetWaitFlag()
+{
+    d->waitFlag = false;
+}
+
+bool ADTExecutor::isRunning()
+{
+    return d->isRunning;
+}
+
 void ADTExecutor::setTasks(std::vector<ADTExecutable *> &tasks)
 {
     d->executables.clear();
@@ -97,11 +116,28 @@ void ADTExecutor::runTasks()
         return;
     }
 
+    d->isRunning = true;
+
     for (ADTExecutable *executable : d->executables)
     {
         if (d->stopFlag)
         {
             break;
+        }
+
+        if (d->waitFlag)
+        {
+            while (true)
+            {
+                if (d->waitFlag)
+                {
+                    QThread::currentThread()->yieldCurrentThread();
+                }
+                else
+                {
+                    break;
+                }
+            }
         }
 
         emit beginTask(executable);
@@ -110,6 +146,7 @@ void ADTExecutor::runTasks()
 
         emit finishTask(executable);
     }
+    d->isRunning = false;
 
     this->moveToThread(QApplication::instance()->thread());
 

@@ -66,6 +66,11 @@ public:
     int runSpecifiedTestOfObject(QString object, QString test);
     int runApp() override;
 
+public slots:
+    virtual void on_serviceUnregistered() override;
+    virtual void on_serviceRegistered() override;
+    virtual void on_serviceOwnerChanged() override;
+
 private:
     void clearAllReports();
 

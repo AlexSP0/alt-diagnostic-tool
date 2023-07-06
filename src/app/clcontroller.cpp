@@ -181,6 +181,35 @@ int CLController::runApp()
     return result;
 }
 
+void CLController::on_serviceUnregistered()
+{
+    if (d->m_executor->isRunning())
+    {
+        std::cout << "Service alterator-manager.service was unregictered! Please, restart the service! Waiting..."
+                  << std::endl;
+        d->m_executor->wait();
+    }
+}
+
+void CLController::on_serviceRegistered()
+{
+    if (d->m_executor->isRunning())
+    {
+        std::cout << "Service alterator-manager.service was regictered! Working..." << std::endl;
+        d->m_executor->resetWaitFlag();
+    }
+}
+
+void CLController::on_serviceOwnerChanged()
+{
+    std::cout << "The owner of alterator-manager.service was changed! exiting..." << std::endl;
+    if (d->m_executor->isRunning())
+    {
+        d->m_executor->cancelTasks();
+        d->m_executor->resetWaitFlag();
+    }
+}
+
 TreeItem *CLController::getToolById(QString id)
 {
     TreeItem *rootItem = static_cast<TreeItem *>(d->m_model->parent(QModelIndex()).internalPointer());

@@ -299,6 +299,21 @@ int MainWindowControllerImpl::runApp()
     return result;
 }
 
+void MainWindowControllerImpl::on_serviceUnregistered()
+{
+
+}
+
+void MainWindowControllerImpl::on_serviceRegistered()
+{
+
+}
+
+void MainWindowControllerImpl::on_serviceOwnerChanged()
+{
+
+}
+
 void MainWindowControllerImpl::clearAllReports()
 {
     QModelIndex rootIndex = d->m_model->parent(QModelIndex());

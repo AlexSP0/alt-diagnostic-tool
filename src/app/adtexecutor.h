@@ -30,6 +30,7 @@ class ADTExecutorPrivate;
 class ADTExecutor : public QObject
 {
     Q_OBJECT
+
 public:
     ADTExecutor();
 
@@ -40,6 +41,12 @@ public:
     void cancelTasks();
 
     void resetStopFlag();
+
+    void wait();
+
+    void resetWaitFlag();
+
+    bool isRunning();
 
     void setTasks(std::vector<ADTExecutable *> &tasks);
 

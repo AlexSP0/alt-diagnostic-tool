@@ -23,6 +23,11 @@ public:
 
     virtual int runApp() = 0;
 
+public slots:
+    virtual void on_serviceUnregistered() = 0;
+    virtual void on_serviceRegistered()   = 0;
+    virtual void on_serviceOwnerChanged() = 0;
+
 protected:
     virtual void onAllTasksBegin()    = 0;
     virtual void onAllTasksFinished() = 0;
