@@ -86,6 +86,9 @@ private slots:
     void onBeginTask(ADTExecutable *task) override;
     void onFinishTask(ADTExecutable *task) override;
 
+    void onCloseAndExitButtonPressed();
+    void on_closeButtonPressed();
+
 private:
     TreeItem *getToolById(QString id);
 

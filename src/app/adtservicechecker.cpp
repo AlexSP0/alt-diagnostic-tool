@@ -79,13 +79,11 @@ bool ADTServiceChecker::checkServiceInterfaceAvailability()
 
 void ADTServiceChecker::on_dbusServiceUnregistered()
 {
-    qWarning() << "DBUS checker: service unregistered!";
     emit serviceUnregistered();
 }
 
 void ADTServiceChecker::on_dbusServiceRegistered()
 {
-    qWarning() << "DBUS checker: service registered!";
     emit serviceRegistered();
 }
 

@@ -27,8 +27,9 @@
 
 class ADTAppPrivate;
 
-class ADTApp
+class ADTApp : public QObject
 {
+    Q_OBJECT
 public:
     ADTApp(QApplication *application, QString locale);
     ~ADTApp();

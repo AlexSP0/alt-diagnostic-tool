@@ -165,24 +165,24 @@ void ADTExecutor::executeTask(ADTExecutable *task)
 
     QDBusMessage reply = dbusIface.call(task->m_dbusRunMethodName, task->m_id);
 
+    if (reply.type() == QDBusMessage::ErrorMessage)
+    {
+        task->m_exit_code = -1;
+        task->m_stringStderr.append(reply.errorMessage());
+
+        return;
+    }
+
     QList<QVariant> replyValues = reply.arguments();
 
     QStringList report = replyValues.takeFirst().toStringList();
 
     int exitCode = replyValues.takeFirst().toInt();
 
-    if (reply.type() != QDBusMessage::ErrorMessage)
-    {
-        task->m_exit_code = exitCode;
+    task->m_exit_code = exitCode;
 
-        for (QString &line : report)
-        {
-            task->m_stringStdout.append(line);
-        }
-    }
-    else
+    for (QString &line : report)
     {
-        task->m_exit_code = -1;
-        task->m_stringStderr.append(reply.errorMessage());
+        task->m_stringStdout.append(line);
     }
 }

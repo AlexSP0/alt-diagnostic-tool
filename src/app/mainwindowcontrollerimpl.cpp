@@ -22,6 +22,7 @@
 #include "categoryproxymodel.h"
 #include "mainwindow/detailsdialog.h"
 #include "mainwindow/mainwindow.h"
+#include "mainwindow/serviceunregisteredwidget.h"
 #include "treeproxymodel.h"
 
 #include <QThread>
@@ -35,6 +36,7 @@ public:
         , m_toolsWidget(nullptr)
         , m_testWidget(nullptr)
         , m_detailsDialog(new DetailsDialog())
+        , m_serviceUnregisteredWidget(new ServiceUnregisteredWidget())
         , m_currentToolItem(nullptr)
         , m_executor(new ADTExecutor())
         , m_workerThread(nullptr)
@@ -42,15 +44,18 @@ public:
         , m_options(options)
         , m_application(app)
         , m_proxyModel(new QSortFilterProxyModel())
+
     {
         m_mainWindow  = new MainWindow();
         m_toolsWidget = m_mainWindow->getToolsWidget();
         m_testWidget  = m_mainWindow->getTestWidget();
+        m_serviceUnregisteredWidget->setWindowFlags(Qt::FramelessWindowHint);
     }
     ~MainWindowControllerImplPrivate()
     {
         delete m_proxyModel;
         delete m_detailsDialog;
+        delete m_serviceUnregisteredWidget;
         delete m_mainWindow;
     }
 
@@ -63,6 +68,8 @@ public:
     TestWidgetInterface *m_testWidget;
 
     DetailsDialog *m_detailsDialog;
+
+    ServiceUnregisteredWidget *m_serviceUnregisteredWidget;
 
     TreeItem *m_currentToolItem;
 
@@ -102,6 +109,15 @@ MainWindowControllerImpl::MainWindowControllerImpl(TreeModel *model, CommandLine
     connect(d->m_executor.get(), &ADTExecutor::finishTask, this, &MainWindowControllerImpl::onFinishTask);
     connect(d->m_executor.get(), &ADTExecutor::allTaskBegin, this, &MainWindowControllerImpl::onAllTasksBegin);
     connect(d->m_executor.get(), &ADTExecutor::allTasksFinished, this, &MainWindowControllerImpl::onAllTasksFinished);
+
+    connect(d->m_serviceUnregisteredWidget,
+            &ServiceUnregisteredWidget::closeAndExit,
+            this,
+            &MainWindowControllerImpl::onCloseAndExitButtonPressed);
+    connect(d->m_serviceUnregisteredWidget,
+            &ServiceUnregisteredWidget::closeAll,
+            this,
+            &MainWindowControllerImpl::on_closeButtonPressed);
 }
 
 MainWindowControllerImpl::~MainWindowControllerImpl()
@@ -301,18 +317,28 @@ int MainWindowControllerImpl::runApp()
 
 void MainWindowControllerImpl::on_serviceUnregistered()
 {
-
+    if (d->m_executor->isRunning())
+    {
+        d->m_executor->wait();
+    }
+    d->m_serviceUnregisteredWidget->show();
+    d->m_serviceUnregisteredWidget->startAnimation();
 }
 
 void MainWindowControllerImpl::on_serviceRegistered()
 {
+    if (d->m_serviceUnregisteredWidget->isVisible())
+    {
+        d->m_serviceUnregisteredWidget->close();
+    }
 
+    if (d->m_executor->isRunning())
+    {
+        d->m_executor->resetWaitFlag();
+    }
 }
 
-void MainWindowControllerImpl::on_serviceOwnerChanged()
-{
-
-}
+void MainWindowControllerImpl::on_serviceOwnerChanged() {}
 
 void MainWindowControllerImpl::clearAllReports()
 {
@@ -377,6 +403,21 @@ void MainWindowControllerImpl::onFinishTask(ADTExecutable *task)
     {
         d->m_testWidget->setWidgetStatus(task, StatusCommonWidget::WidgetStatus::finishedFailed);
     }
+}
+
+void MainWindowControllerImpl::onCloseAndExitButtonPressed()
+{
+    d->m_executor->cancelTasks();
+    d->m_executor->resetWaitFlag();
+    d->m_serviceUnregisteredWidget->close();
+    d->m_mainWindow->closeAll();
+}
+
+void MainWindowControllerImpl::on_closeButtonPressed()
+{
+    d->m_executor->cancelTasks();
+    d->m_executor->resetWaitFlag();
+    d->m_serviceUnregisteredWidget->close();
 }
 
 TreeItem *MainWindowControllerImpl::getToolById(QString id)

@@ -122,6 +122,19 @@ int ADTApp::runApp()
         d->m_appController = std::make_unique<CLController>(d->m_model.get(), d->m_options.get());
     }
 
+    connect(d->m_serviceChecker.get(),
+            &ADTServiceChecker::serviceOwnerChanged,
+            d->m_appController.get(),
+            &AppControllerInterface::on_serviceOwnerChanged);
+    connect(d->m_serviceChecker.get(),
+            &ADTServiceChecker::serviceRegistered,
+            d->m_appController.get(),
+            &AppControllerInterface::on_serviceRegistered);
+    connect(d->m_serviceChecker.get(),
+            &ADTServiceChecker::serviceUnregistered,
+            d->m_appController.get(),
+            &AppControllerInterface::on_serviceUnregistered);
+
     return d->m_appController->runApp();
 }
 

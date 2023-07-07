@@ -41,6 +41,7 @@ set(HEADERS
     mainwindow/doubleclickablelabel.h
     mainwindow/detailsdialog.h
     mainwindow/clickablehighlightlabel.h
+    mainwindow/serviceunregisteredwidget.h
 
     adtbuilderstrategies/adtmodelbuilder.h
     adtbuilderstrategies/adtmodelbuilderstrategyinterface.h
@@ -75,6 +76,7 @@ set(SOURCES
     mainwindow/doubleclickablelabel.cpp
     mainwindow/detailsdialog.cpp
     mainwindow/clickablehighlightlabel.cpp
+    mainwindow/serviceunregisteredwidget.cpp
 
     adtbuilderstrategies/adtmodelbuilder.cpp
     adtbuilderstrategies/adtmodelbuilderstrategydbusinfodesktop.cpp
@@ -95,6 +97,8 @@ set(UI_FORMS
 
     mainwindow/statuscommonwidget.ui
     mainwindow/detailsdialog.ui
+
+    mainwindow/serviceunregistered.ui
 )
 set(RESOURCES
     resources.qrc
