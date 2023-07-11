@@ -90,13 +90,18 @@ std::unique_ptr<ADTExecutable> ADTDesktopFileParser::buildCategoryExecutable()
 
     newADTExecutable->m_id = getToolName();
 
+    if (newADTExecutable->m_id.isEmpty())
+    {
+        return nullptr;
+    }
+
     newADTExecutable->m_toolId = newADTExecutable->m_id;
 
     QList<QString> listOfKeys = getKeysListOfGroup(ADTDesktopFileParser::DESKTOP_ENTRY_SECTION_NAME);
 
     if (listOfKeys.empty())
     {
-        qWarning() << "ERROR! Can't get list of keys for tool: object" << newADTExecutable->m_id;
+        qWarning() << "ERROR! Can't get list of keys for object: " << newADTExecutable->m_id;
 
         return nullptr;
     }
@@ -105,13 +110,13 @@ std::unique_ptr<ADTExecutable> ADTDesktopFileParser::buildCategoryExecutable()
 
     if (!setNames(ADTDesktopFileParser::DESKTOP_ENTRY_SECTION_NAME, newADTExecutable.get()))
     {
-        qWarning() << "ERROR! Can't get name for tool object: " << newADTExecutable->m_id;
+        qWarning() << "ERROR! Can't get name for object: " << newADTExecutable->m_id;
         return nullptr;
     }
 
     if (!setDescriptions(ADTDesktopFileParser::DESKTOP_ENTRY_SECTION_NAME, newADTExecutable.get()))
     {
-        qWarning() << "ERROR! Can't get description for tool object: " << newADTExecutable->m_id;
+        qWarning() << "ERROR! Can't get description for object: " << newADTExecutable->m_id;
         return nullptr;
     }
 
@@ -154,13 +159,15 @@ std::unique_ptr<ADTExecutable> ADTDesktopFileParser::buildTestExecutable(QString
 
     if (!setNames(test, result.get()))
     {
-        qWarning() << "ERROR! Can't names for test : " << test << " in tool: " << categoryExecutable->m_id;
+        qWarning() << "ERROR! Can't find key " << ADTDesktopFileParser::NAME_SECTION_NAME << " for test : " << test
+                   << " in tool: " << categoryExecutable->m_id;
 
         return nullptr;
     }
     if (!setDescriptions(test, result.get()))
     {
-        qWarning() << "ERROR! Can't descriptions for test : " << test << " in tool: " << categoryExecutable->m_id;
+        qWarning() << "ERROR! Can't find key " << ADTDesktopFileParser::DESCRIPTION_SECTION_NAME
+                   << " for test : " << test << " in tool: " << categoryExecutable->m_id;
 
         return nullptr;
     }
@@ -338,7 +345,8 @@ QString ADTDesktopFileParser::getToolName()
 
     if (desktopEntryIt == m_sections.end())
     {
-        qWarning() << "ERROR! Can't find section: " << ADTDesktopFileParser::DESCRIPTION_SECTION_NAME;
+        qWarning() << "ERROR! Can't find section: " << ADTDesktopFileParser::DESKTOP_ENTRY_SECTION_NAME
+                   << " for the object located on the path " << m_dbusPath;
 
         return QString();
     }
@@ -349,8 +357,8 @@ QString ADTDesktopFileParser::getToolName()
 
     if (toolNameList.isEmpty())
     {
-        qWarning() << "ERROR! Can't find key: " << ADTDesktopFileParser::NAME_SECTION_NAME
-                   << " in section: " << ADTDesktopFileParser::DESCRIPTION_SECTION_NAME;
+        qWarning() << "ERROR! Can't find any keys in section: " << ADTDesktopFileParser::DESKTOP_ENTRY_SECTION_NAME
+                   << " for the object located on the path " << m_dbusPath;
 
         return QString();
     }
@@ -364,6 +372,7 @@ QString ADTDesktopFileParser::getToolName()
     }
 
     qWarning() << "ERROR! Can't find key: " << ADTDesktopFileParser::NAME_SECTION_NAME
-               << " in section: " << ADTDesktopFileParser::DESCRIPTION_SECTION_NAME << " without locale!";
+               << " in section: " << ADTDesktopFileParser::DESKTOP_ENTRY_SECTION_NAME << " without locale "
+               << "for the object located on the path " << m_dbusPath;
     return QString();
 }
