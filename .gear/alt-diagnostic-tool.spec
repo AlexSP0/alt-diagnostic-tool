@@ -20,6 +20,8 @@ BuildRequires: qt5-base-common
 BuildRequires: boost-devel-headers
 BuildRequires: doxygen
 
+BuildRequires: desktop-file-utils ImageMagick-tools
+
 Requires: alterator-manager
 Requires: alterator-module-executor
 
@@ -39,12 +41,18 @@ ALT Linux diagnostic tool template.
 %cmakeinstall_std
 install -v -p -m 644 -D %_builddir/%name-%version/40-adt.rules %buildroot%_datadir/polkit-1/rules.d/40-adt.rules
 
+cd %_cmake__builddir
+desktop-file-install --dir=%buildroot%_desktopdir \
+                     --set-key Exec --set-value %_bindir/alt-diagnostic-tool \
+                     ../setup/adt.desktop
+
 %files
 %doc README.md
 %doc INSTALL.md
 
 %_bindir/alt-diagnostic-tool
 %_datadir/polkit-1/rules.d/40-adt.rules
+%_desktopdir/adt.desktop
 
 %changelog
 * Wed Jun 28 2023 Aleksey Saprunov <sav@altlinux.org> 0.1.1-alt1
