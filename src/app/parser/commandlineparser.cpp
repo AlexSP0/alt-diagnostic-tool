@@ -59,20 +59,30 @@ CommandLineParser::CommandLineParseResult CommandLineParser::parseCommandLine(Co
 
     const QCommandLineOption versionOption = d->parser->addVersionOption();
 
-    const QCommandLineOption listOfObjectsOption("l", QObject::tr("List of available tools"));
+    const QCommandLineOption listOfObjectsOption(QStringList() << "l"
+                                                               << "list",
+                                                 QObject::tr("List of available tools"));
 
-    const QCommandLineOption objectListOption("o", QObject::tr("Test list of specified tool."), "tool");
+    const QCommandLineOption objectListOption(QStringList() << "o"
+                                                            << "object",
+                                              QObject::tr("Test list of specified tool."),
+                                              "tool");
 
     const QCommandLineOption
-        runSpecifiedTestOption("r",
+        runSpecifiedTestOption(QStringList() << "r"
+                                             << "run",
                                QObject::tr(
                                    "Runs the tests for the specified instrument. If no specific test is specified with "
                                    "the -t option, all tests for the specified instrument are run."),
                                "tool");
 
-    const QCommandLineOption specifiedTestOption("t", QObject::tr("Specify test for running"), "test");
+    const QCommandLineOption specifiedTestOption(QStringList() << "t"
+                                                               << "test",
+                                                 QObject::tr("Specify test for running"),
+                                                 "test");
 
-    const QCommandLineOption useGraphicOption("g",
+    const QCommandLineOption useGraphicOption(QStringList() << "g"
+                                                            << "graph",
                                               QObject::tr("if specified, the graphical user interface will be used. If "
                                                           "not specified, the command line interface will be used "));
 
