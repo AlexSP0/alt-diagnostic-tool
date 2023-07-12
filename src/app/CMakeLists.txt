@@ -18,6 +18,8 @@ endmacro(add_adt_executable)
 
 find_package(Qt5 COMPONENTS Widgets Core Gui DBus Xml LinguistTools REQUIRED)
 
+configure_file(version.h.in version.h)
+
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set(CMAKE_AUTOMOC ON)

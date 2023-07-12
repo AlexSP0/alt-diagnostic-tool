@@ -21,9 +21,15 @@
 #include "adtapp.h"
 
 #include <QApplication>
+#include <QDebug>
 #include <QTranslator>
 
-#include <QDebug>
+#include "version.h"
+
+QString getVersion()
+{
+    return QString("%1.%2.%3").arg(0).arg(ADT_VERSION_MINOR).arg(ADT_VERSION_PATCH);
+}
 
 int main(int argc, char **argv)
 {
@@ -33,8 +39,8 @@ int main(int argc, char **argv)
     // construct settings path
     app.setOrganizationName(QCoreApplication::translate("main", "BaseALT Ltd."));
     app.setOrganizationDomain("basealt.ru");
-    app.setApplicationName("ALT Diagnostic tool");
-    app.setApplicationVersion("0.1.0");
+    app.setApplicationName("ALT Diagnostic Tool");
+    app.setApplicationVersion(getVersion());
 
     QLocale locale;
 
