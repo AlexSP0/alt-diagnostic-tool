@@ -32,10 +32,6 @@ ADTDesktopFileParser::ADTDesktopFileParser(QString data)
             {
                 Section &currentSections = m_sections[QString(section.first.c_str())];
 
-                QString kcurrentSections = section.first.c_str();
-                QString keyName          = QString(key.first.c_str());
-                QString keyValue         = key.second.get_value("").c_str();
-
                 currentSections.insert(getKeyNameWithoutLocale(QString(key.first.c_str())),
                                        IniFileKey{getKeyNameWithoutLocale(QString(key.first.c_str())),
                                                   getKeyLocale(QString(key.first.c_str())),
@@ -117,7 +113,6 @@ std::unique_ptr<ADTExecutable> ADTDesktopFileParser::buildCategoryExecutable()
     if (!setDescriptions(ADTDesktopFileParser::DESKTOP_ENTRY_SECTION_NAME, newADTExecutable.get()))
     {
         qWarning() << "ERROR! Can't get description for object: " << newADTExecutable->m_id;
-        return nullptr;
     }
 
     setArgs(ADTDesktopFileParser::DESKTOP_ENTRY_SECTION_NAME, newADTExecutable.get());
@@ -168,8 +163,6 @@ std::unique_ptr<ADTExecutable> ADTDesktopFileParser::buildTestExecutable(QString
     {
         qWarning() << "ERROR! Can't find key " << ADTDesktopFileParser::DESCRIPTION_SECTION_NAME
                    << " for test : " << test << " in tool: " << categoryExecutable->m_id;
-
-        return nullptr;
     }
 
     if (!setArgs(test, result.get()))
@@ -236,10 +229,10 @@ QString ADTDesktopFileParser::getKeyNameWithoutLocale(QString keyName)
 
     if (indexOfOpeningBracket >= indexOfClosingBracket || indexOfOpeningBracket == -1 || indexOfClosingBracket == -1)
     {
-        return keyName;
+        return keyName.toLower();
     }
 
-    return keyName.mid(0, indexOfOpeningBracket);
+    return keyName.mid(0, indexOfOpeningBracket).toLower();
 }
 
 bool ADTDesktopFileParser::setIcon(const QString &test, ADTExecutable *object)
