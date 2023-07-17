@@ -82,6 +82,7 @@ void MainTestsWidget::enableButtons()
     ui->backPushButton->setEnabled(true);
     ui->exitPushButton->setEnabled(true);
     ui->runAllTestPushButton->setEnabled(true);
+    ui->checkfilter->setEnabled(true);
     disableRunTestByDoubleClick(false);
 }
 
@@ -90,6 +91,7 @@ void MainTestsWidget::disableButtons()
     ui->backPushButton->setEnabled(false);
     ui->exitPushButton->setEnabled(false);
     ui->runAllTestPushButton->setEnabled(false);
+    ui->checkfilter->setEnabled(false);
     disableRunTestByDoubleClick(true);
 }
 
@@ -192,19 +194,26 @@ void MainTestsWidget::updateStatusWidgets()
 
     for (int i = m_currentToolItem->childCount() - 1; i >= 0; i--)
     {
-        StatusCommonWidget *currentWidget = new StatusCommonWidget(m_currentToolItem->child(i));
+        QString name  = m_currentToolItem->child(i)->getExecutable()->m_name;
+        bool nameFlag = m_currentToolItem->child(i)->getExecutable()->m_name.contains(ui->checkfilter->text());
 
-        connect(currentWidget,
-                &StatusCommonWidget::detailsButtonClicked,
-                this,
-                &MainTestsWidget::onDetailsButtonCurrentStatusWidgetClicked);
+        if (ui->checkfilter->text().isEmpty()
+            || m_currentToolItem->child(i)->getExecutable()->m_name.contains(ui->checkfilter->text()))
+        {
+            StatusCommonWidget *currentWidget = new StatusCommonWidget(m_currentToolItem->child(i));
 
-        connect(currentWidget,
-                &StatusCommonWidget::runButtonCLicked,
-                this,
-                &MainTestsWidget::onRunButtonCurrentStatusWidgetClicked);
+            connect(currentWidget,
+                    &StatusCommonWidget::detailsButtonClicked,
+                    this,
+                    &MainTestsWidget::onDetailsButtonCurrentStatusWidgetClicked);
 
-        m_statusWidgets[currentWidget] = 0;
+            connect(currentWidget,
+                    &StatusCommonWidget::runButtonCLicked,
+                    this,
+                    &MainTestsWidget::onRunButtonCurrentStatusWidgetClicked);
+
+            m_statusWidgets[currentWidget] = 0;
+        }
     }
 }
 
@@ -262,4 +271,13 @@ void MainTestsWidget::disableRunTestByDoubleClick(bool flag)
 void MainTestsWidget::on_exitPushButton_clicked()
 {
     m_controller->exitTestsWidget();
+}
+
+void MainTestsWidget::on_checkfilter_textChanged(const QString &arg1)
+{
+    clearUi();
+
+    updateStatusWidgets();
+
+    updateListOfStatusCommonWidgets();
 }

@@ -73,6 +73,8 @@ private slots:
 
     void on_exitPushButton_clicked();
 
+    void on_checkfilter_textChanged(const QString &arg1);
+
 private:
     void updateStatusWidgets();
 
