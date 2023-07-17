@@ -38,6 +38,10 @@
         <source>Exit</source>
         <translation>Exit</translation>
     </message>
+    <message>
+        <source>Clear</source>
+        <translation>Clear</translation>
+    </message>
 </context>
 <context>
     <name>MainToolsWidget</name>
@@ -76,22 +80,6 @@
 <context>
     <name>QObject</name>
     <message>
-        <source>List of available objects</source>
-        <translation>List of available objects</translation>
-    </message>
-    <message>
-        <source>Test list of specified object.</source>
-        <translation>Test list of specified object.</translation>
-    </message>
-    <message>
-        <source>Run all tests of speccified object</source>
-        <translation>Run all tests of speccified object</translation>
-    </message>
-    <message>
-        <source>Run specicfied test of specified object. Must specify test name with -t option</source>
-        <translation>Run specicfied test of specified object. Must specify test name with -t option</translation>
-    </message>
-    <message>
         <source>Specify test for running</source>
         <translation>Specify test for running</translation>
     </message>
@@ -104,12 +92,39 @@
         <translation>Bad object name: </translation>
     </message>
     <message>
-        <source>Missing test name for object: </source>
-        <translation>Missing test name for object: </translation>
-    </message>
-    <message>
         <source>Bad test name: </source>
         <translation>Bad test name: </translation>
+    </message>
+    <message>
+        <source>List of available tools</source>
+        <translation>List of available tools</translation>
+    </message>
+    <message>
+        <source>Test list of specified tool.</source>
+        <translation>Test list of specified tool.</translation>
+    </message>
+    <message>
+        <source>Runs the tests for the specified instrument. If no specific test is specified with the -t option, all tests for the specified instrument are run.</source>
+        <translation>Runs the tests for the specified instrument. If no specific test is specified with the -t option, all tests for the specified instrument are run.</translation>
+    </message>
+</context>
+<context>
+    <name>ServiceUnregisteredWidget</name>
+    <message>
+        <source>ERROR: service unavaliable</source>
+        <translation>ERROR: service unavaliable</translation>
+    </message>
+    <message>
+        <source>Service was unregistered! Waiting for register service</source>
+        <translation>Service was unregistered! Waiting for register service</translation>
+    </message>
+    <message>
+        <source>Close and exit</source>
+        <translation>Close and exit</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation>Close</translation>
     </message>
 </context>
 <context>

@@ -38,6 +38,10 @@
         <source>Exit</source>
         <translation>Выход</translation>
     </message>
+    <message>
+        <source>Clear</source>
+        <translation>Очистить</translation>
+    </message>
 </context>
 <context>
     <name>MainToolsWidget</name>
@@ -76,22 +80,6 @@
 <context>
     <name>QObject</name>
     <message>
-        <source>List of available objects</source>
-        <translation>Список доступных инструментов</translation>
-    </message>
-    <message>
-        <source>Test list of specified object.</source>
-        <translation>Список тестов, доступных для данного инструмента</translation>
-    </message>
-    <message>
-        <source>Run all tests of speccified object</source>
-        <translation>Запуск всех тестов указанного инструмента</translation>
-    </message>
-    <message>
-        <source>Run specicfied test of specified object. Must specify test name with -t option</source>
-        <translation>Запуск указанного теста инструмента. Должна быть указано имя теста с помощью опции -t</translation>
-    </message>
-    <message>
         <source>Specify test for running</source>
         <translation>Имя теста для запуска</translation>
     </message>
@@ -104,12 +92,39 @@
         <translation>Неправильное имя инструмента</translation>
     </message>
     <message>
-        <source>Missing test name for object: </source>
-        <translation>Не указано имя теста</translation>
-    </message>
-    <message>
         <source>Bad test name: </source>
         <translation>Неправильное имя теста</translation>
+    </message>
+    <message>
+        <source>List of available tools</source>
+        <translation>Список доступных инструментов</translation>
+    </message>
+    <message>
+        <source>Test list of specified tool.</source>
+        <translation>Список тестов указанного инструмента</translation>
+    </message>
+    <message>
+        <source>Runs the tests for the specified instrument. If no specific test is specified with the -t option, all tests for the specified instrument are run.</source>
+        <translation>Запуск тестов указанного инструмента. Если тест не указан, все тесты будут запущены.</translation>
+    </message>
+</context>
+<context>
+    <name>ServiceUnregisteredWidget</name>
+    <message>
+        <source>ERROR: service unavaliable</source>
+        <translation>ОШИБКА! Сервис недоступен</translation>
+    </message>
+    <message>
+        <source>Service was unregistered! Waiting for register service</source>
+        <translation>Сервис не зарегистрирован! Ожидаю регистрации сервиса</translation>
+    </message>
+    <message>
+        <source>Close and exit</source>
+        <translation>Закрыть и выйти</translation>
+    </message>
+    <message>
+        <source>Close</source>
+        <translation>Закрыть</translation>
     </message>
 </context>
 <context>
@@ -128,7 +143,7 @@
     </message>
     <message>
         <source>Running:</source>
-        <translation type="unfinished">Выполняется:</translation>
+        <translation>Выполняется:</translation>
     </message>
 </context>
 <context>

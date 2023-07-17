@@ -75,6 +75,8 @@ private slots:
 
     void on_checkfilter_textChanged(const QString &arg1);
 
+    void on_clearFilterPushButton_clicked();
+
 private:
     void updateStatusWidgets();
 

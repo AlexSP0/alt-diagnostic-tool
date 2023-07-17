@@ -281,3 +281,8 @@ void MainTestsWidget::on_checkfilter_textChanged(const QString &arg1)
 
     updateListOfStatusCommonWidgets();
 }
+
+void MainTestsWidget::on_clearFilterPushButton_clicked()
+{
+    ui->checkfilter->clear();
+}
