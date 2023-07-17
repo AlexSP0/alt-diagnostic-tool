@@ -112,7 +112,7 @@ std::unique_ptr<ADTExecutable> ADTDesktopFileParser::buildCategoryExecutable()
 
     if (!setDescriptions(ADTDesktopFileParser::DESKTOP_ENTRY_SECTION_NAME, newADTExecutable.get()))
     {
-        qWarning() << "ERROR! Can't get description for object: " << newADTExecutable->m_id;
+        qWarning() << "WARNING! Can't get description for object: " << newADTExecutable->m_id;
     }
 
     setArgs(ADTDesktopFileParser::DESKTOP_ENTRY_SECTION_NAME, newADTExecutable.get());
@@ -161,7 +161,7 @@ std::unique_ptr<ADTExecutable> ADTDesktopFileParser::buildTestExecutable(QString
     }
     if (!setDescriptions(test, result.get()))
     {
-        qWarning() << "ERROR! Can't find key " << ADTDesktopFileParser::DESCRIPTION_SECTION_NAME
+        qWarning() << "WARNING! Can't find key " << ADTDesktopFileParser::DESCRIPTION_SECTION_NAME
                    << " for test : " << test << " in tool: " << categoryExecutable->m_id;
     }
 
