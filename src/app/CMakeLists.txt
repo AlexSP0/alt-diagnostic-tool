@@ -44,6 +44,7 @@ set(HEADERS
     mainwindow/detailsdialog.h
     mainwindow/clickablehighlightlabel.h
     mainwindow/serviceunregisteredwidget.h
+    mainwindow/mainwindowsettings.h
 
     adtbuilderstrategies/adtmodelbuilder.h
     adtbuilderstrategies/adtmodelbuilderstrategyinterface.h
@@ -79,6 +80,7 @@ set(SOURCES
     mainwindow/detailsdialog.cpp
     mainwindow/clickablehighlightlabel.cpp
     mainwindow/serviceunregisteredwidget.cpp
+    mainwindow/mainwindowsettings.cpp
 
     adtbuilderstrategies/adtmodelbuilder.cpp
     adtbuilderstrategies/adtmodelbuilderstrategydbusinfodesktop.cpp

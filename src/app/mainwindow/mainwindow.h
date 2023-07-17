@@ -31,6 +31,8 @@ class MainWindow;
 }
 QT_END_NAMESPACE
 
+class MainWindowPrivate;
+
 class MainWindow : public QMainWindow, public MainWindowInterface
 {
 public:
@@ -52,7 +54,7 @@ public:
 private:
     Ui::MainWindow *ui;
 
-    MainWindowControllerInterface *m_controller;
+    MainWindowPrivate *d;
 
 private:
     MainWindow(const MainWindow &) = delete;

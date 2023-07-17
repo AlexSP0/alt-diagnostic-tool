@@ -20,30 +20,62 @@
 
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
+#include "mainwindowsettings.h"
 
 #include <QDebug>
+
+class MainWindowPrivate
+{
+public:
+    MainWindowPrivate(MainWindow *mWindow, Ui::MainWindow *ui)
+        : mainWindow(mWindow)
+        , mainWindowUi(ui)
+        , controller(nullptr)
+        , settings(new MainWindowSettings(mWindow, ui))
+    {}
+    ~MainWindowPrivate() = default;
+
+    MainWindow *mainWindow;
+
+    Ui::MainWindow *mainWindowUi;
+
+    MainWindowControllerInterface *controller;
+
+    std::unique_ptr<MainWindowSettings> settings;
+
+private:
+    MainWindowPrivate(const MainWindowPrivate &) = delete;
+    MainWindowPrivate(MainWindowPrivate &&)      = delete;
+    MainWindowPrivate &operator=(const MainWindowPrivate &) = delete;
+    MainWindowPrivate &operator=(MainWindowPrivate &&) = delete;
+};
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow())
-    , m_controller(nullptr)
+    , d(nullptr)
 {
     ui->setupUi(this);
+    d = new MainWindowPrivate(this, ui);
+
+    d->settings->restoreSettings();
 }
 
 MainWindow::~MainWindow()
 {
+    delete d;
     delete ui;
 }
 
 void MainWindow::closeAll()
 {
+    d->settings->saveSettings();
     close();
 }
 
 void MainWindow::setController(MainWindowControllerInterface *controller)
 {
-    m_controller = controller;
+    d->controller = controller;
 }
 
 void MainWindow::toggleStackWidget()
