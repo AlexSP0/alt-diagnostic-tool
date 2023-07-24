@@ -95,6 +95,13 @@ std::vector<std::unique_ptr<ADTExecutable>> ADTModelBuilderStrategyDbusInfoDeskt
 
     QDBusReply<QStringList> testsListReply = iface.call(ADTModelBuilderStrategyDbusInfoDesktop::LIST_METHOD);
 
+    if (!testsListReply.isValid())
+    {
+        qWarning() << "ERROR! Can't answer from list method from object with path: " << path;
+
+        return std::vector<std::unique_ptr<ADTExecutable>>();
+    }
+
     QStringList testsList = testsListReply.value();
 
     for (QString &currentTestName : testsList)
@@ -109,25 +116,25 @@ std::vector<std::unique_ptr<ADTExecutable>> ADTModelBuilderStrategyDbusInfoDeskt
         return std::vector<std::unique_ptr<ADTExecutable>>();
     }
 
-    QDBusReply<QStringList> reply = iface.call(ADTModelBuilderStrategyDbusInfoDesktop::INFO_METHOD);
+    QDBusReply<QByteArray> reply = iface.call(ADTModelBuilderStrategyDbusInfoDesktop::INFO_METHOD);
 
-    QStringList infoList = reply.value();
+    if (!reply.isValid())
+    {
+        qWarning() << "ERROR! Can't answer from info method from object with path: " << path;
 
-    if (infoList.isEmpty())
+        return std::vector<std::unique_ptr<ADTExecutable>>();
+    }
+
+    if (reply.value().isEmpty())
     {
         qWarning() << "ERROR! Can't get info from object with path: " << path;
 
         return std::vector<std::unique_ptr<ADTExecutable>>();
     }
 
-    QString infoResult;
+    QString info(reply.value());
 
-    for (QString currentLine : infoList)
-    {
-        infoResult = infoResult + currentLine;
-    }
-
-    ADTDesktopFileParser parser(infoResult, testsList, m_serviceName, path, m_findInterface, m_runTaskMethodName);
+    ADTDesktopFileParser parser(info, testsList, m_serviceName, path, m_findInterface, m_runTaskMethodName);
 
     return parser.buildExecutables();
 }
