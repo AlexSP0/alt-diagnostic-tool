@@ -58,7 +58,7 @@ public:
 
     void exitTestsWidget();
 
-    void detailsCurrentTest(ADTExecutable *test);
+    void detailsCurrentTest(StatusCommonWidget *widget);
 
     int listObjects();
     int listTestsOfObject(QString object);
@@ -76,6 +76,8 @@ private:
 
     void clearToolReports(TreeItem *item);
 
+    TreeItem *getToolById(QString id);
+
 private:
     MainWindowControllerImplPrivate *d;
 
@@ -88,9 +90,6 @@ private slots:
 
     void onCloseAndExitButtonPressed();
     void on_closeButtonPressed();
-
-private:
-    TreeItem *getToolById(QString id);
 
 private:
     MainWindowControllerImpl(const MainWindowControllerImpl &) = delete;

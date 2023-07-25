@@ -37,6 +37,7 @@ ADTExecutable::ADTExecutable()
     , m_dbusRunMethodName("")
     , m_stringStdout("")
     , m_stringStderr("")
+    , m_log("")
     , m_bytesStdout({})
     , m_bytesStderr({})
     , m_nameLocaleStorage()
@@ -62,16 +63,21 @@ void ADTExecutable::clearReports()
 {
     m_stringStdout.clear();
     m_stringStderr.clear();
+    m_log.clear();
     m_bytesStdout.clear();
     m_bytesStderr.clear();
 }
 
 void ADTExecutable::getStdout(QString out)
 {
+    m_log.append(out);
     m_stringStdout.append(out);
+    emit getStdoutLine(out);
 }
 
 void ADTExecutable::getStderr(QString err)
 {
+    m_log.append(err);
     m_stringStderr.append(err);
+    emit getStderrLine(err);
 }

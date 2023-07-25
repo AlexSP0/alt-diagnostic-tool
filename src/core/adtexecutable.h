@@ -28,6 +28,7 @@
 class ADTExecutable : public QObject
 {
     Q_OBJECT
+
     Q_PROPERTY(QString id MEMBER m_id)
     Q_PROPERTY(int type MEMBER m_type)
     Q_PROPERTY(QString name MEMBER m_name)
@@ -39,6 +40,7 @@ class ADTExecutable : public QObject
     Q_PROPERTY(QString dbusPath MEMBER m_dbusPath)
     Q_PROPERTY(QString dbusInterfaceName MEMBER m_dbusInterfaceName)
     Q_PROPERTY(QString dbusRunMethodName MEMBER m_dbusServiceName)
+    Q_PROPERTY(QString log MEMBER m_log)
     Q_PROPERTY(int m_exit_code MEMBER m_exit_code)
 
 public:
@@ -64,6 +66,7 @@ public:
 
     QString m_stringStdout;
     QString m_stringStderr;
+    QString m_log;
 
     QByteArray m_bytesStdout;
     QByteArray m_bytesStderr;
@@ -81,6 +84,10 @@ public:
 public slots:
     void getStdout(QString out);
     void getStderr(QString err);
+
+signals:
+    void getStdoutLine(QString);
+    void getStderrLine(QString);
 };
 
 #endif //ADTEXECUTABLE_H

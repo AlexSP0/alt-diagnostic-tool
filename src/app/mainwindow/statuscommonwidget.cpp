@@ -28,7 +28,9 @@ StatusCommonWidget::StatusCommonWidget(TreeItem *item, QWidget *parent)
     : QWidget(parent)
     , ui(new Ui::StatusCommonWidget)
     , treeItem(item)
+    , detailsDialog(new DetailsDialog())
     , m_defaultColor()
+
 {
     ui->setupUi(this);
 
@@ -44,10 +46,14 @@ StatusCommonWidget::StatusCommonWidget(TreeItem *item, QWidget *parent)
             &ClickableHighlightLabel::doubleClicked,
             this,
             &StatusCommonWidget::on_runPushButton_clicked);
+
+    connect(item->getExecutable(), &ADTExecutable::getStdoutLine, detailsDialog, &DetailsDialog::on_getStdout);
+    connect(item->getExecutable(), &ADTExecutable::getStderrLine, detailsDialog, &DetailsDialog::on_getStderr);
 }
 
 StatusCommonWidget::~StatusCommonWidget()
 {
+    delete detailsDialog;
     delete ui;
 }
 
@@ -115,12 +121,17 @@ void StatusCommonWidget::disableRunTestByDoubleClick(bool flag)
     ui->testNameLabel->disabledDoubleClick(flag);
 }
 
-void StatusCommonWidget::on_detailsPushButton_clicked()
+DetailsDialog *StatusCommonWidget::getDetailsDialog()
 {
-    emit detailsButtonClicked(this);
+    return detailsDialog;
 }
 
 void StatusCommonWidget::on_runPushButton_clicked()
 {
     emit runButtonCLicked(this);
+}
+
+void StatusCommonWidget::on_logsPushButton_clicked()
+{
+    emit logsButtonClicked(this);
 }

@@ -146,6 +146,12 @@ std::vector<ADTExecutable *> MainTestsWidget::getTasks()
 
 void MainTestsWidget::on_runAllTestPushButton_clicked()
 {
+    for (StatusCommonWidget *widget : m_statusWidgets.keys())
+    {
+        widget->getExecutable()->clearReports();
+        widget->getDetailsDialog()->clearDetailsText();
+    }
+
     m_controller->runTestsWidget(getTasks());
 }
 
@@ -165,12 +171,13 @@ void MainTestsWidget::onRunButtonCurrentStatusWidgetClicked(StatusCommonWidget *
 
     runningTests.push_back(widget->getExecutable());
 
+    widget->getDetailsDialog()->clearDetailsText();
     m_controller->runTestsWidget(runningTests);
 }
 
 void MainTestsWidget::onDetailsButtonCurrentStatusWidgetClicked(StatusCommonWidget *widget)
 {
-    m_controller->detailsCurrentTest(widget->getExecutable());
+    m_controller->detailsCurrentTest(widget);
 }
 
 void MainTestsWidget::onBackToSummaryButtonClicked()
@@ -203,7 +210,7 @@ void MainTestsWidget::updateStatusWidgets()
             StatusCommonWidget *currentWidget = new StatusCommonWidget(m_currentToolItem->child(i));
 
             connect(currentWidget,
-                    &StatusCommonWidget::detailsButtonClicked,
+                    &StatusCommonWidget::logsButtonClicked,
                     this,
                     &MainTestsWidget::onDetailsButtonCurrentStatusWidgetClicked);
 

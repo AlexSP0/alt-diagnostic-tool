@@ -138,12 +138,12 @@
         <translation>Запустить</translation>
     </message>
     <message>
-        <source>Details</source>
-        <translation>Отчет</translation>
-    </message>
-    <message>
         <source>Running:</source>
         <translation>Выполняется:</translation>
+    </message>
+    <message>
+        <source>Logs</source>
+        <translation>Журнал</translation>
     </message>
 </context>
 <context>

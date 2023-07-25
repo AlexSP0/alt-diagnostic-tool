@@ -21,6 +21,8 @@
 #ifndef STATUSCOMMONWIDGET_H
 #define STATUSCOMMONWIDGET_H
 
+#include "detailsdialog.h"
+
 #include <../core/treeitem.h>
 #include <QWidget>
 
@@ -101,20 +103,24 @@ public:
 
     void disableRunTestByDoubleClick(bool flag);
 
+    DetailsDialog *getDetailsDialog();
+
 signals:
-    void detailsButtonClicked(StatusCommonWidget *widget);
+    void logsButtonClicked(StatusCommonWidget *widget);
 
     void runButtonCLicked(StatusCommonWidget *widget);
 
 private slots:
-    void on_detailsPushButton_clicked();
-
     void on_runPushButton_clicked();
+
+    void on_logsPushButton_clicked();
 
 private:
     Ui::StatusCommonWidget *ui;
 
     TreeItem *treeItem;
+
+    DetailsDialog *detailsDialog;
 
     QColor m_defaultColor;
 

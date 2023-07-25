@@ -35,7 +35,6 @@ public:
         , m_mainWindow(nullptr)
         , m_toolsWidget(nullptr)
         , m_testWidget(nullptr)
-        , m_detailsDialog(new DetailsDialog())
         , m_serviceUnregisteredWidget(new ServiceUnregisteredWidget())
         , m_currentToolItem(nullptr)
         , m_executor(new ADTExecutor())
@@ -54,7 +53,6 @@ public:
     ~MainWindowControllerImplPrivate()
     {
         delete m_proxyModel;
-        delete m_detailsDialog;
         delete m_serviceUnregisteredWidget;
         delete m_mainWindow;
     }
@@ -66,8 +64,6 @@ public:
     ToolsWidgetInterface *m_toolsWidget;
 
     TestWidgetInterface *m_testWidget;
-
-    DetailsDialog *m_detailsDialog;
 
     ServiceUnregisteredWidget *m_serviceUnregisteredWidget;
 
@@ -202,12 +198,9 @@ void MainWindowControllerImpl::exitTestsWidget()
     d->m_mainWindow->closeAll();
 }
 
-void MainWindowControllerImpl::detailsCurrentTest(ADTExecutable *test)
+void MainWindowControllerImpl::detailsCurrentTest(StatusCommonWidget *widget)
 {
-    //d->m_testWidget->showDetails(test->m_stringStdout + test->m_stringStderr);
-    d->m_detailsDialog->clearDetailsText();
-    d->m_detailsDialog->setDetailsText(test->m_stringStdout + test->m_stringStderr);
-    d->m_detailsDialog->show();
+    widget->getDetailsDialog()->show();
 }
 
 int MainWindowControllerImpl::listObjects()

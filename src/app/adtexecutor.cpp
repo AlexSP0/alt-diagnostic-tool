@@ -22,11 +22,13 @@
 
 #include <QApplication>
 #include <QDBusConnection>
-#include <QDBusInterface>
 #include <QDBusReply>
 #include <QThread>
 #include <QTimer>
 #include <qdbusmessage.h>
+
+const QString STDOUT_SIGNAL_NAME = "diag1_stdout_signal";
+const QString STDERR_SIGNAL_NAME = "diag1_stderr_signal";
 
 class ADTExecutorPrivate
 {
@@ -163,26 +165,65 @@ void ADTExecutor::executeTask(ADTExecutable *task)
 
     task->clearReports();
 
-    QDBusMessage reply = dbusIface.call(task->m_dbusRunMethodName, task->m_id);
+    QString signalPrefix = dbus.baseService();
+    signalPrefix.replace(':', '_');
+    signalPrefix.replace('.', '_');
 
-    if (reply.type() == QDBusMessage::ErrorMessage)
+    QString stdoutSignal = STDOUT_SIGNAL_NAME + signalPrefix;
+    QString stderrSignal = STDERR_SIGNAL_NAME + signalPrefix;
+
+    connectTaskSignals(dbusIface, task, stdoutSignal, stderrSignal);
+
+    QDBusReply<int> reply = dbusIface.call(task->m_dbusRunMethodName, task->m_id);
+
+    if (!reply.isValid())
     {
         task->m_exit_code = -1;
-        task->m_stringStderr.append(reply.errorMessage());
-
+        task->getStderr(reply.error().message());
         return;
     }
 
-    QList<QVariant> replyValues = reply.arguments();
+    disconnectTaskSignals(dbusIface, task, stdoutSignal, stderrSignal);
 
-    QStringList report = replyValues.takeFirst().toStringList();
+    task->m_exit_code = reply.value();
+}
 
-    int exitCode = replyValues.takeFirst().toInt();
+void ADTExecutor::connectTaskSignals(QDBusInterface &iface,
+                                     ADTExecutable *task,
+                                     QString stdoutSignalName,
+                                     QString stderrSignalName)
+{
+    iface.connection().connect(task->m_dbusServiceName,
+                               task->m_dbusPath,
+                               task->m_dbusInterfaceName,
+                               stdoutSignalName,
+                               task,
+                               SLOT(getStdout(QString)));
 
-    task->m_exit_code = exitCode;
+    iface.connection().connect(task->m_dbusServiceName,
+                               task->m_dbusPath,
+                               task->m_dbusInterfaceName,
+                               stderrSignalName,
+                               task,
+                               SLOT(getStderr(QString)));
+}
 
-    for (QString &line : report)
-    {
-        task->m_stringStdout.append(line);
-    }
+void ADTExecutor::disconnectTaskSignals(QDBusInterface &iface,
+                                        ADTExecutable *task,
+                                        QString stdoutSignalName,
+                                        QString stderrSignalName)
+{
+    iface.connection().disconnect(task->m_dbusServiceName,
+                                  task->m_dbusPath,
+                                  task->m_dbusInterfaceName,
+                                  stdoutSignalName,
+                                  task,
+                                  SLOT(getStdout(QString)));
+
+    iface.connection().disconnect(task->m_dbusServiceName,
+                                  task->m_dbusPath,
+                                  task->m_dbusInterfaceName,
+                                  stderrSignalName,
+                                  task,
+                                  SLOT(getStderr(QString)));
 }

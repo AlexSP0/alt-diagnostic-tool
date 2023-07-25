@@ -23,6 +23,7 @@
 
 #include "mainwindow/statuscommonwidget.h"
 
+#include <QDBusInterface>
 #include <QObject>
 
 class ADTExecutorPrivate;
@@ -53,18 +54,27 @@ public:
 public slots:
     void runTasks();
 
-private:
-    void executeTask(ADTExecutable *task);
-
-private:
-    ADTExecutorPrivate *d;
-
 signals:
     void beginTask(ADTExecutable *currentExecutable);
     void finishTask(ADTExecutable *currentExecutable);
 
     void allTaskBegin();
     void allTasksFinished();
+
+private:
+    void executeTask(ADTExecutable *task);
+
+    void connectTaskSignals(QDBusInterface &iface,
+                            ADTExecutable *task,
+                            QString stdoutSignalName,
+                            QString stderrSignalName);
+    void disconnectTaskSignals(QDBusInterface &iface,
+                               ADTExecutable *task,
+                               QString stdoutSignalName,
+                               QString stderrSignalName);
+
+private:
+    ADTExecutorPrivate *d;
 
 private:
     ADTExecutor(const ADTExecutor &) = delete;

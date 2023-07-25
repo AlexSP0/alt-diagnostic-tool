@@ -138,12 +138,12 @@
         <translation>Form</translation>
     </message>
     <message>
-        <source>Details</source>
-        <translation>Details</translation>
-    </message>
-    <message>
         <source>Running:</source>
         <translation>Running:</translation>
+    </message>
+    <message>
+        <source>Logs</source>
+        <translation>Logs</translation>
     </message>
 </context>
 <context>

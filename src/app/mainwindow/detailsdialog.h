@@ -1,6 +1,7 @@
 #ifndef DETAILSDIALOG_H
 #define DETAILSDIALOG_H
 
+#include "../core/adtexecutable.h"
 #include <QDialog>
 
 namespace Ui
@@ -15,11 +16,15 @@ public:
     DetailsDialog(QWidget *parent = nullptr);
     ~DetailsDialog();
 
-    void setDetailsText(QString text);
+    void setDetailsText(ADTExecutable *test);
     void clearDetailsText();
 
 private slots:
     void on_closePushButton_clicked();
+
+public slots:
+    void on_getStdout(QString line);
+    void on_getStderr(QString line);
 
 private:
     Ui::DetailsDialog *ui;
