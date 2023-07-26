@@ -42,6 +42,10 @@
         <source>Clear</source>
         <translation>Clear</translation>
     </message>
+    <message>
+        <source>Report</source>
+        <translation>Report</translation>
+    </message>
 </context>
 <context>
     <name>MainToolsWidget</name>

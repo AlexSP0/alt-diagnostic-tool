@@ -293,3 +293,5 @@ void MainTestsWidget::on_clearFilterPushButton_clicked()
 {
     ui->checkfilter->clear();
 }
+
+void MainTestsWidget::on_reportPushButton_clicked() {}

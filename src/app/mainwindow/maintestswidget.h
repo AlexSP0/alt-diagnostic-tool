@@ -77,6 +77,8 @@ private slots:
 
     void on_clearFilterPushButton_clicked();
 
+    void on_reportPushButton_clicked();
+
 private:
     void updateStatusWidgets();
 

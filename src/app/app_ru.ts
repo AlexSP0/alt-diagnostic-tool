@@ -42,6 +42,10 @@
         <source>Clear</source>
         <translation>Очистить</translation>
     </message>
+    <message>
+        <source>Report</source>
+        <translation>Отчет</translation>
+    </message>
 </context>
 <context>
     <name>MainToolsWidget</name>
