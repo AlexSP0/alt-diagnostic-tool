@@ -23,7 +23,9 @@
 #include <QDBusInterface>
 #include <QDebug>
 
-ADTServiceChecker::ADTServiceChecker(QString dbusServiceName, QString dbusPath, QString dbusInterface)
+ADTServiceChecker::ADTServiceChecker(QString dbusServiceName,
+                                     QString dbusPath,
+                                     QString dbusInterface)
     : m_dbusServiceName(dbusServiceName)
     , m_dbusPath(dbusPath)
     , m_dbusIntefaceName(dbusInterface)
@@ -34,18 +36,20 @@ ADTServiceChecker::ADTServiceChecker(QString dbusServiceName, QString dbusPath, 
 {
     m_dbusConnection = std::make_unique<QDBusConnection>(QDBusConnection::systemBus());
 
-    m_watcherForDBusServiceOwnerChanged = std::make_unique<QDBusServiceWatcher>(m_dbusServiceName,
-                                                                                *m_dbusConnection.get(),
-                                                                                QDBusServiceWatcher::WatchForOwnerChange);
+    m_watcherForDBusServiceOwnerChanged =
+            std::make_unique<QDBusServiceWatcher>(m_dbusServiceName,
+                                                  *m_dbusConnection.get(),
+                                                  QDBusServiceWatcher::WatchForOwnerChange);
 
-    m_watcherForDBusServiceRegistered = std::make_unique<QDBusServiceWatcher>(m_dbusServiceName,
-                                                                              *m_dbusConnection.get(),
-                                                                              QDBusServiceWatcher::WatchForRegistration);
+    m_watcherForDBusServiceRegistered =
+            std::make_unique<QDBusServiceWatcher>(m_dbusServiceName,
+                                                  *m_dbusConnection.get(),
+                                                  QDBusServiceWatcher::WatchForRegistration);
 
     m_watcherForDBusServiceUnregistered
-        = std::make_unique<QDBusServiceWatcher>(m_dbusServiceName,
-                                                *m_dbusConnection.get(),
-                                                QDBusServiceWatcher::WatchForUnregistration);
+            = std::make_unique<QDBusServiceWatcher>(m_dbusServiceName,
+                                                    *m_dbusConnection.get(),
+                                                    QDBusServiceWatcher::WatchForUnregistration);
 
     connect(m_watcherForDBusServiceOwnerChanged.get(),
             &QDBusServiceWatcher::serviceOwnerChanged,
@@ -68,7 +72,10 @@ bool ADTServiceChecker::checkServiceInterfaceAvailability()
         return false;
     }
 
-    QDBusInterface dBusInterface(m_dbusServiceName, m_dbusPath, m_dbusIntefaceName, *m_dbusConnection.get());
+    QDBusInterface dBusInterface(m_dbusServiceName,
+                                 m_dbusPath,
+                                 m_dbusIntefaceName,
+                                 *m_dbusConnection.get());
     if (!dBusInterface.isValid())
     {
         return false;

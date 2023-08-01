@@ -42,7 +42,7 @@ private:
     CLControllerPrivate(const CLControllerPrivate &) = delete;
     CLControllerPrivate(CLControllerPrivate &&)      = delete;
     CLControllerPrivate &operator=(const CLControllerPrivate &) = delete;
-    CLControllerPrivate &operator=(CLControllerPrivate &&) = delete;
+    CLControllerPrivate &operator=(CLControllerPrivate &&)      = delete;
 };
 
 CLController::CLController(TreeModel *model, CommandLineOptions *options)
@@ -89,7 +89,9 @@ int CLController::listTestsOfObject(QString object)
 
     if (!currentTool || currentTool->childCount() < 1)
     {
-        std::cerr << "ERROR: can't find tests in object: " << object.toStdString() << std::endl;
+        std::cerr << "ERROR: can't find tests in object: "
+                  << object.toStdString()
+                  << std::endl;
         return 1;
     }
 
@@ -107,7 +109,9 @@ int CLController::runAllTestsOfObject(QString object)
 
     if (!currentTool || currentTool->childCount() < 1)
     {
-        std::cerr << "ERROR: can't find tests in object: " << object.toStdString() << std::endl;
+        std::cerr << "ERROR: can't find tests in object: "
+                  << object.toStdString()
+                  << std::endl;
         return 1;
     }
 
@@ -133,7 +137,9 @@ int CLController::runSpecifiedTestOfObject(QString object, QString test)
 
     if (!currentTool || currentTool->childCount() < 1)
     {
-        std::cerr << "ERROR: can't find tests in object: " << object.toStdString() << std::endl;
+        std::cerr << "ERROR: can't find tests in object: "
+                  << object.toStdString()
+                  << std::endl;
         return 1;
     }
 

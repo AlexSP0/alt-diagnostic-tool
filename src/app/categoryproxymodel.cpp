@@ -25,9 +25,12 @@ CategoryProxyModel::CategoryProxyModel(const QString &category)
     : selectedCategory(category)
 {}
 
-bool CategoryProxyModel::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
+bool CategoryProxyModel::filterAcceptsRow(int source_row,
+                                          const QModelIndex &source_parent) const
 {
-    QModelIndex source_index = sourceModel()->index(source_row, this->filterKeyColumn(), source_parent);
+    QModelIndex source_index = sourceModel()->index(source_row,
+                                                    this->filterKeyColumn(),
+                                                    source_parent);
     if (source_index.isValid())
     {
         auto data = source_index.data(Qt::UserRole + 1);

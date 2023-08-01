@@ -154,15 +154,19 @@ std::unique_ptr<ADTExecutable> ADTDesktopFileParser::buildTestExecutable(QString
 
     if (!setNames(test, result.get()))
     {
-        qWarning() << "ERROR! Can't find key " << ADTDesktopFileParser::NAME_SECTION_NAME << " for test : " << test
+        qWarning() << "ERROR! Can't find key "
+                   << ADTDesktopFileParser::NAME_SECTION_NAME
+                   << " for test : " << test
                    << " in tool: " << categoryExecutable->m_id;
 
         return nullptr;
     }
     if (!setDescriptions(test, result.get()))
     {
-        qWarning() << "WARNING! Can't find key " << ADTDesktopFileParser::DESCRIPTION_SECTION_NAME
-                   << " for test : " << test << " in tool: " << categoryExecutable->m_id;
+        qWarning() << "WARNING! Can't find key "
+                   << ADTDesktopFileParser::DESCRIPTION_SECTION_NAME
+                   << " for test : " << test
+                   << " in tool: " << categoryExecutable->m_id;
     }
 
     if (!setArgs(test, result.get()))
@@ -214,7 +218,8 @@ QString ADTDesktopFileParser::getKeyLocale(QString keyName)
     auto indexOfOpeningBracket = keyName.lastIndexOf("[");
     auto indexOfClosingBracket = keyName.lastIndexOf("]");
 
-    if (indexOfOpeningBracket >= indexOfClosingBracket || indexOfOpeningBracket == -1 || indexOfClosingBracket == -1)
+    if (indexOfOpeningBracket >= indexOfClosingBracket
+            || indexOfOpeningBracket == -1 || indexOfClosingBracket == -1)
     {
         return QString();
     }
@@ -227,7 +232,8 @@ QString ADTDesktopFileParser::getKeyNameWithoutLocale(QString keyName)
     auto indexOfOpeningBracket = keyName.lastIndexOf("[");
     auto indexOfClosingBracket = keyName.lastIndexOf("]");
 
-    if (indexOfOpeningBracket >= indexOfClosingBracket || indexOfOpeningBracket == -1 || indexOfClosingBracket == -1)
+    if (indexOfOpeningBracket >= indexOfClosingBracket
+            || indexOfOpeningBracket == -1 || indexOfClosingBracket == -1)
     {
         return keyName.toLower();
     }
@@ -338,7 +344,8 @@ QString ADTDesktopFileParser::getToolName()
 
     if (desktopEntryIt == m_sections.end())
     {
-        qWarning() << "ERROR! Can't find section: " << ADTDesktopFileParser::DESKTOP_ENTRY_SECTION_NAME
+        qWarning() << "ERROR! Can't find section: "
+                   << ADTDesktopFileParser::DESKTOP_ENTRY_SECTION_NAME
                    << " for the object located on the path " << m_dbusPath;
 
         return QString();
@@ -350,7 +357,8 @@ QString ADTDesktopFileParser::getToolName()
 
     if (toolNameList.isEmpty())
     {
-        qWarning() << "ERROR! Can't find any keys in section: " << ADTDesktopFileParser::DESKTOP_ENTRY_SECTION_NAME
+        qWarning() << "ERROR! Can't find any keys in section: "
+                   << ADTDesktopFileParser::DESKTOP_ENTRY_SECTION_NAME
                    << " for the object located on the path " << m_dbusPath;
 
         return QString();
