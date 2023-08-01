@@ -24,8 +24,10 @@
 #include <QApplication>
 #include <QCommandLineParser>
 
+typedef CommandLineParser::CommandLineParseResult CommandLineParseResult;
+
 class CommandLineParserPrivate
-{
+{ 
 public:
     QApplication &application;
     std::unique_ptr<QCommandLineParser> parser;
@@ -51,7 +53,7 @@ CommandLineParser::~CommandLineParser()
     delete d;
 }
 
-CommandLineParser::CommandLineParseResult CommandLineParser::parseCommandLine(CommandLineOptions *options,
+CommandLineParseResult CommandLineParser::parseCommandLine(CommandLineOptions *options,
                                                                               QString *errorMessage)
 {
     //TO DO add translations
