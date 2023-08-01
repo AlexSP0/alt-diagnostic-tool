@@ -14,7 +14,9 @@ std::unique_ptr<TreeModel> TreeModelBulderFromExecutable::buildModel(std::vector
     {
         if (elements.at(i)->m_type == ADTExecutable::ExecutableType::categoryType)
         {
-            TreeItem *categoryItem = new TreeItem(QList<QVariant>{}, TreeItem::categoryItem, rootItem);
+            TreeItem *categoryItem = new TreeItem(QList<QVariant>{},
+                                                  TreeItem::categoryItem,
+                                                  rootItem);
 
             rootItem->appendChild(categoryItem);
 
@@ -25,7 +27,8 @@ std::unique_ptr<TreeModel> TreeModelBulderFromExecutable::buildModel(std::vector
     }
     for (size_t i = 0; i < elements.size(); i++)
     {
-        if (elements.at(i) != NULL && elements.at(i)->m_type == ADTExecutable::ExecutableType::executableType)
+        if (elements.at(i) != NULL
+                && elements.at(i)->m_type == ADTExecutable::ExecutableType::executableType)
         {
             auto it = categoriesMap.find(elements.at(i)->m_toolId);
 
@@ -39,7 +42,9 @@ std::unique_ptr<TreeModel> TreeModelBulderFromExecutable::buildModel(std::vector
 
             TreeItem *categoryItem = categoriesMap[elements.at(i)->m_toolId];
 
-            TreeItem *checkItem = new TreeItem(QList<QVariant>{}, TreeItem::checkItem, categoryItem);
+            TreeItem *checkItem = new TreeItem(QList<QVariant>{},
+                                               TreeItem::checkItem,
+                                               categoryItem);
 
             categoryItem->appendChild(checkItem);
 
