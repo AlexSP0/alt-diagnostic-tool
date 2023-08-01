@@ -2,4 +2,12 @@
     <qresource prefix="/">
         <file>logo.png</file>
     </qresource>
+
+	 <qresource prefix="/">
+        <file>adt32.svg</file>
+    </qresource>
+
+<qresource prefix="/">
+        <file>adt64.svg</file>
+    </qresource>
 </RCC>
