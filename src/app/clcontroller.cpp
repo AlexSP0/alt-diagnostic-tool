@@ -185,7 +185,7 @@ void CLController::on_serviceUnregistered()
 {
     if (d->m_executor->isRunning())
     {
-        std::cout << "Service alterator-manager.service was unregictered! Please, restart the service! Waiting..."
+        std::cout << "Service alterator-manager.service was unregistered! Please, restart the service! Waiting..."
                   << std::endl;
         d->m_executor->wait();
     }
