@@ -39,7 +39,6 @@ ALT Linux diagnostic tool template.
 
 %install
 %cmakeinstall_std
-install -v -p -m 644 -D %_builddir/%name-%version/40-adt.rules %buildroot%_datadir/polkit-1/rules.d/40-adt.rules
 
 cd %_cmake__builddir
 desktop-file-install --dir=%buildroot%_desktopdir \
@@ -51,7 +50,6 @@ desktop-file-install --dir=%buildroot%_desktopdir \
 %doc INSTALL.md
 
 %_bindir/alt-diagnostic-tool
-%_datadir/polkit-1/rules.d/40-adt.rules
 %_desktopdir/adt.desktop
 
 %changelog
