@@ -81,11 +81,6 @@ QVariant TreeModel::data(const QModelIndex &index, int role) const
 
     TreeItem *item = static_cast<TreeItem *>(index.internalPointer());
 
-    /*if (role == Qt::CheckStateRole && index.column() == 0)
-    {
-        return static_cast<int>(item->isChecked() ? Qt::Checked : Qt::Unchecked);
-    }*/
-
     if (role == Qt::UserRole + 1)
     {
         return QVariant::fromValue(item->getExecutable());
@@ -113,9 +108,6 @@ Qt::ItemFlags TreeModel::flags(const QModelIndex &index) const
         return Qt::ItemFlag::NoItemFlags;
 
     Qt::ItemFlags flags = Qt::ItemIsEnabled | Qt::ItemIsSelectable;
-
-    /*if (index.column() == 0)
-        flags |= Qt::ItemIsUserCheckable;*/
 
     return flags;
 }

@@ -46,9 +46,6 @@ set(HEADERS
     mainwindow/serviceunregisteredwidget.h
     mainwindow/mainwindowsettings.h
 
-    reportcollector/reportcollectorinterface.h
-    reportcollector/reportcollectorimpl.h
-
     adtbuilderstrategies/adtmodelbuilder.h
     adtbuilderstrategies/adtmodelbuilderstrategyinterface.h
     adtbuilderstrategies/adtmodelbuilderstrategydbusinfodesktop.h
@@ -84,9 +81,6 @@ set(SOURCES
     mainwindow/clickablehighlightlabel.cpp
     mainwindow/serviceunregisteredwidget.cpp
     mainwindow/mainwindowsettings.cpp
-
-    reportcollector/reportcollectorinterface.cpp
-    reportcollector/reportcollectorimpl.cpp
 
     adtbuilderstrategies/adtmodelbuilder.cpp
     adtbuilderstrategies/adtmodelbuilderstrategydbusinfodesktop.cpp
