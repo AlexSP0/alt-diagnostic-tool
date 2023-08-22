@@ -46,6 +46,9 @@ set(HEADERS
     mainwindow/serviceunregisteredwidget.h
     mainwindow/mainwindowsettings.h
 
+    reportcollector/reportcollectorinterface.h
+    reportcollector/reportcollectorimpl.h
+
     adtbuilderstrategies/adtmodelbuilder.h
     adtbuilderstrategies/adtmodelbuilderstrategyinterface.h
     adtbuilderstrategies/adtmodelbuilderstrategydbusinfodesktop.h
@@ -81,6 +84,9 @@ set(SOURCES
     mainwindow/clickablehighlightlabel.cpp
     mainwindow/serviceunregisteredwidget.cpp
     mainwindow/mainwindowsettings.cpp
+
+    reportcollector/reportcollectorinterface.cpp
+    reportcollector/reportcollectorimpl.cpp
 
     adtbuilderstrategies/adtmodelbuilder.cpp
     adtbuilderstrategies/adtmodelbuilderstrategydbusinfodesktop.cpp
@@ -121,7 +127,9 @@ qt5_add_translation(QM_FILES ${TS_FILES})
 
 qt5_wrap_ui(UI_SOURCES ${UI_FORMS})
 
-qt5_add_resources(RCC_SOURCES ${RESOURCES})
+add_translation_resource(RESOURCES_SRC "adt" ${QM_FILES})
+
+qt5_add_resources(RCC_SOURCES ${RESOURCES} ${RESOURCES_SRC})
 
 add_adt_executable(alt-diagnostic-tool ${SOURCES} ${HEADERS} ${UI_SOURCES} ${RCC_SOURCES} ${QM_FILES})
 

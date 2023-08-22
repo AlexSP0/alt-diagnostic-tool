@@ -1,4 +1,4 @@
-# Prerequisites
+7# Prerequisites
 *.d
 
 # Compiled Object files
@@ -79,3 +79,5 @@ compile_commands.json
 build/
 docs/
 
+#Generated files
+*.translations.qrc
