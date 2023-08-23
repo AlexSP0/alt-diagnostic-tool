@@ -1,8 +1,0 @@
-polkit.addRule(function(action, subject) {
-    if (action.id == "ru.basealt.alterator.diag1.list") {
-        return polkit.Result.YES;
-    }
-    if (action.id == "ru.basealt.alterator.diag1") {
-        return polkit.Result.YES;
-    }
-});

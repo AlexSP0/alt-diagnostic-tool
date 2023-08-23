@@ -23,6 +23,7 @@
 #include <QApplication>
 #include <QDebug>
 #include <QTranslator>
+#include <iostream>
 
 #include "version.h"
 
@@ -46,7 +47,7 @@ int main(int argc, char **argv)
 
     QTranslator translator;
     QString language = locale.system().name().split("_").at(0);
-    translator.load("app_" + language, ".");
+    translator.load("app_" + language, ":/");
     app.installTranslator(&translator);
 
     ADTApp adtApp(&app, locale.system().name());
