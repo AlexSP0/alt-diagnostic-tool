@@ -52,6 +52,9 @@ public:
     TestWidgetInterface *getTestWidget() override;
 
 private:
+    void closeEvent(QCloseEvent *closeEvent) override;
+
+private:
     Ui::MainWindow *ui;
 
     MainWindowPrivate *d;

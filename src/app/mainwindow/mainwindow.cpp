@@ -93,3 +93,18 @@ TestWidgetInterface *MainWindow::getTestWidget()
 {
     return ui->testsPage;
 }
+
+void MainWindow::closeEvent(QCloseEvent *closeEvent)
+{
+    d->settings->saveSettings();
+
+    QWidget *currentWidget = ui->stackedWidget->currentWidget();
+    if (currentWidget == ui->toolsPage)
+    {
+        d->controller->exitToolsWidget();
+    }
+    else
+    {
+        d->controller->exitTestsWidget();
+    }
+}

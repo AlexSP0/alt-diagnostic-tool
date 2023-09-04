@@ -195,7 +195,15 @@ void MainWindowControllerImpl::backTestsWigdet()
 
 void MainWindowControllerImpl::exitTestsWidget()
 {
-    d->m_mainWindow->closeAll();
+    if (d->m_executor->isRunning())
+    {
+        //TO DO show stopping dialog!
+        d->m_executor->cancelTasks();
+    }
+    else
+    {
+        d->m_mainWindow->closeAll();
+    }
 }
 
 void MainWindowControllerImpl::detailsCurrentTest(StatusCommonWidget *widget)
