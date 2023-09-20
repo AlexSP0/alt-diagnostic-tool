@@ -40,11 +40,6 @@ ADT (Alt Diagnostic Tool) is a utility for diagnosing software problems using th
 %install
 %cmakeinstall_std
 
-cd %_cmake__builddir
-desktop-file-install --dir=%buildroot%_desktopdir \
-                     --set-key Exec --set-value %_bindir/alt-diagnostic-tool \
-                     ../setup/adt.desktop
-
 %files
 %doc README.md
 %doc INSTALL.md

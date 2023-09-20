@@ -122,4 +122,6 @@ qt5_add_resources(RCC_SOURCES ${RESOURCES} ${RESOURCES_SRC})
 
 add_adt_executable(alt-diagnostic-tool ${SOURCES} ${HEADERS} ${UI_SOURCES} ${RCC_SOURCES})
 
+install (FILES ${CMAKE_SOURCE_DIR}/setup/adt.desktop DESTINATION share/applications)
+
 target_link_libraries(alt-diagnostic-tool Qt5::Widgets Qt5::Core Qt5::DBus Qt5::Xml Qt5::Gui adtcore)
