@@ -28,7 +28,7 @@ Requires: alterator-module-executor
 Source0: %name-%version.tar
 
 %description
-ALT Linux diagnostic tool template.
+ADT (Alt Diagnostic Tool) is a utility for diagnosing software problems using the alterator-interface-diag1 interface.
 
 %prep
 %setup -q
