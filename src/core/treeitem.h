@@ -68,18 +68,21 @@ public:
     void appendChild(TreeItem *child);
 
     TreeItem *child(int row);
+    TreeItem *parent();
+    QVariant data(int column) const;
+
     int childCount() const;
     int columnCount() const;
-    QVariant data(int column) const;
     int row() const;
-    TreeItem *parent();
+
     bool isChecked() const;
     void setChecked(bool state);
 
     ADTExecutable *getExecutable() const;
-    void setExecutable(std::unique_ptr<ADTExecutable> executable);
-    ItemType getItemType();
     QIcon getIcon();
+    ItemType getItemType();
+
+    void setExecutable(std::unique_ptr<ADTExecutable> executable);
     void setIcon(QIcon i);
     void setlocaleForExecutable(QString locale);
 
