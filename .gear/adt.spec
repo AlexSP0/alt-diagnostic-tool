@@ -1,6 +1,6 @@
 %define _unpackaged_files_terminate_build 1
 
-Name: alt-diagnostic-tool
+Name: adt
 Version: 0.1.1
 Release: alt1
 
@@ -44,7 +44,7 @@ ADT (Alt Diagnostic Tool) is a utility for diagnosing software problems using th
 %doc README.md
 %doc INSTALL.md
 
-%_bindir/alt-diagnostic-tool
+%_bindir/adt
 %_desktopdir/adt.desktop
 
 %changelog
