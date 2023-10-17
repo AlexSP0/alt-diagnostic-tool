@@ -44,7 +44,7 @@ ADT (Alt Diagnostic Tool) is a utility for diagnosing software problems using th
 %doc README.md
 %doc INSTALL.md
 
-%_bindir/alt-diagnostic-tool
+%_bindir/adt
 %_desktopdir/adt.desktop
 
 %changelog
