@@ -1,6 +1,6 @@
 %define _unpackaged_files_terminate_build 1
 
-Name: alt-diagnostic-tool
+Name: adt
 Version: 0.1.1
 Release: alt1
 

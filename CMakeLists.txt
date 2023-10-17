@@ -4,7 +4,7 @@ project("ALT Diagnostic tool")
 
 execute_process(
     COMMAND
-    bash -c "grep 'Version:' .gear/alt-diagnostic-tool.spec | awk -F ':' '{ print $2 }' | tr -d [:space:]"
+    bash -c "grep 'Version:' .gear/adt.spec | awk -F ':' '{ print $2 }' | tr -d [:space:]"
     OUTPUT_VARIABLE ADT_GEAR_VERSION
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 message (${ADT_GEAR_VERSION})

@@ -120,8 +120,8 @@ add_translation_resource(RESOURCES_SRC "adt" ${QM_FILES})
 
 qt5_add_resources(RCC_SOURCES ${RESOURCES} ${RESOURCES_SRC})
 
-add_adt_executable(alt-diagnostic-tool ${SOURCES} ${HEADERS} ${UI_SOURCES} ${RCC_SOURCES})
+add_adt_executable(adt ${SOURCES} ${HEADERS} ${UI_SOURCES} ${RCC_SOURCES})
 
 install (FILES ${CMAKE_SOURCE_DIR}/setup/adt.desktop DESTINATION share/applications)
 
-target_link_libraries(alt-diagnostic-tool Qt5::Widgets Qt5::Core Qt5::DBus Qt5::Xml Qt5::Gui adtcore)
+target_link_libraries(adt Qt5::Widgets Qt5::Core Qt5::DBus Qt5::Xml Qt5::Gui adtcore)
