@@ -77,7 +77,6 @@ compile_commands.json
 
 # Build directory
 build/
-docs/
 
 #Generated files
 *.tr.qrc

@@ -35,9 +35,9 @@
 const QString DBUS_SERVICE_NAME         = "ru.basealt.alterator";
 const QString PATH_TO_DBUS_OBJECT       = "/ru/basealt/alterator";
 const QString DBUS_INTERFACE_NAME       = "ru.basealt.alterator.manager";
-const QString DBUS_GET_METHOD_NAME      = "get_objects";
+const QString DBUS_GET_METHOD_NAME      = "GetObjects";
 const QString DBUS_FIND_INTERFACE       = "ru.basealt.alterator.diag1";
-const QString DBUS_RUN_TASK_METHOD_NAME = "run";
+const QString DBUS_RUN_TASK_METHOD_NAME = "Run";
 
 typedef CommandLineParser::CommandLineParseResult CommandLineParseResult;
 
@@ -53,9 +53,7 @@ public:
         , m_locale(locale)
         , m_appController(nullptr)
         , m_parserResult{}
-        , m_serviceChecker(new ADTServiceChecker(DBUS_SERVICE_NAME,
-                                                 PATH_TO_DBUS_OBJECT,
-                                                 DBUS_INTERFACE_NAME))
+        , m_serviceChecker(new ADTServiceChecker(DBUS_SERVICE_NAME, PATH_TO_DBUS_OBJECT, DBUS_INTERFACE_NAME))
 
     {}
 
@@ -75,7 +73,7 @@ private:
     ADTAppPrivate(const ADTAppPrivate &) = delete;
     ADTAppPrivate(ADTAppPrivate &&)      = delete;
     ADTAppPrivate &operator=(const ADTAppPrivate &) = delete;
-    ADTAppPrivate &operator=(ADTAppPrivate &&)      = delete;
+    ADTAppPrivate &operator=(ADTAppPrivate &&) = delete;
 };
 
 ADTApp::ADTApp(QApplication *application, QString locale)
@@ -89,8 +87,7 @@ ADTApp::~ADTApp()
 
 int ADTApp::runApp()
 {
-    d->m_parserResult = d->m_parser->parseCommandLine(d->m_options.get(),
-                                                      &d->m_parseErrorMessage);
+    d->m_parserResult = d->m_parser->parseCommandLine(d->m_options.get(), &d->m_parseErrorMessage);
 
     if (d->m_parserResult == CommandLineParseResult::CommandLineError)
     {
@@ -113,8 +110,7 @@ int ADTApp::runApp()
 
     buildModel();
 
-    if (d->m_parserResult == CommandLineParseResult::CommandLineOk
-        || d->m_options->useGraphic == true)
+    if (d->m_parserResult == CommandLineParseResult::CommandLineOk || d->m_options->useGraphic == true)
     {
         //use GUI
         d->m_appController = std::make_unique<MainWindowControllerImpl>(d->m_model.get(),
@@ -124,8 +120,7 @@ int ADTApp::runApp()
     else
     {
         //use CLI
-        d->m_appController = std::make_unique<CLController>(d->m_model.get(),
-                                                            d->m_options.get());
+        d->m_appController = std::make_unique<CLController>(d->m_model.get(), d->m_options.get());
     }
 
     connect(d->m_serviceChecker.get(),
@@ -146,14 +141,13 @@ int ADTApp::runApp()
 
 void ADTApp::buildModel()
 {
-    ADTModelBuilder
-            modelBuilder(new ADTModelBuilderStrategyDbusInfoDesktop(DBUS_SERVICE_NAME,
-                                                                    PATH_TO_DBUS_OBJECT,
-                                                                    DBUS_INTERFACE_NAME,
-                                                                    DBUS_GET_METHOD_NAME,
-                                                                    DBUS_FIND_INTERFACE,
-                                                                    DBUS_RUN_TASK_METHOD_NAME,
-                                                                    new TreeModelBulderFromExecutable()));
+    ADTModelBuilder modelBuilder(new ADTModelBuilderStrategyDbusInfoDesktop(DBUS_SERVICE_NAME,
+                                                                            PATH_TO_DBUS_OBJECT,
+                                                                            DBUS_INTERFACE_NAME,
+                                                                            DBUS_GET_METHOD_NAME,
+                                                                            DBUS_FIND_INTERFACE,
+                                                                            DBUS_RUN_TASK_METHOD_NAME,
+                                                                            new TreeModelBulderFromExecutable()));
     d->m_model = std::move(modelBuilder.buildModel());
     d->m_model->setLocaleForElements(d->m_locale);
 }

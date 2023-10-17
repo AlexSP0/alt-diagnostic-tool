@@ -25,8 +25,8 @@
 #include <QDebug>
 #include <QJsonDocument>
 
-const QString ADTModelBuilderStrategyDbusInfoDesktop::LIST_METHOD = QString("list");
-const QString ADTModelBuilderStrategyDbusInfoDesktop::INFO_METHOD = QString("info");
+const QString ADTModelBuilderStrategyDbusInfoDesktop::LIST_METHOD = QString("List");
+const QString ADTModelBuilderStrategyDbusInfoDesktop::INFO_METHOD = QString("Info");
 
 ADTModelBuilderStrategyDbusInfoDesktop::ADTModelBuilderStrategyDbusInfoDesktop(QString serviceName,
                                                                                QString path,
