@@ -1,7 +1,7 @@
 %define _unpackaged_files_terminate_build 1
 
 Name: adt
-Version: 0.1.1
+Version: 0.1.2
 Release: alt1
 
 Summary: ALT Diagnostic tool
@@ -48,6 +48,10 @@ ADT (Alt Diagnostic Tool) is a utility for diagnosing software problems using th
 %_desktopdir/adt.desktop
 
 %changelog
+* Tue Oct 17 2023 Aleksey Saprunov <sav@altlinux.org> 0.1.2-alt1
+- Changed method names for the interface alterator-manager 1.18
+- fix alterator.interface.diag1 documentation
+
 * Wed Jun 28 2023 Aleksey Saprunov <sav@altlinux.org> 0.1.1-alt1
 - Use alterator-module-executor to get tools and tests
 
