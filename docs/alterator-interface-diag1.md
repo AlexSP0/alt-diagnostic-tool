@@ -28,7 +28,7 @@
 Пример реализации секции:
 
 ```
-[Manager] //обязательная секция
+[Manager]
 
 module_name = executor
 
@@ -102,7 +102,6 @@ thread_limit = 3
 [List]
 
 execute = /usr/share/alterator/backends/example.sh -l
-# ключ -l построчно возвращает список тестов
 
 stdout_strings = enabled
 
@@ -252,59 +251,81 @@ description[en_US]=writes 10 strings to stderr
 ```
 
 # Пример исполняемого файла
-```javascript 
+```
 #!/bin/bash
+DOMAIN="www.basealt.ru"
+PROG="net-diag"
+VERSION=0.0.1
+ipv6_address="2001:4860:4860::8888"
+ping_count=3
+runcmd=run
 
-test1()
-{
- for ((i=0;i<10;i++))
-do
-echo "${i} out 111" >&1
-sleep 0.5
-echo "${i} error 111" >&2
-sleep 0.5
-done
-exit 0
+show_usage(){
+    echo "Active Directory net diagnostic tool"
+    echo ""
+    echo "Usage: $PROG [options] [<check/test-function-name>]"
+    echo ""
+    echo "<check/test-function-name> must be a function name from the list of tests"
+    echo ""
+    echo "Options:"
+    echo "  -h, --help      This message"
+    echo "  -V, --version      Display version number"
+    echo "  -l, --list      List of tests"
+    echo ""
+    exit 0;
 }
 
-test2()
-{
- for ((i=0;i<10;i++))
-do
-echo "${i} out 222" >&1
-sleep .5
-echo "${i}error 222" >&2
-sleep .5
-done
-exit 0
+print_version(){
+echo "$PROG" ": " "$VERSION"
 }
 
-list()
-{
- echo "test1"
- echo "test2"
-exit 0
+check_ipv4(){
+ping -c "$ping_count" -W 1 -4 "$DOMAIN" >/dev/null 2>&1
+exit $?
 }
 
+check_ipv6(){
+ping -c "$ping_count" -W 1 -6 "$ipv6_address" >/dev/null 2>&1
+exit $?
+}
 
-while [[ $# -gt 0 ]]; do
-    key="$1"
-
-    case $key in
-        -l|--list)
-	    list
-        ;;
-	test1)
-	  $runcmd test1
-	    ;;
-	test2)
-      $runcmd test2
-	    ;;
-        *)
-        echo "Неизвестный ключ: $key"
-        exit 1
-        ;;
-    esac
+if [ "$#" -gt 0 ];then
+for input in "$@"; do
+    case "$input" in
+  -h | --help) show_ usage
+   ;;
+  -l | --list) listcmd=1
+   ;;
+  -v | --version) print_version
+   ;;
+  check_ipv4) check_ipv4
+   ;;
+  check_ipv6) check_ipv6
+   ;;
+  *) echo "Unrecognized option: $input"
+   ;;
+  esac
 done
+fi
+
+
+list_run(){
+    echo "$1"
+}
+
+run(){
+    local retval=126
+    local func="$1"
+    $func 2>&1 | retval=0  retval=$?
+    return $retval
+}
+
+if ! test -z $listcmd; then
+    runcmd=list_run
+fi
+
+$runcmd check_ipv4 "Check ipv4"
+$runcmd check_ipv6 "Check ipv6"
+
 ```
 
