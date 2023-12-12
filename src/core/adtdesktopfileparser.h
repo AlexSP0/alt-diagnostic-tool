@@ -22,7 +22,7 @@ public:
 
     const QString DEFAULT_ICON = "system-run";
 
-    static const QString DESKTOP_ENTRY_SECTION_NAME;
+    static const QString ALTERATOR_ENTRY_SECTION_NAME;
     static const QString NAME_SECTION_NAME;
     static const QString ICON_SECTION_NAME;
     static const QString DESCRIPTION_SECTION_NAME;

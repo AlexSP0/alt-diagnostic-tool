@@ -5,11 +5,11 @@
 
 #include <QDebug>
 
-const QString ADTDesktopFileParser::NAME_SECTION_NAME          = "name";
-const QString ADTDesktopFileParser::ICON_SECTION_NAME          = "icon";
-const QString ADTDesktopFileParser::DESCRIPTION_SECTION_NAME   = "description";
-const QString ADTDesktopFileParser::ARGS_SECTION_NAME          = "args";
-const QString ADTDesktopFileParser::DESKTOP_ENTRY_SECTION_NAME = "Desktop Entry";
+const QString ADTDesktopFileParser::NAME_SECTION_NAME            = "Name";
+const QString ADTDesktopFileParser::ICON_SECTION_NAME            = "Icon";
+const QString ADTDesktopFileParser::DESCRIPTION_SECTION_NAME     = "Description";
+const QString ADTDesktopFileParser::ARGS_SECTION_NAME            = "Args";
+const QString ADTDesktopFileParser::ALTERATOR_ENTRY_SECTION_NAME = "Alterator Entry";
 
 ADTDesktopFileParser::ADTDesktopFileParser(QString data)
     : m_sections()
@@ -93,7 +93,7 @@ std::unique_ptr<ADTExecutable> ADTDesktopFileParser::buildCategoryExecutable()
 
     newADTExecutable->m_toolId = newADTExecutable->m_id;
 
-    QList<QString> listOfKeys = getKeysListOfGroup(ADTDesktopFileParser::DESKTOP_ENTRY_SECTION_NAME);
+    QList<QString> listOfKeys = getKeysListOfGroup(ADTDesktopFileParser::ALTERATOR_ENTRY_SECTION_NAME);
 
     if (listOfKeys.empty())
     {
@@ -102,20 +102,20 @@ std::unique_ptr<ADTExecutable> ADTDesktopFileParser::buildCategoryExecutable()
         return nullptr;
     }
 
-    setIcon(ADTDesktopFileParser::DESKTOP_ENTRY_SECTION_NAME, newADTExecutable.get());
+    setIcon(ADTDesktopFileParser::ALTERATOR_ENTRY_SECTION_NAME, newADTExecutable.get());
 
-    if (!setNames(ADTDesktopFileParser::DESKTOP_ENTRY_SECTION_NAME, newADTExecutable.get()))
+    if (!setNames(ADTDesktopFileParser::ALTERATOR_ENTRY_SECTION_NAME, newADTExecutable.get()))
     {
         qWarning() << "ERROR! Can't get name for object: " << newADTExecutable->m_id;
         return nullptr;
     }
 
-    if (!setDescriptions(ADTDesktopFileParser::DESKTOP_ENTRY_SECTION_NAME, newADTExecutable.get()))
+    if (!setDescriptions(ADTDesktopFileParser::ALTERATOR_ENTRY_SECTION_NAME, newADTExecutable.get()))
     {
         qWarning() << "WARNING! Can't get description for object: " << newADTExecutable->m_id;
     }
 
-    setArgs(ADTDesktopFileParser::DESKTOP_ENTRY_SECTION_NAME, newADTExecutable.get());
+    setArgs(ADTDesktopFileParser::ALTERATOR_ENTRY_SECTION_NAME, newADTExecutable.get());
 
     newADTExecutable->m_type = ADTExecutable::ExecutableType::categoryType;
 
@@ -229,10 +229,10 @@ QString ADTDesktopFileParser::getKeyNameWithoutLocale(QString keyName)
 
     if (indexOfOpeningBracket >= indexOfClosingBracket || indexOfOpeningBracket == -1 || indexOfClosingBracket == -1)
     {
-        return keyName.toLower();
+        return keyName;
     }
 
-    return keyName.mid(0, indexOfOpeningBracket).toLower();
+    return keyName.mid(0, indexOfOpeningBracket);
 }
 
 bool ADTDesktopFileParser::setIcon(const QString &test, ADTExecutable *object)
@@ -334,23 +334,23 @@ bool ADTDesktopFileParser::setArgs(const QString &test, ADTExecutable *object)
 
 QString ADTDesktopFileParser::getToolName()
 {
-    auto desktopEntryIt = m_sections.find(ADTDesktopFileParser::DESKTOP_ENTRY_SECTION_NAME);
+    auto alteratorEntryIt = m_sections.find(ADTDesktopFileParser::ALTERATOR_ENTRY_SECTION_NAME);
 
-    if (desktopEntryIt == m_sections.end())
+    if (alteratorEntryIt == m_sections.end())
     {
-        qWarning() << "ERROR! Can't find section: " << ADTDesktopFileParser::DESKTOP_ENTRY_SECTION_NAME
+        qWarning() << "ERROR! Can't find section: " << ADTDesktopFileParser::ALTERATOR_ENTRY_SECTION_NAME
                    << " for the object located on the path " << m_dbusPath;
 
         return QString();
     }
 
-    Section desktopEntrySection = *desktopEntryIt;
+    Section alteratorEntrySection = *alteratorEntryIt;
 
-    QList<IniFileKey> toolNameList = desktopEntrySection.values(ADTDesktopFileParser::NAME_SECTION_NAME);
+    QList<IniFileKey> toolNameList = alteratorEntrySection.values(ADTDesktopFileParser::NAME_SECTION_NAME);
 
     if (toolNameList.isEmpty())
     {
-        qWarning() << "ERROR! Can't find any keys in section: " << ADTDesktopFileParser::DESKTOP_ENTRY_SECTION_NAME
+        qWarning() << "ERROR! Can't find any keys in section: " << ADTDesktopFileParser::ALTERATOR_ENTRY_SECTION_NAME
                    << " for the object located on the path " << m_dbusPath;
 
         return QString();
@@ -365,7 +365,7 @@ QString ADTDesktopFileParser::getToolName()
     }
 
     qWarning() << "ERROR! Can't find key: " << ADTDesktopFileParser::NAME_SECTION_NAME
-               << " in section: " << ADTDesktopFileParser::DESKTOP_ENTRY_SECTION_NAME << " without locale "
+               << " in section: " << ADTDesktopFileParser::ALTERATOR_ENTRY_SECTION_NAME << " without locale "
                << "for the object located on the path " << m_dbusPath;
     return QString();
 }
