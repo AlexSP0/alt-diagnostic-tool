@@ -23,10 +23,10 @@ public:
     const QString DEFAULT_ICON = "system-run";
 
     static const QString ALTERATOR_ENTRY_SECTION_NAME;
-    static const QString NAME_SECTION_NAME;
-    static const QString ICON_SECTION_NAME;
-    static const QString DESCRIPTION_SECTION_NAME;
-    static const QString ARGS_SECTION_NAME;
+    static const QString NAME_KEY_NAME;
+    static const QString ICON_KEY_NAME;
+    static const QString COMMENT_KEY_NAME;
+    static const QString ARGS_KEY_NAME;
 
 public:
     ADTDesktopFileParser(QString data,
