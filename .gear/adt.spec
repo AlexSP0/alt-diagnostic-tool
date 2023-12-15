@@ -39,6 +39,7 @@ ADT (Alt Diagnostic Tool) is a utility for diagnosing software problems using th
 
 %install
 %cmakeinstall_std
+install -v -p -m 644 -D setup/adt.application %buildroot%_datadir/alterator/applications
 
 %files
 %doc README.md
@@ -46,6 +47,7 @@ ADT (Alt Diagnostic Tool) is a utility for diagnosing software problems using th
 
 %_bindir/adt
 %_desktopdir/adt.desktop
+%_datadir/alterator/applications/adt/application
 
 %changelog
 * Tue Oct 17 2023 Aleksey Saprunov <sav@altlinux.org> 0.1.2-alt1
