@@ -54,6 +54,8 @@ RUN apt-get update \
     && mkdir /app \
     && chown root:builder2 /app
 
+RUN chmod a=rwx,u+t /tmp
+
 # Copies your code file from your action repository to the filesystem path `/` of the container
 COPY script/build.sh /build.sh
 
