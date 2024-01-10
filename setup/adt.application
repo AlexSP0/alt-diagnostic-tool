@@ -5,4 +5,4 @@ Name=ADT
 Name[ru]=ADT
 Comment=ALT Diagnostic Tool
 Comment[ru]=Диагностический инструмент
-Exec=adt -o %o -g
+Exec=adt -o %o -r -t -g
