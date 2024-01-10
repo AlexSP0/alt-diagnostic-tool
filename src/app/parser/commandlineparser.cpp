@@ -53,8 +53,7 @@ CommandLineParser::~CommandLineParser()
     delete d;
 }
 
-CommandLineParseResult CommandLineParser::parseCommandLine(CommandLineOptions *options,
-                                                                              QString *errorMessage)
+CommandLineParseResult CommandLineParser::parseCommandLine(CommandLineOptions *options, QString *errorMessage)
 {
     //TO DO add translations
     const QCommandLineOption helpOption = d->parser->addHelpOption();
@@ -128,14 +127,17 @@ CommandLineParseResult CommandLineParser::parseCommandLine(CommandLineOptions *o
 
     if (d->parser->isSet(objectListOption))
     {
-        const QString objectName = d->parser->value(objectListOption);
-        options->objectName      = objectName;
+        const QString name = d->parser->value(objectListOption);
 
-        if (options->objectName.isNull() || options->objectName.isEmpty())
+        if (name.isNull() || name.isEmpty())
         {
-            *errorMessage = QObject::tr("Bad object name: ") + objectName;
+            *errorMessage = QObject::tr("Bad object name: ") + name;
             return CommandLineError;
         }
+
+        QString objectName = name.mid(name.lastIndexOf("/") + 1, name.size());
+
+        options->objectName = objectName;
 
         options->action = CommandLineOptions::Action::listOfTestFromSpecifiedObject;
         return CommandLineListOfTestsRequested;
