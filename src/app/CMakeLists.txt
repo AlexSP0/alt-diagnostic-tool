@@ -58,6 +58,9 @@ set(HEADERS
 
     parser/commandlineparser.h
     parser/commandlineoptions.h
+
+    settings/adtsettingsinterface.h
+    settings/adtsettingsimpl.h
 )
 
 set(SOURCES
@@ -92,6 +95,8 @@ set(SOURCES
     interfaces/appcontrollerinterface.cpp
 
     parser/commandlineparser.cpp
+
+    settings/adtsettingsimpl.cpp
 )
 
 set(UI_FORMS
