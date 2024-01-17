@@ -30,6 +30,10 @@ public:
     virtual void detailsCurrentTest(StatusCommonWidget *widget) = 0;
 
     virtual int runApp() = 0;
+
+    virtual void saveMainWindowSettings() = 0;
+
+    virtual void restoreMainWindowSettings() = 0;
 };
 
 #endif

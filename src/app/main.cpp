@@ -19,11 +19,12 @@
 ***********************************************************************************************************************/
 
 #include "adtapp.h"
+#include "settings/adtsettingsimpl.h"
 
+#include <iostream>
 #include <QApplication>
 #include <QDebug>
 #include <QTranslator>
-#include <iostream>
 
 #include "version.h"
 
@@ -38,9 +39,9 @@ int main(int argc, char **argv)
 
     // NOTE: set app variables which will be used to
     // construct settings path
-    app.setOrganizationName(QCoreApplication::translate("main", "BaseALT Ltd."));
+    app.setOrganizationName(QCoreApplication::translate("main", "BaseALT"));
     app.setOrganizationDomain("basealt.ru");
-    app.setApplicationName("ALT Diagnostic Tool");
+    app.setApplicationName("ADT");
     app.setApplicationVersion(getVersion());
 
     QLocale locale;
@@ -50,7 +51,9 @@ int main(int argc, char **argv)
     translator.load("app_" + language, ":/");
     app.installTranslator(&translator);
 
-    ADTApp adtApp(&app, locale.system().name());
+    ADTSettingsImpl settings;
+
+    ADTApp adtApp(&app, &settings, locale.system().name());
 
     return adtApp.runApp();
 }

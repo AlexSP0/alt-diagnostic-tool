@@ -23,19 +23,20 @@
 #include "adtexecutor.h"
 
 #include <iostream>
-
 class CLControllerPrivate
 {
 public:
-    CLControllerPrivate(TreeModel *model, CommandLineOptions *options)
+    CLControllerPrivate(TreeModel *model, ADTSettingsInterface *settings, CommandLineOptions *options)
         : m_options(options)
         , m_model(model)
+        , m_settings(settings)
         , m_executor(new ADTExecutor())
     {}
     ~CLControllerPrivate() { delete m_executor; }
 
     CommandLineOptions *m_options;
     TreeModel *m_model;
+    ADTSettingsInterface *m_settings;
     ADTExecutor *m_executor;
 
 private:
@@ -45,8 +46,8 @@ private:
     CLControllerPrivate &operator=(CLControllerPrivate &&) = delete;
 };
 
-CLController::CLController(TreeModel *model, CommandLineOptions *options)
-    : d(new CLControllerPrivate(model, options))
+CLController::CLController(TreeModel *model, ADTSettingsInterface *settings, CommandLineOptions *options)
+    : d(new CLControllerPrivate(model, settings, options))
 {
     connect(d->m_executor, &ADTExecutor::beginTask, this, &CLController::onBeginTask);
     connect(d->m_executor, &ADTExecutor::finishTask, this, &CLController::onFinishTask);

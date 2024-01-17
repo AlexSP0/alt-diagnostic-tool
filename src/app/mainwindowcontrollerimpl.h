@@ -29,16 +29,19 @@
 #include "interfaces/testswidgetinterface.h"
 #include "interfaces/toolswidgetinterface.h"
 #include "parser/commandlineoptions.h"
+#include "settings/adtsettingsinterface.h"
 
 #include <QApplication>
-
 class MainWindowControllerImplPrivate;
 
 class MainWindowControllerImpl : public AppControllerInterface, public MainWindowControllerInterface
 {
     Q_OBJECT
 public:
-    MainWindowControllerImpl(TreeModel *model, CommandLineOptions *options, QApplication *app);
+    MainWindowControllerImpl(TreeModel *model,
+                             ADTSettingsInterface *settings,
+                             CommandLineOptions *options,
+                             QApplication *app);
 
     ~MainWindowControllerImpl();
 
@@ -65,6 +68,9 @@ public:
     int runAllTestsOfObject(QString object);
     int runSpecifiedTestOfObject(QString object, QString test);
     int runApp() override;
+
+    void saveMainWindowSettings() override;
+    void restoreMainWindowSettings() override;
 
 public slots:
     virtual void on_serviceUnregistered() override;

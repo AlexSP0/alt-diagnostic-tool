@@ -20,7 +20,6 @@
 
 #include "mainwindow.h"
 #include "./ui_mainwindow.h"
-#include "mainwindowsettings.h"
 
 #include <QDebug>
 
@@ -31,7 +30,6 @@ public:
         : mainWindow(mWindow)
         , mainWindowUi(ui)
         , controller(nullptr)
-        , settings(new MainWindowSettings(mWindow, ui))
     {}
     ~MainWindowPrivate() = default;
 
@@ -40,8 +38,6 @@ public:
     Ui::MainWindow *mainWindowUi;
 
     MainWindowControllerInterface *controller;
-
-    std::unique_ptr<MainWindowSettings> settings;
 
 private:
     MainWindowPrivate(const MainWindowPrivate &) = delete;
@@ -57,8 +53,6 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     d = new MainWindowPrivate(this, ui);
-
-    d->settings->restoreSettings();
 }
 
 MainWindow::~MainWindow()
@@ -69,13 +63,14 @@ MainWindow::~MainWindow()
 
 void MainWindow::closeAll()
 {
-    d->settings->saveSettings();
+    d->controller->saveMainWindowSettings();
     close();
 }
 
 void MainWindow::setController(MainWindowControllerInterface *controller)
 {
     d->controller = controller;
+    d->controller->restoreMainWindowSettings();
 }
 
 void MainWindow::toggleStackWidget()
@@ -96,7 +91,7 @@ TestWidgetInterface *MainWindow::getTestWidget()
 
 void MainWindow::closeEvent(QCloseEvent *closeEvent)
 {
-    d->settings->saveSettings();
+    d->controller->saveMainWindowSettings();
 
     QWidget *currentWidget = ui->stackedWidget->currentWidget();
     if (currentWidget == ui->toolsPage)

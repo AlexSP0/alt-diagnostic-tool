@@ -27,13 +27,15 @@
 
 #include <QString>
 
+#include <settings/adtsettingsinterface.h>
+
 class CLControllerPrivate;
 
 class CLController : public AppControllerInterface
 {
     Q_OBJECT
 public:
-    CLController(TreeModel *model, CommandLineOptions *options);
+    CLController(TreeModel *model, ADTSettingsInterface *settings, CommandLineOptions *options);
     ~CLController();
 
     int listObjects() override;

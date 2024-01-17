@@ -30,8 +30,12 @@
 class MainWindowControllerImplPrivate
 {
 public:
-    MainWindowControllerImplPrivate(TreeModel *model, CommandLineOptions *options, QApplication *app)
+    MainWindowControllerImplPrivate(TreeModel *model,
+                                    ADTSettingsInterface *settings,
+                                    CommandLineOptions *options,
+                                    QApplication *app)
         : m_model(model)
+        , m_settings(settings)
         , m_mainWindow(nullptr)
         , m_toolsWidget(nullptr)
         , m_testWidget(nullptr)
@@ -58,6 +62,8 @@ public:
     }
 
     TreeModel *m_model;
+
+    ADTSettingsInterface *m_settings;
 
     MainWindowInterface *m_mainWindow;
 
@@ -88,8 +94,11 @@ private:
     MainWindowControllerImplPrivate &operator=(MainWindowControllerImplPrivate &&) = delete;
 };
 
-MainWindowControllerImpl::MainWindowControllerImpl(TreeModel *model, CommandLineOptions *options, QApplication *app)
-    : d(new MainWindowControllerImplPrivate(model, options, app))
+MainWindowControllerImpl::MainWindowControllerImpl(TreeModel *model,
+                                                   ADTSettingsInterface *settings,
+                                                   CommandLineOptions *options,
+                                                   QApplication *app)
+    : d(new MainWindowControllerImplPrivate(model, settings, options, app))
 {
     d->m_toolsWidget->setController(this);
     d->m_proxyModel->setSourceModel(d->m_model);
@@ -314,6 +323,16 @@ int MainWindowControllerImpl::runApp()
     d->m_application->exec();
 
     return result;
+}
+
+void MainWindowControllerImpl::saveMainWindowSettings()
+{
+    d->m_settings->saveWindowsSettings(dynamic_cast<QMainWindow *>(d->m_mainWindow));
+}
+
+void MainWindowControllerImpl::restoreMainWindowSettings()
+{
+    d->m_settings->restoreWindowSettings(dynamic_cast<QMainWindow *>(d->m_mainWindow));
 }
 
 void MainWindowControllerImpl::on_serviceUnregistered()

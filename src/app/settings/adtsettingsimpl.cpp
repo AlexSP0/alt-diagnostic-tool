@@ -20,6 +20,7 @@
 
 #include "adtsettingsimpl.h"
 
+#include <memory>
 #include <QMainWindow>
 #include <QSettings>
 
@@ -50,6 +51,8 @@ private:
 ADTSettingsImpl::ADTSettingsImpl()
     : d(std::make_unique<ADTSettingsPrivate>())
 {}
+
+ADTSettingsImpl::~ADTSettingsImpl() {}
 
 void ADTSettingsImpl::restoreWindowSettings(QWidget *window)
 {

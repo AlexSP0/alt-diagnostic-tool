@@ -44,8 +44,9 @@ typedef CommandLineParser::CommandLineParseResult CommandLineParseResult;
 class ADTAppPrivate
 {
 public:
-    ADTAppPrivate(QApplication *app, QString locale)
+    ADTAppPrivate(QApplication *app, ADTSettingsInterface *settings, QString locale)
         : m_application(app)
+        , m_settings(settings)
         , m_model(nullptr)
         , m_parser(new CommandLineParser(*app))
         , m_options(new CommandLineOptions())
@@ -58,6 +59,7 @@ public:
     {}
 
     QApplication *m_application;
+    ADTSettingsInterface *m_settings;
     std::unique_ptr<TreeModel> m_model;
     std::unique_ptr<CommandLineParser> m_parser;
     std::unique_ptr<CommandLineOptions> m_options;
@@ -76,8 +78,8 @@ private:
     ADTAppPrivate &operator=(ADTAppPrivate &&) = delete;
 };
 
-ADTApp::ADTApp(QApplication *application, QString locale)
-    : d(new ADTAppPrivate(application, locale))
+ADTApp::ADTApp(QApplication *application, ADTSettingsInterface *settings, QString locale)
+    : d(new ADTAppPrivate(application, settings, locale))
 {}
 
 ADTApp::~ADTApp()
@@ -114,13 +116,14 @@ int ADTApp::runApp()
     {
         //use GUI
         d->m_appController = std::make_unique<MainWindowControllerImpl>(d->m_model.get(),
+                                                                        d->m_settings,
                                                                         d->m_options.get(),
                                                                         d->m_application);
     }
     else
     {
         //use CLI
-        d->m_appController = std::make_unique<CLController>(d->m_model.get(), d->m_options.get());
+        d->m_appController = std::make_unique<CLController>(d->m_model.get(), d->m_settings, d->m_options.get());
     }
 
     connect(d->m_serviceChecker.get(),

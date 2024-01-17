@@ -28,7 +28,7 @@ class ADTSettingsImpl : public ADTSettingsInterface
 {
 public:
     ADTSettingsImpl();
-    ~ADTSettingsImpl() = default;
+    ~ADTSettingsImpl();
 
 public:
     void restoreWindowSettings(QWidget *window) override;

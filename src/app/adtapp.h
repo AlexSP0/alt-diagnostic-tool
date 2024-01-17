@@ -22,6 +22,7 @@
 #define ADTAPP_H
 
 #include "../core/treemodel.h"
+#include "settings/adtsettingsinterface.h"
 
 #include <QApplication>
 
@@ -31,7 +32,7 @@ class ADTApp : public QObject
 {
     Q_OBJECT
 public:
-    ADTApp(QApplication *application, QString locale);
+    ADTApp(QApplication *application, ADTSettingsInterface *settings, QString locale);
     ~ADTApp();
 
     int runApp();
