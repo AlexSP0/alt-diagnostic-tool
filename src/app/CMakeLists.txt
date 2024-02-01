@@ -123,5 +123,6 @@ qt5_add_resources(RCC_SOURCES ${RESOURCES} ${RESOURCES_SRC})
 add_adt_executable(adt ${SOURCES} ${HEADERS} ${UI_SOURCES} ${RCC_SOURCES})
 
 install (FILES ${CMAKE_SOURCE_DIR}/setup/adt.desktop DESTINATION share/applications)
+install (FILES ${CMAKE_SOURCE_DIR}/setup/adt.svg DESTINATION ${CMAKE_INSTALL_DATADIR}/icons/hicolor/scalable/apps)
 
 target_link_libraries(adt Qt5::Widgets Qt5::Core Qt5::DBus Qt5::Xml Qt5::Gui adtcore)
