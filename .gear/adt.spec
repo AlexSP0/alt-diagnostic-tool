@@ -49,6 +49,7 @@ install -v -p -m 644 -D setup/adt.application %buildroot%_datadir/alterator/appl
 %_bindir/adt
 %_desktopdir/adt.desktop
 %_datadir/alterator/applications/adt.application
+%_iconsdir/hicolor/scalable/apps/adt.svg
 
 %changelog
 * Fri Dec 15 2023 Aleksey Saprunov <sav@altlinux.org> 0.1.3-alt1

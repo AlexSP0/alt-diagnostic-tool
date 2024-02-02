@@ -23,6 +23,7 @@
 #include <QApplication>
 #include <QDebug>
 #include <QTranslator>
+#include <QIcon>
 #include <iostream>
 
 #include "version.h"
@@ -42,6 +43,7 @@ int main(int argc, char **argv)
     app.setOrganizationDomain("basealt.ru");
     app.setApplicationName("ALT Diagnostic Tool");
     app.setApplicationVersion(getVersion());
+    app.setWindowIcon(QIcon(":adt.ico"));
 
     QLocale locale;
 
